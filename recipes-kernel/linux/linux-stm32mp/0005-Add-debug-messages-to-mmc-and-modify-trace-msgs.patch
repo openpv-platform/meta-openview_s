@@ -1,0 +1,158 @@
+From 950075440e27ba462b58b3fb1d04ab936a707141 Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Tue, 14 Sep 2021 17:04:27 -0400
+Subject: [PATCH 3/3] Add debug messages to mmc and modify the trace message
+ for debugging SDIO i/f.
+
+---
+ drivers/mmc/core/core.c     |  7 ++++++-
+ drivers/mmc/core/sdio_ops.c | 11 +++++++++--
+ drivers/mmc/host/mmci.c     |  1 +
+ include/trace/events/mmc.h  | 20 +++++++++++++++-----
+ 4 files changed, 31 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index d42037f0f..97e3d82cb 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -147,7 +147,10 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
+ 	    (err == -EILSEQ || (mrq->sbc && mrq->sbc->error == -EILSEQ) ||
+ 	    (mrq->data && mrq->data->error == -EILSEQ) ||
+ 	    (mrq->stop && mrq->stop->error == -EILSEQ)))
++	{
+ 		mmc_retune_needed(host);
++		pr_err("mmc_request_done Marking retune");
++	}
+ 
+ 	if (err && cmd->retries && mmc_host_is_spi(host)) {
+ 		if (cmd->resp[0] & R1_SPI_ILLEGAL_COMMAND)
+@@ -220,6 +223,7 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
+ 	/* Assumes host controller has been runtime resumed by mmc_claim_host */
+ 	err = mmc_retune(host);
+ 	if (err) {
++		pr_err("mmc retune %d", err);
+ 		mrq->cmd->error = err;
+ 		mmc_request_done(host, mrq);
+ 		return;
+@@ -233,11 +237,11 @@ static void __mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
+ 	if (sdio_is_io_busy(mrq->cmd->opcode, mrq->cmd->arg) &&
+ 	    host->ops->card_busy) {
+ 		int tries = 500; /* Wait aprox 500ms at maximum */
+-
+ 		while (host->ops->card_busy(host) && --tries)
+ 			mmc_delay(1);
+ 
+ 		if (tries == 0) {
++			pr_err("mmc retry expire");
+ 			mrq->cmd->error = -EBUSY;
+ 			mmc_request_done(host, mrq);
+ 			return;
+@@ -386,6 +390,7 @@ static int __mmc_start_req(struct mmc_host *host, struct mmc_request *mrq)
+ 
+ 	err = mmc_start_request(host, mrq);
+ 	if (err) {
++		pr_err("start_req err %d", err);
+ 		mrq->cmd->error = err;
+ 		mmc_complete_cmd(mrq);
+ 		complete(&mrq->completion);
+diff --git a/drivers/mmc/core/sdio_ops.c b/drivers/mmc/core/sdio_ops.c
+index 4c229dd2b..a2c031de3 100644
+--- a/drivers/mmc/core/sdio_ops.c
++++ b/drivers/mmc/core/sdio_ops.c
+@@ -172,13 +172,20 @@ int mmc_io_rw_extended(struct mmc_card *card, int write, unsigned fn,
+ 	mmc_set_data_timeout(&data, card);
+ 
+ 	mmc_pre_req(card->host, &mrq);
++	if (cmd.error) {
++		pr_err("pre_req cmd err %d, nents %d, blocks %d, blksz %d", err, nents, blocks, blksz);
++	}
+ 
+ 	mmc_wait_for_req(card->host, &mrq);
+ 
+-	if (cmd.error)
++	if (cmd.error) {
+ 		err = cmd.error;
+-	else if (data.error)
++		pr_err("cmd err %d, nents %d, blocks %d, blksz %d", err, nents, blocks, blksz);
++	}
++	else if (data.error) {
+ 		err = data.error;
++		pr_err("data err %d, nents %d, blocks %d, blksz %d", err, nents, blocks, blksz);
++	}
+ 	else if (mmc_host_is_spi(card->host))
+ 		/* host driver already reported errors */
+ 		err = 0;
+diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+index fa6d85190..2c13c906a 100644
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -1390,6 +1390,7 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+ 		cmd->error = -ETIMEDOUT;
+ 	} else if (status & MCI_CMDCRCFAIL && cmd->flags & MMC_RSP_CRC) {
+ 		cmd->error = -EILSEQ;
++		pr_err("mmci_cmd_irq sets EILSEQ");
+ 	} else if (host->variant->busy_timeout && busy_resp &&
+ 		   status & MCI_DATATIMEOUT) {
+ 		cmd->error = -ETIMEDOUT;
+diff --git a/include/trace/events/mmc.h b/include/trace/events/mmc.h
+index 7b706ff21..a85e5c9da 100644
+--- a/include/trace/events/mmc.h
++++ b/include/trace/events/mmc.h
+@@ -101,6 +101,9 @@ TRACE_EVENT(mmc_request_done,
+ 
+ 	TP_STRUCT__entry(
+ 		__field(u32,			cmd_opcode)
++		__field(u16,			cmd_arg_a)
++		__field(u16,			cmd_arg_b)
++		__field(u32,			cmd_arg_ra)
+ 		__field(int,			cmd_err)
+ 		__array(u32,			cmd_resp,	4)
+ 		__field(unsigned int,		cmd_retries)
+@@ -127,6 +130,9 @@ TRACE_EVENT(mmc_request_done,
+ 
+ 	TP_fast_assign(
+ 		__entry->cmd_opcode = mrq->cmd ? mrq->cmd->opcode : 0;
++		__entry->cmd_arg_a = mrq->cmd ? (mrq->cmd->arg >> 16) : 0;
++		__entry->cmd_arg_b = mrq->cmd ? (mrq->cmd->arg & 0xffff) : 0;
++		__entry->cmd_arg_ra = mrq->cmd ? ((mrq->cmd->arg >> 9) & 0x1ffff) : 0;
+ 		__entry->cmd_err = mrq->cmd ? mrq->cmd->error : 0;
+ 		__entry->cmd_resp[0] = mrq->cmd ? mrq->cmd->resp[0] : 0;
+ 		__entry->cmd_resp[1] = mrq->cmd ? mrq->cmd->resp[1] : 0;
+@@ -161,17 +167,21 @@ TRACE_EVENT(mmc_request_done,
+ 	),
+ 
+ 	TP_printk("%s: end struct mmc_request[%p]: "
+-		  "cmd_opcode=%u cmd_err=%d cmd_resp=0x%x 0x%x 0x%x 0x%x "
++		  "cmd_opcode=%u cmd_arg_a=%u cmd_arg_b=%u cmd_52_ra=%u "
++			"cmd_err=%d cmd_resp=0x%x 0x%x 0x%x 0x%x "
++/*
+ 		  "cmd_retries=%u stop_opcode=%u stop_err=%d "
+ 		  "stop_resp=0x%x 0x%x 0x%x 0x%x stop_retries=%u "
+ 		  "sbc_opcode=%u sbc_err=%d sbc_resp=0x%x 0x%x 0x%x 0x%x "
+ 		  "sbc_retries=%u bytes_xfered=%u data_err=%d tag=%d "
+ 		  "can_retune=%u doing_retune=%u retune_now=%u need_retune=%d "
+-		  "hold_retune=%d retune_period=%u",
++		  "hold_retune=%d retune_period=%u" */,
+ 		  __get_str(name), __entry->mrq,
+-		  __entry->cmd_opcode, __entry->cmd_err,
++		  __entry->cmd_opcode,
++			__entry->cmd_arg_a, __entry->cmd_arg_b, __entry->cmd_arg_ra,
++			__entry->cmd_err,
+ 		  __entry->cmd_resp[0], __entry->cmd_resp[1],
+-		  __entry->cmd_resp[2], __entry->cmd_resp[3],
++		  __entry->cmd_resp[2], __entry->cmd_resp[3] /*,
+ 		  __entry->cmd_retries,
+ 		  __entry->stop_opcode, __entry->stop_err,
+ 		  __entry->stop_resp[0], __entry->stop_resp[1],
+@@ -184,7 +194,7 @@ TRACE_EVENT(mmc_request_done,
+ 		  __entry->bytes_xfered, __entry->data_err, __entry->tag,
+ 		  __entry->can_retune, __entry->doing_retune,
+ 		  __entry->retune_now, __entry->need_retune,
+-		  __entry->hold_retune, __entry->retune_period)
++		  __entry->hold_retune, __entry->retune_period */ )
+ );
+ 
+ #endif /* _TRACE_MMC_H */
+-- 
+2.25.1
+
