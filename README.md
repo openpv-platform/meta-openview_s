@@ -84,8 +84,9 @@ The following documentation is available for Distribution Team developers:
 - [Modifying the Device Tree](https://enovationexternal.visualstudio.com/HCEE/_git/meta-hlio-rcd?path=/docs/Modify_Device_Tree.md&version=GBmain&_a=preview)
 
 - Adding an OpenEmbedded supported kernel driver
+  - Add `IMAGE_INSTALL_append = " python3-pip"` to `layers/meta-st/meta-hlio-rcd/conf/layer.conf` config file
 
-- Adding an unsupported (by OpenEmbedded) kernel driver
+- [Adding an unsupported (by OpenEmbedded) kernel driver](https://enovationexternal.visualstudio.com/HCEE/_git/meta-hlio-rcd?path=/docs/Add_Kernel_Driver.md&version=GBmain&_a=preview)
 
 #### Other Recipes and Applications
 
