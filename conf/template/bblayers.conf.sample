@@ -61,6 +61,7 @@ FRAMEWORKLAYERS += "${@'${OEROOT}/layers/meta-st/meta-st-openstlinux' if os.path
 
 # Specific to RCD
 RCDLAYERS = "${@'${OEROOT}/layers/meta-st/meta-hlio-rcd' if os.path.isfile('${OEROOT}/layers/meta-st/meta-hlio-rcd/conf/layer.conf') else ''}"
+RCDLAYERS += "${@'${OEROOT}/layers/meta-st/meta-st-stm32mp-addons' if os.path.isfile('${OEROOT}/layers/meta-st/meta-st-stm32mp-addons/conf/layer.conf') else ''}"
 
 # add BSP layer
 BBLAYERS += " \
