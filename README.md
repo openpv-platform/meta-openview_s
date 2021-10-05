@@ -61,9 +61,10 @@ The meta-hlio-rcd repository
   - When the developer has used `repo` to create the Yocto build environment, the meta-hlio-rcd layer will have a git status of "Not currently on any branch." and `git branch` will show "* (no branch)". 
   - Normal `git` commands can be invoked in this directory, but some steps are necessary to set up the appropriate tracking branches locally. 
   - The name of the remote is __hlio-devops__.  
-  - Before making a change in the build environment, it is a good idea to create your working branch off of the dev branch:  
+  - Before making a change in the build environment, create your working branch off of the dev branch. Please use the following naming convention:
+    - new_branch_name = "dev/{developer-name}/{pbi#-feature-name}"
     ```git
-    git checkout -b <new_branch> hlio-devops/dev
+    git checkout -b <new_branch_name> hlio-devops/dev
     .
     . [Make changes, and intermediate check-ins as needed]
     .
