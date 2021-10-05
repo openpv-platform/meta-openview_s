@@ -12,4 +12,5 @@ PACKAGES = "\
 
 RDEPENDS_packagegroup-hlio-esp = "\
     esp-hosted \
+    python3-can \
     "

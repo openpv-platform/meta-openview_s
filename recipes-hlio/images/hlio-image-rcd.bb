@@ -12,12 +12,12 @@ IMAGE_LINGUAS = "en-us"
 
 IMAGE_FEATURES += "\
     splash              \
-    package-management  \
     ssh-server-dropbear \
     hwcodecs            \
     tools-profile       \
     eclipse-debug       \
     "
+#    package-management  
 
 #
 # INSTALL addons
@@ -38,9 +38,12 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     \
     ${@bb.utils.contains('COMBINED_FEATURES', 'tpm2', 'packagegroup-security-tpm2', '', d)} \
     \
-    packagegroup-st-demo \
     packagegroup-hlio-esp \
     "
+
+# Removed:
+#     packagegroup-st-demo 
+
 
 # NOTE:
 #   packagegroup-st-demo are installed on rootfs to populate the package

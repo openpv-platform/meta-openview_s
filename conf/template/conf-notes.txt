@@ -1,0 +1,4 @@
+Available images for OpenSTLinux layers are:
+
+  - Official Helios Right Cost Display images:
+      hlio-image-rcd       -   OpenSTLinux weston image with basic Wayland support

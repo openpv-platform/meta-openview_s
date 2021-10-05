@@ -68,8 +68,13 @@ The meta-hlio-rcd repository
     . [Make changes, and intermediate check-ins as needed]
     .
     git push hlio-devops HEAD
+    git branch <name_of_new_branch> -u hlio-devops/<name_of_new_branch>
     ```
-    The push command as written above is needed to create the new branch in the repository.  
+    - The checkout command above creates the new local branch based off of and tracking the current remote dev branch.
+    - The push command above is needed to create the new branch in the repository.
+    - The branch command that follows will change your local tracking branch to track the newly created remote branch instead of hlio-devops/dev.
+      - The -t switch with the original checkout command will not work because the remote branch does not exist yet.
+      - There may be other ways with git to accomplish this. Please submit suggestions if there is something more succinct or cleaner.
   - You may also want to have a local tracking branch for the remote dev branch, for merging purposes:  
 `git checkout -b dev hlio-devops/dev`
 
