@@ -36,11 +36,25 @@ Run 'bitbake-layers add-layer meta-hlio-rcd'
 
 - Any subsequent work must be done in a terminal that has sourced the same script.
 
-- Currently we are piggy-backing on the ST provided _Machine_ and _Distro_. So the script to source is:
+There are currently two machine names available:  
 
-  `DISTRO=openstlinux-weston MACHINE=stm32mp1 source layers/meta-st/scripts/envsetup.sh`
+1. Development on the ST Development Kit (DK):
+    ```
+    DISTRO=hlio-rcd MACHINE=stm32mp1 source layers/meta-st/scripts/envsetup.sh
+    ```
 
-  TODO: This will change once we create the Helios RCD specific machine definition and one or more specific distributions.
+2. Development on the Helios RCD hardware:
+   - Do not use this yet, as the device tree has not been fully defined and may cause issues on the Dev Kit.
+    ```
+    DISTRO=hlio-rcd MACHINE=stm32mp1-hlio-rcd source layers/meta-st/scripts/envsetup.sh
+    ```
+
+3. Legacy prior to merge of DISTRO changes:
+    ```
+    DISTRO=openstlinux-weston MACHINE=stm32mp1 source layers/meta-st/scripts/envsetup.sh
+    ```
+    - Followed by a one-time command:  
+    `bitbake-layers add-layer ../layers/meta-st/meta-hlio-rcd/`
 
 #### Making changes to the meta-hlio-rcd layer
 

@@ -6,33 +6,55 @@ All work is done in a terminal that has previously sourced the appropriate envir
 
 All commands are to be executed in the build directory unless otherwise indicated.
 
-We can use devtool to facilitate kernel modifications.
+## We have two source locations for device tree modifications:
+### Targeting the ST Dev Kit
+  - All modifications should be made in the source file:
+    - `meta-hlio-rcd/recipes-kernel/linux/linux-stm32mp/stm32mp15xx-hlio-rcd.dtsi`
+### Targeting Helios RCD hardware
+  - All modifications should be made in the source file directory structure:
+    - `meta-hlio-rcd/mx/CA7/DeviceTree/right_cost_display`
+    - There are three sub-directories:
+      - kernel
+        - `./kernel/stm32mp157a-right_cost_display-mx.dts`
+        - User space configuration
+      - tf-a
+        - Device Tree for devices accessible to the M4 MCU (I think)
+      - u-boot
+        - `./u-boot/stm32mp157a-right_cost_display-mx.dts`
+        - Startup configuration
 
-## Prepare for any kernel modification:
+You can use devtool to aid in testing without re-building the entire image.
+
+## Using devtool
+We can use devtool to facilitate kernel modifications and debugging in general.
+
+### Prepare for any kernel modification:
   - `devtool modify virtual/kernel`
     - Creates __temporary layer, source tree and recipe__ in {Build Directory}/workspace
     - __Source tree__ extracted to {Build Directory}/workspace/sources/linux-stm32mp
     - __Recipe linux-stm32mp__ now set up to build from {Build Directory}/workspace/sources/linux-stm32mp
 
-## Modify the device tree files
-We may be able to mdoify these files directly in the repository once we create a machine definition, as we will no longer need to patch an ST device tree file. The following describes how to patch an existing file from another layer.
-  - For example, I added an included .dtsi file and include it in the dk2 .dts file.
-    - `stm32mp157c-hlio-rcb.dtsi`
-    - Add `#include "stm32mp157c-hlio-rcb.dtsi"` to stm32mp157c-dk2.dts in the case of the dev kit
+### Modify the device tree files
+  - If using devtool, the device tree files are temporarily located in:
+    - `{build-directory}/workspace/sources/linux-stm32mp/arch/arm/boot/dts`
+  - If you want to make changes to test your changes, you must change the files here, as subsequent builds will use this source tree.
 
-## Build with bitbake
+### Build with bitbake
   - `bitbake virtual/kernel -C compile`
     ```
     From ST: "We use here bitbake command instead of devtool build because the build makes compile, compile_kernemodules [sic] and install commands whereas we only need only [sic] compile command to generate the kernel image and the device tree".
     https://wiki.st.com/stm32mpu/wiki/How_to_cross-compile_with_the_Distribution_Package
     ```  
 
-## Test
+### Test
   - Copy the new Device Tree to the board and test:
     - `scp ./tmp-glibc/deploy/images/stm32mp1/kernel/*.dtb root@192.168.4.119:/boot`
       - Generally, `scp <build dir>/tmp-glibc/deploy/images/<machine name>/*.dtb root@<board ip address>:/boot`
 
 ## Create patches from these modifications
+If changes need to be made to existing ST files, you must create a patch file.  
+**NB: Changes that are made to our source files can be copied directly to our source file and checked in to the layer repository.**  
+Creating Patches:
   - `cd workspace/sources/linux-stm32mp/`
     - Generally, `cd <build dir>/workspace/sources/<name of kernel recipe>/`
   - Check in changes to git, using standard git commands, typically `git add .` and `git commit -m "Commit message"`  

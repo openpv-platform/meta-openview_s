@@ -1,13 +1,27 @@
+# require linux-add-custom-dtsi.inc
+
+THISAPPENDFILESDIR := "${THISDIR}/${PN}"
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI_append = " \
-   file://0001-Update-device-tree-to-use-sdmmc3-for-esp32.patch \
-   file://0002-Apply-device-tree-changes-to-157f.patch \
-   file://0003-Device-Tree-SDIO-if-Restore-default-25Mhz-freq.patch \
-   file://0004-Modify-SDIO-core-memcpy-to-copy-mis-aligned-buffers.patch \
-   file://0005-Add-debug-messages-to-mmc-and-modify-trace-msgs.patch \
-   file://0006-Updated-the-hlio-rcb.dtsi-to-configure-can.patch \
+   file://0001-Add-hlio-specific-dtsi.patch \
+   file://0002-Modify-SDIO-core-memcpy-to-copy-mis-aligned-buffers.patch \
+   file://0003-Add-debug-messages-to-mmc-and-modify-trace-msgs.patch \
    "
+
+# The following idea is adapted from: 
+# https://www.yoctoproject.org/pipermail/yocto/2019-May/045121.html
+# This moves our source device tree file to the working source directory prior 
+# to building the device tree. The .dtsi file is included by the dev kit device
+# tree (accomplished by the patch above)
+###############################################################################
+do_add_platform_dtsi() {
+	echo 'cp -f "${THISAPPENDFILESDIR}/stm32mp15xx-hlio-rcd.dtsi" "${STAGING_KERNEL_DIR}/arch/arm/boot/dts"'
+	cp -f "${THISAPPENDFILESDIR}/stm32mp15xx-hlio-rcd.dtsi" \
+             "${STAGING_KERNEL_DIR}/arch/arm/boot/dts"
+}
+
+addtask add_platform_dtsi before do_configure after do_patch 
 
 # The following sections were created based on the knowledge from here:
 #   https://www.yoctoproject.org/docs/2.4.1/kernel-dev/kernel-dev.html#configuring-the-kernel

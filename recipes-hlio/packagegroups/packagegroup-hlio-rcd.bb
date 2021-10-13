@@ -7,10 +7,13 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 inherit packagegroup
 
 PACKAGES = "\
-            packagegroup-hlio-esp \
+            packagegroup-hlio-rcd \
             "
 
-RDEPENDS_packagegroup-hlio-esp = "\
+RDEPENDS_packagegroup-hlio-rcd = "\
     esp-hosted \
     python3-can \
+    python3-pip \
+    python3-protobuf \
+    rs485-example \
     "

@@ -1,0 +1,37 @@
+From 1bcf2fa2de5ed05fcdaed9cedcfb6e8abba5ab27 Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Tue, 12 Oct 2021 18:38:18 -0400
+Subject: [PATCH] Add hlio specific dtsi.
+
+---
+ arch/arm/boot/dts/stm32mp157c-dk2.dts | 1 +
+ arch/arm/boot/dts/stm32mp157f-dk2.dts | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/arch/arm/boot/dts/stm32mp157c-dk2.dts b/arch/arm/boot/dts/stm32mp157c-dk2.dts
+index 1c894f288..2143be9f0 100644
+--- a/arch/arm/boot/dts/stm32mp157c-dk2.dts
++++ b/arch/arm/boot/dts/stm32mp157c-dk2.dts
+@@ -11,6 +11,7 @@
+ #include "stm32mp15-pinctrl.dtsi"
+ #include "stm32mp15xxac-pinctrl.dtsi"
+ #include "stm32mp15xx-dkx.dtsi"
++#include "stm32mp15xx-hlio-rcd.dtsi"
+ #include <dt-bindings/rtc/rtc-stm32.h>
+ 
+ / {
+diff --git a/arch/arm/boot/dts/stm32mp157f-dk2.dts b/arch/arm/boot/dts/stm32mp157f-dk2.dts
+index 15a397c4c..5cd2d58f1 100644
+--- a/arch/arm/boot/dts/stm32mp157f-dk2.dts
++++ b/arch/arm/boot/dts/stm32mp157f-dk2.dts
+@@ -11,6 +11,7 @@
+ #include "stm32mp15-pinctrl.dtsi"
+ #include "stm32mp15xxac-pinctrl.dtsi"
+ #include "stm32mp15xx-dkx.dtsi"
++#include "stm32mp15xx-hlio-rcd.dtsi"
+ #include <dt-bindings/rtc/rtc-stm32.h>
+ 
+ / {
+-- 
+2.25.1
+
