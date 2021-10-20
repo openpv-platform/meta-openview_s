@@ -1,26 +1,28 @@
 SUMMARY = "Helios Engineering Low Cost Display image based on ST wayland image with basic Wayland support (if enabled in distro)."
 LICENSE = "Proprietary"
 
+# overlay the st-image-weston recipe
 include recipes-st/images/st-image.inc
-
 inherit core-image features_check
 
-# let's make sure we have a good image...
+
+# Include wayland graphics framework
 REQUIRED_DISTRO_FEATURES = "wayland"
 
 IMAGE_LINGUAS = "en-us"
 
+# Add image features
 IMAGE_FEATURES += "\
     splash              \
+    package-management  \
     ssh-server-dropbear \
     hwcodecs            \
     tools-profile       \
     eclipse-debug       \
     "
-#    package-management  
 
 #
-# INSTALL addons
+# INSTALL addon packages
 #
 CORE_IMAGE_EXTRA_INSTALL += " \
     resize-helper \
@@ -39,12 +41,8 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     ${@bb.utils.contains('COMBINED_FEATURES', 'tpm2', 'packagegroup-security-tpm2', '', d)} \
     \
     packagegroup-hlio-rcd \
+    packagegroup-hlio-electron \
     "
 
-# Removed:
-#     packagegroup-st-demo 
-
-
-# NOTE:
-#   packagegroup-st-demo are installed on rootfs to populate the package
-#   database.
+# removed packagegroups
+#   packagegroup-st-demo

@@ -57,18 +57,18 @@ IMAGE_LINGUAS = "en-us en-gb"
 # =========================================================================
 DISTRO_FEATURES  = "alsa"
 DISTRO_FEATURES += "argp"
-#DISTRO_FEATURES += "ext2"
+DISTRO_FEATURES += "ext2"
 DISTRO_FEATURES += "ext4"
-#DISTRO_FEATURES += "largefile"
+DISTRO_FEATURES += "largefile"
 DISTRO_FEATURES += "ipv4"
 DISTRO_FEATURES += "ipv6"
-#DISTRO_FEATURES += "multiarch"
+DISTRO_FEATURES += "multiarch"
 DISTRO_FEATURES += "wifi"
 DISTRO_FEATURES += "nfs"
 DISTRO_FEATURES += "usbgadget"
 DISTRO_FEATURES += "usbhost"
 DISTRO_FEATURES += "xattr"
-#DISTRO_FEATURES += "zeroconf"
+DISTRO_FEATURES += "zeroconf"
 DISTRO_FEATURES += "bluetooth"
 DISTRO_FEATURES += "bluez5"
 DISTRO_FEATURES += "${DISTRO_FEATURES_LIBC}"
@@ -77,7 +77,7 @@ DISTRO_FEATURES += "${DISTRO_FEATURES_LIBC}"
 DISTRO_FEATURES_append = " gstreamer "
 
 # add support of optee
-# DISTRO_FEATURES_append = " optee "
+DISTRO_FEATURES_append = " optee "
 
 # add support of splashscreen
 DISTRO_FEATURES_append = " splashscreen "
@@ -86,16 +86,16 @@ DISTRO_FEATURES_append = " splashscreen "
 DISTRO_FEATURES_append = " wayland pam "
 
 # add support of X11
-# DISTRO_FEATURES_append = " x11 "
+DISTRO_FEATURES_append = " x11 "
 
 # add support of KDE (since OE thud version)
-# DISTRO_FEATURES_append = " kde "
+DISTRO_FEATURES_append = " kde "
 
 # add support of systemd
 DISTRO_FEATURES_append = " systemd polkit "
 
 # add support of efi
-# DISTRO_FEATURES_append = " efi "
+DISTRO_FEATURES_append = " efi "
 
 # add support of autoresize through InitRD
 DISTRO_FEATURES_append = " autoresize "
