@@ -23,12 +23,12 @@ Electron apps can interface with the RCD board via a custom-made node extension 
 5. Make a new user `~/.npmrc` file and paste the following template into it. Make sure to substitute in your `b64Token` to <B64_TOKEN> in the template:
 ```
 ; begin auth token
-//pkgs.dev.azure.com/HeliosEngineering/2cacf874-3e26-4e90-9988-25d2bf404fae/_packaging/rcd-sdk-node/npm/registry/:username=HeliosEngineering
-//pkgs.dev.azure.com/HeliosEngineering/2cacf874-3e26-4e90-9988-25d2bf404fae/_packaging/rcd-sdk-node/npm/registry/:_password=<B64_TOKEN>
-//pkgs.dev.azure.com/HeliosEngineering/2cacf874-3e26-4e90-9988-25d2bf404fae/_packaging/rcd-sdk-node/npm/registry/:email=npm requires email to be set but doesn't use the value
-//pkgs.dev.azure.com/HeliosEngineering/2cacf874-3e26-4e90-9988-25d2bf404fae/_packaging/rcd-sdk-node/npm/:username=HeliosEngineering
-//pkgs.dev.azure.com/HeliosEngineering/2cacf874-3e26-4e90-9988-25d2bf404fae/_packaging/rcd-sdk-node/npm/:_password=<B64_TOKEN>
-//pkgs.dev.azure.com/HeliosEngineering/2cacf874-3e26-4e90-9988-25d2bf404fae/_packaging/rcd-sdk-node/npm/:email=npm requires email to be set but doesn't use the value
+//pkgs.dev.azure.com/HeliosEngineering/_packaging/node-registry/npm/registry/:username=HeliosEngineering
+//pkgs.dev.azure.com/HeliosEngineering/_packaging/node-registry/npm/registry/:_password=<B64_TOKEN>
+//pkgs.dev.azure.com/HeliosEngineering/_packaging/node-registry/npm/registry/:email=npm requires email to be set but doesn't use the value
+//pkgs.dev.azure.com/HeliosEngineering/_packaging/node-registry/npm/:username=HeliosEngineering
+//pkgs.dev.azure.com/HeliosEngineering/_packaging/node-registry/npm/:_password=<B64_TOKEN>
+//pkgs.dev.azure.com/HeliosEngineering/_packaging/node-registry/npm/:email=npm requires email to be set but doesn't use the value
 ; end auth token
 ```
 
