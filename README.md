@@ -36,11 +36,25 @@ Run 'bitbake-layers add-layer meta-hlio-rcd'
 
 - Any subsequent work must be done in a terminal that has sourced the same script.
 
-- Currently we are piggy-backing on the ST provided _Machine_ and _Distro_. So the script to source is:
+There are currently two machine names available:  
 
-  `DISTRO=openstlinux-weston MACHINE=stm32mp1 source layers/meta-st/scripts/envsetup.sh`
+1. Development on the ST Development Kit (DK):
+    ```
+    DISTRO=hlio-rcd MACHINE=stm32mp1 source layers/meta-st/scripts/envsetup.sh
+    ```
 
-  TODO: This will change once we create the Helios RCD specific machine definition and one or more specific distributions.
+2. Development on the Helios RCD hardware:
+   - Do not use this yet, as the device tree has not been fully defined and may cause issues on the Dev Kit.
+    ```
+    DISTRO=hlio-rcd MACHINE=stm32mp1-hlio-rcd source layers/meta-st/scripts/envsetup.sh
+    ```
+
+3. Legacy prior to merge of DISTRO changes:
+    ```
+    DISTRO=openstlinux-weston MACHINE=stm32mp1 source layers/meta-st/scripts/envsetup.sh
+    ```
+    - Followed by a one-time command:  
+    `bitbake-layers add-layer ../layers/meta-st/meta-hlio-rcd/`
 
 #### Making changes to the meta-hlio-rcd layer
 
@@ -61,15 +75,21 @@ The meta-hlio-rcd repository
   - When the developer has used `repo` to create the Yocto build environment, the meta-hlio-rcd layer will have a git status of "Not currently on any branch." and `git branch` will show "* (no branch)". 
   - Normal `git` commands can be invoked in this directory, but some steps are necessary to set up the appropriate tracking branches locally. 
   - The name of the remote is __hlio-devops__.  
-  - Before making a change in the build environment, it is a good idea to create your working branch off of the dev branch:  
+  - Before making a change in the build environment, create your working branch off of the dev branch. Please use the following naming convention:
+    - new_branch_name = "dev/{developer-name}/{pbi#-feature-name}"
     ```git
-    git checkout -b <new_branch> hlio-devops/dev
+    git checkout -b <new_branch_name> hlio-devops/dev
     .
     . [Make changes, and intermediate check-ins as needed]
     .
     git push hlio-devops HEAD
+    git branch <name_of_new_branch> -u hlio-devops/<name_of_new_branch>
     ```
-    The push command as written above is needed to create the new branch in the repository.  
+    - The checkout command above creates the new local branch based off of and tracking the current remote dev branch.
+    - The push command above is needed to create the new branch in the repository.
+    - The branch command that follows will change your local tracking branch to track the newly created remote branch instead of hlio-devops/dev.
+      - The -t switch with the original checkout command will not work because the remote branch does not exist yet.
+      - There may be other ways with git to accomplish this. Please submit suggestions if there is something more succinct or cleaner.
   - You may also want to have a local tracking branch for the remote dev branch, for merging purposes:  
 `git checkout -b dev hlio-devops/dev`
 
