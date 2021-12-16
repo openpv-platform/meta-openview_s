@@ -25,7 +25,7 @@
 
 	memory@c0000000 {
 		device_type = "memory";
-		reg = <0xc0000000 0x40000000>;
+		reg = <0xc0000000 0x10000000>;
 
 		/* USER CODE BEGIN memory */
 		/* USER CODE END memory */
@@ -40,7 +40,80 @@
 		/* USER CODE END reserved-memory */
 	};
 
-	/* USER CODE BEGIN root */
+	/* USER CODE BEGIN root */	
+	lcd_reg: lcd_reg {
+		compatible = "regulator-fixed";
+		regulator-name = "lcd_reg";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpio = <&gpioe 9 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-boot-on;		/* Turn on immediately */
+	};
+	
+	// bl_pwm_en_reg {
+	// 	compatible = "regulator-fixed";
+	// 	regulator-name = "bl_pwm_en_reg";
+	// 	regulator-min-microvolt = <5000000>;
+	// 	regulator-max-microvolt = <5000000>;
+	// 	gpio = <&gpiod 14 GPIO_ACTIVE_HIGH>;
+	// 	enable-active-high;
+	// 	regulator-boot-on;		/* Turn on immediately */
+	// };
+	
+	tp_en_reg {
+		compatible = "regulator-fixed";
+		regulator-name = "tp_en_reg";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpioa 14 GPIO_ACTIVE_HIGH>;
+		enable-active-high;			
+		regulator-boot-on;		/* Turn on immediately */
+	}; 
+
+	panel_backlight: panel_backlight {
+		compatible = "gpio-backlight";
+		gpios = <&gpiod 14 GPIO_ACTIVE_HIGH>;
+		default-on; // turn on at boot/probe time
+	};
+
+	panel {
+		compatible = "simple-panel";
+		power-supply = <&lcd_reg>;
+		backlight = <&panel_backlight>;
+		//enable-gpios = <&gpioe 12 GPIO_ACTIVE_HIGH>;
+		//reset-gpios = <&gpioe 11 GPIO_ACTIVE_HIGH>;
+		status = "okay";	
+		
+		
+		port@0 {
+			reg = <0>;
+			panel_in: endpoint {
+				remote-endpoint = <&ltdc_ep0_out>;
+			};
+		};
+
+		display-timings { 
+			native-mode = <&timing0>;
+			timing0: timing0 {
+				clock-frequency = <33300000>;
+				hactive = <800>;
+				vactive = <480>;
+				hfront-porch = <210>;
+				hback-porch = <46>;
+				hsync-len = <46>;
+				vback-porch = <23>;
+				vfront-porch = <22>;
+				vsync-len = <23>;
+				hsync-active = <1>;
+				vsync-active = <1>;
+				de-active = <0>;
+				pixelclk-active = <1>;
+
+			};
+		};
+	};
+
 	/* USER CODE END root */
 
 	clocks {
@@ -173,7 +246,9 @@
 	};
 
 	i2c4_pins_mx: i2c4_mx-0 {
+		u-boot,dm-pre-reloc;
 		pins {
+			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('B', 9, AF6)>, /* I2C4_SDA */
 					 <STM32_PINMUX('E', 2, AF4)>; /* I2C4_SCL */
 			bias-disable;
@@ -183,7 +258,9 @@
 	};
 
 	i2c4_sleep_pins_mx: i2c4_sleep_mx-0 {
+		u-boot,dm-pre-reloc;
 		pins {
+			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('B', 9, ANALOG)>, /* I2C4_SDA */
 					 <STM32_PINMUX('E', 2, ANALOG)>; /* I2C4_SCL */
 		};
@@ -488,12 +565,12 @@
 		pins1 {
 			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
-			bias-disable;
+			bias-pull-up;
 		};
 		pins2 {
 			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('G', 11, AF6)>; /* UART4_TX */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <0>;
 		};
@@ -636,7 +713,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&eth1_pins_mx>;
 	pinctrl-1 = <&eth1_sleep_pins_mx>;
-	status = "okay";
+	status = "disabled";
 
 	/* USER CODE BEGIN ethernet0 */
 	/* USER CODE END ethernet0 */
@@ -657,6 +734,7 @@
 };
 
 &i2c4{
+	u-boot,dm-pre-reloc;
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&i2c4_pins_mx>;
 	pinctrl-1 = <&i2c4_sleep_pins_mx>;
@@ -674,19 +752,35 @@
 };
 
 &iwdg2{
-	status = "okay";
+	status = "disabled";
 
 	/* USER CODE BEGIN iwdg2 */
 	/* USER CODE END iwdg2 */
 };
 
-&ltdc{
+&dsi {
+	status = "disabled";
+};
+
+&ltdc {
+
+	status = "okay";	
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&ltdc_pins_mx>;
 	pinctrl-1 = <&ltdc_sleep_pins_mx>;
-	status = "okay";
-
+	
 	/* USER CODE BEGIN ltdc */
+	u-boot,dm-pre-reloc;
+
+	port {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		ltdc_ep0_out: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&panel_in>;
+		};
+	};
 	/* USER CODE END ltdc */
 };
 
@@ -803,6 +897,8 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc2 */
+	non-removable;
+	bus-width = <8>;
 	/* USER CODE END sdmmc2 */
 };
 
@@ -888,13 +984,18 @@
 };
 
 &usbotg_hs{
+	u-boot,dm-pre-reloc;
 	status = "okay";
 
 	/* USER CODE BEGIN usbotg_hs */
+	u-boot,force-b-session-valid;
+	hnp-srp-disable;
+	dr_mode = "peripheral";
 	/* USER CODE END usbotg_hs */
 };
 
 &usbphyc{
+	u-boot,dm-pre-reloc;
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc */
@@ -902,6 +1003,7 @@
 };
 
 &usbphyc_port0{
+	u-boot,dm-pre-reloc;
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc_port0 */
@@ -909,6 +1011,7 @@
 };
 
 &usbphyc_port1{
+	u-boot,dm-pre-reloc;
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc_port1 */

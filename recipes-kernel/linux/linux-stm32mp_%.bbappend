@@ -26,7 +26,7 @@ addtask add_platform_dtsi before do_configure after do_patch
 # The following sections were created based on the knowledge from here:
 #   https://www.yoctoproject.org/docs/2.4.1/kernel-dev/kernel-dev.html#configuring-the-kernel
 
-# This is an additional fragment to add definitions to the defconfig that is going to be used to build the kernel
+# These are additional fragments to add definitions to the defconfig that is going to be used to build the kernel
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg"
 
 SRC_URI_append = "file://fragments/fragment_01_enable_j1939.cfg"

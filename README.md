@@ -5,7 +5,7 @@
 **meta-hlio-rcd** is a layer containing the Helios Engineering BSP metadata for modifying the ST distributed BSP.
 
 This layer relies on the OpenEmbedded/Yocto build system that is provided through
-Bitbake and OpenEmbedded-Core layers.
+Bitbake and OpenEmbedded-Core layers. 
 
 ## Images
 
