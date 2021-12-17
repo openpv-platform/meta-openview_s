@@ -7,6 +7,7 @@ SRC_URI_append = " \
    file://0001-Add-hlio-specific-dtsi.patch \
    file://0002-Modify-SDIO-core-memcpy-to-copy-mis-aligned-buffers.patch \
    file://0003-Add-debug-messages-to-mmc-and-modify-trace-msgs.patch \
+   file://0004-Set-initial-state-of-USB-C-dual-role-based-on-dts.patch \
    "
 
 # The following idea is adapted from: 

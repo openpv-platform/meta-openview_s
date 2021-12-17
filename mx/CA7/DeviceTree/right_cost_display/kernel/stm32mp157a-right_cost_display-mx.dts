@@ -148,7 +148,14 @@
 		regulator-always-on;
 	};
 
-
+	vbus_reg: vbus_reg {
+		compatible = "regulator-fixed";
+		regulator-name = "vbus_reg";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		gpio = <&gpiof 10 GPIO_ACTIVE_HIGH>;
+		enable-active-high;		
+	};
 
 	vdd_lcd_reg: vdd_lcd_reg {
 		compatible = "regulator-fixed";
@@ -1112,10 +1119,16 @@
 };
 
 &usbotg_hs {
+	status = "okay";
+	compatible = "st,stm32mp15-hsotg", "snps,dwc2";
 	phys = <&usbphyc_port1 0>;
 	phy-names = "usb2-phy";
-	//usb-role-switch;
-	status = "okay";
+	dr_mode = "otg";
+	usb-role-switch;
+	role-switch-default-mode = "peripheral";
+
+	//TODO: In future look to qcom-pmic-typec.c for good/simple example of switching roles and turning on vbus using CC detect
+	vbus-supply = <&vbus_reg>;
 
 	// These are just to get rid of a warning - ST does not seem to setup either but this shouldn't hurt
 	vusb_a-supply = <&vdd_usb_reg>;
@@ -1124,11 +1137,6 @@
 
 &usbphyc {
 	status = "okay";
-};
-
-&usbphyc_port0 {
-	phy-supply = <&vdd_usb_reg>;
-	st,phy-tuning = <&usb_phy_tuning>;
 };
 
 &usbphyc_port1 {
