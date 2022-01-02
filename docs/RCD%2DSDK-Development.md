@@ -1,7 +1,7 @@
 # RCD SDK Design
 
 ## Meeting notes between Allison, Doug, and Jordan (12/29/2021)
-We had a brainstorming session on exactly what the sdk/developer experience should look like for the RCD platform. Specifically, what the layer between the kernel/distro and the application code should look like.
+We had a brainstorming session on exactly what the sdk/developer experience should look like for the RCD platform. Specifically, what the layer between the kernel/distro and the application code should look like. It was continually mentioned that Jake Pratt and his team are leading the R&D effort for this facet of the project and we'll need to bring them into the fold immediately following the holiday break.
 
 
 ### Key Questions
@@ -15,7 +15,7 @@ We had a brainstorming session on exactly what the sdk/developer experience shou
 + This is still somewhat up in the air, but I think the important thing to keep track of is we are building a toolbox that application developers can effectively utilize. Things that should be in that toolbox (probably) include
 + Wifi/Ethernet
 + OTA
-+ rs45
++ [RS-485](https://en.wikipedia.org/wiki/RS-485)
 + CAN
 + J1939
 + BLE
