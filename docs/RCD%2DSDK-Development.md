@@ -47,3 +47,34 @@ We had a brainstorming session on exactly what the sdk/developer experience shou
 + Meet with Berni/Ryan to talk about testing setups.
 + Jordan will start on developing a module for messing with Analog/Digital Pin I/O. Somewhere along the way this will involve starting to flesh out the sample application.
 
+# 1/4/22 Jake Pratt Meeting Notes
+
+Attended by Allison Shaw, Doug Conyers, Jordan Koeller, Jake Pratt
+
+Jake has designed out an architecture of services with clients. For example, the rcd could havea Bluetooth service, a J1939 service, a I/O service, etc. And these are all their own processes that start up when you start an app. When an app developer writes their app, they specify what services and any config for those services via a json file that's loaded on init.
+
+Communication with the services happen via ZeroMQ, which has support for communicating over IP or RPC. For each service, we write a client in the target language that hides all the ZeroMQ/event passing with the service internally. From the app developer's perspective, they instantiate a client which will under the hood start up the requested service and open up the communication with it over ZeroMQ.
+
+These services, as well as the development tools to write applications, is what makes the RCD sticky.
+
+As far as supporting different runtimes is concerned (.NET, Crank, Node, etc.), each runtime would have an implementation of a client for the each service they communicate to. These clients all have the same interface across runtimes.
+
+Jake has started writing these services using CSharp. CSharp compiles down to machine code, and when necessary, you can directly embed C code for any lower-level communcation/apis that might be needed.
+
+App messages to a service to access features we expose (ex. hardware, bluetooth, j1939, etc).
+
+Jake has built a framework for making services. You define a protobuffer file for that service and that allows for connecting between a client and server interface. From the customer perspective, we want them to see an sdk. They are not aware that they are talking over IP. They instantiate a client and call functions on it.
+
+When an app developer wants to use a service, they configure their app to start up that service, pull in the dependencies through NuGet, and can start using it. Application developers see an SDK-like interface, where they instantiate a client and start calling functions.
+
+This environment is highly asynchronous. Communication between the client and service is fully duplex, and optionally requires acknowledgement. Some functions may block or asynchronously wait for a response. Others return `void`.
+
+This idea of services is not all-encompassing. For example, serial ports probably don't belong behind a service. App developers just use serial ports directly. In this case, we would need to write a "client" that is just making system calls directly instead of communicating over ZeroMQ to a service that makes system calls.
+
+What is the throughput? Jake has seen ~ 1000 messages per second on our target, As long as message size is below what can be in one TCP packet. Beyond that point, you start trading off the number of messages you can send for the size of the message.
+
+### Is there anything we can reuse from PowerVision?
+
+Jake seems to think not really. He said we can definitely learn from what was done in the core PowerVision modules, but the rcd stuff will be fundamentally new code.
+
+
