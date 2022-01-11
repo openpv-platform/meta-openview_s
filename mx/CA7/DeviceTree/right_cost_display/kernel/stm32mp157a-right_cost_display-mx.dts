@@ -173,8 +173,7 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		gpio = <&gpioa 14 GPIO_ACTIVE_HIGH>;
-		enable-active-high;			
-		regulator-boot-on;		/* Turn on immediately */
+		enable-active-high;
 	};
 
 	panel_backlight: panel_backlight {
@@ -366,19 +365,29 @@
 
 	i2c4_pins_mx: i2c4_mx-0 {
 		u-boot,dm-pre-reloc;
-		pins {
+		pins1 {
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('C', 13, GPIO)>; /* GPIO IRQ pin */					 
+			bias-pull-up;
+			slew-rate = <0>;
+		};
+		pins2 {
 			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('B', 9, AF6)>, /* I2C4_SDA */
 					 <STM32_PINMUX('E', 2, AF4)>; /* I2C4_SCL */
-			bias-disable;
+			bias-pull-up;
 			drive-open-drain;
-			slew-rate = <0>;
+			slew-rate = <3>;
 		};
 	};
 
 	i2c4_sleep_pins_mx: i2c4_sleep_mx-0 {
 		u-boot,dm-pre-reloc;
-		pins {
+		pins1 {
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('C', 13, ANALOG)>; /* GPIO IRQ pin */
+		};
+		pins2 {
 			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('B', 9, ANALOG)>, /* I2C4_SDA */
 					 <STM32_PINMUX('E', 2, ANALOG)>; /* I2C4_SCL */
@@ -894,7 +903,27 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&i2c4_pins_mx>;
 	pinctrl-1 = <&i2c4_sleep_pins_mx>;
-	status = "disabled";
+	status = "okay";
+
+	clock-frequency = <100000>;
+	i2c-scl-rising-time-ns = <185>;
+	i2c-scl-falling-time-ns = <20>;
+
+	/delete-property/dmas;
+	/delete-property/dma-names;
+
+	touchscreen@38 {
+		compatible = "hycon,hy4635";
+		reg = <0x38>;
+		vcc-supply = <&vdd_tp_reg>;
+		interrupt-parent = <&gpioc>;
+		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
+		//reset-gpios = <&gpioc 13 GPIO_ACTIVE_LOW>;
+		touchscreen-size-x = <800>;
+		touchscreen-size-y = <480>;
+		hycon,report-speed-hz = <60>;
+		// wakeup-source;
+	};
 
 	/* USER CODE BEGIN i2c4 */
 	/* USER CODE END i2c4 */

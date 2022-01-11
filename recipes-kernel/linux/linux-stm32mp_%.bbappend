@@ -3,11 +3,15 @@
 THISAPPENDFILESDIR := "${THISDIR}/${PN}"
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
+# file://0005-Input-add-Hycon-HY46XX-Touchscreen-controller.patch comes from the following link:
+#   https://patchwork.kernel.org/project/linux-input/list/?series=466405&state=%2A&archive=both
 SRC_URI_append = " \
    file://0001-Add-hlio-specific-dtsi.patch \
    file://0002-Modify-SDIO-core-memcpy-to-copy-mis-aligned-buffers.patch \
    file://0003-Add-debug-messages-to-mmc-and-modify-trace-msgs.patch \
    file://0004-Set-initial-state-of-USB-C-dual-role-based-on-dts.patch \
+   file://0005-Input-add-Hycon-HY46XX-Touchscreen-controller.patch \
+   file://0006-fix-1s-reset-delay-and-checksum-on-old-firmware.patch \
    "
 
 # The following idea is adapted from: 
@@ -28,19 +32,11 @@ addtask add_platform_dtsi before do_configure after do_patch
 #   https://www.yoctoproject.org/docs/2.4.1/kernel-dev/kernel-dev.html#configuring-the-kernel
 
 # These are additional fragments to add definitions to the defconfig that is going to be used to build the kernel
-KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg"
+KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
+                            ${WORKDIR}/fragments/fragment_03_enable_hycon_touch.cfg"
 
-SRC_URI_append = "file://fragments/fragment_01_enable_j1939.cfg"
+SRC_URI_append = "file://fragments/fragment_01_enable_j1939.cfg \
+                  file://fragments/fragment_03_enable_hycon_touch.cfg"
 
-SRC_URI_class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg"
-
-# NOTE: This is how you should add more fragments if you want to add more. If you don't do it this way there is a chance
-#  that the python script won't successfully parse all the separate files and corectly pull them into the configuration.
-#  PLEASE MAKE SURE THAT YOU DELETE THIS COMMENT ONCE A SECOND FILE IS ADDED, THIS IS ONLY HERE BECAUSE IT ISN'T
-#  INHERENTLY OBVIOUS HOW OTHER FRAGMENT FILES WOULD BE ADDED
-#KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
-#                            ${WORKDIR}/fragments/fragment_02_other_config.cfg"
-#SRC_URI_append = "file://fragments/fragment_01_enable_j1939.cfg \
-#                  file://fragments/fragment_02_other_config.cfg"
-#SRC_URI_class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
-#                              file://fragments/fragment_02_other_config.cfg"
+SRC_URI_class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
+                              file://fragments/fragment_03_enable_hycon_touch.cfg"
