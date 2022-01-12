@@ -6,14 +6,119 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
+#           packagegroup-hlio-rcd-tools-python3
+PROVIDES = "${PACKAGES}"
 PACKAGES = "\
             packagegroup-hlio-rcd \
+            packagegroup-hlio-rcd-tools-core \
+            packagegroup-hlio-rcd-tools-kernel \
+            packagegroup-hlio-rcd-tools-network \
             "
 
+# python3-can
 RDEPENDS_packagegroup-hlio-rcd = "\
     esp-hosted \
-    python3-can \
     python3-pip \
     python3-protobuf \
     rs485-example \
+    packagegroup-hlio-rcd-tools-core \
+    packagegroup-hlio-rcd-tools-kernel \
+    packagegroup-hlio-rcd-tools-network \
+    "
+
+# Packages removed from the packagegroup-framework-tools-core packagegroup that this is based off of
+#   libiio-iiod
+#   libiio-tests
+#   lrzsz
+#   util-linux
+#   util-linux-lscpu
+#   procps
+#   kbd
+#   bc
+#   sysstat
+#   ntp
+#   systemtap
+#   gptfdisk
+#   bzip2
+#   wget
+#   xz
+#   rt-tests
+SUMMARY_packagegroup-hlio-rcd-tools-core = "Framework tools components for core, copied over to rcd"
+RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
+    ckermit         \
+    coreutils       \
+    libgpiod        \
+    libgpiod-tools  \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'usbgadget', 'usbotg-gadget-config', '', d)} \
+    grep            \
+    file            \
+    e2fsprogs       \
+    e2fsprogs-resize2fs \
+    minicom         \
+    rng-tools       \
+    apt-openstlinux \
+    tar             \
+    cracklib        \
+    db              \
+    sqlite3         \
+    stm32-ddr-tools \
+    "
+
+# Packages removed from the packagegroup-hlio-rcd-tools-kernel packagegroup that this is based off of
+#   evtest
+#   memtester
+SUMMARY_packagegroup-hlio-rcd-tools-kernel = "Framework tools components for kernel, copied over to rcd"
+RDEPENDS_packagegroup-hlio-rcd-tools-kernel = "\
+    can-utils       \
+    i2c-tools       \
+    strace          \
+    usbutils        \
+    \
+    mtd-utils       \
+    v4l-utils       \
+    util-linux      \
+    util-linux-fdisk\
+    pciutils        \
+    "
+
+# Packages removed from the packagegroup-framework-tools-network packagegroup that this is based off of
+#   openssh-sftp
+SUMMARY_packagegroup-hlio-rcd-tools-network = "Framework tools components for network, copied over to rcd"
+RDEPENDS_packagegroup-hlio-rcd-tools-network = "\
+    ethtool         \
+    iproute2        \
+    curl            \
+    tcpdump         \
+    packagegroup-core-full-cmdline-extended \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'iw', '', d)}                       \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'wpa-supplicant', '', d)}           \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'hostapd', '', d)}                  \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'wireless-regdb-static', '', d)}    \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'dhcp-client', '', d)}                       \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-networkd-configuration', '', d)}    \
+    usbip uhubctl   \
+    bridge-utils    \
+    "
+
+SUMMARY_packagegroup-hlio-rcd-tools-python3 = "Framework tools components for python3, copied over to rcd"
+RDEPENDS_packagegroup-hlio-rcd-tools-python3 = "\
+    python3-datetime    \
+    python3-dateutil    \
+    python3-distutils   \
+    python3-email       \
+    python3-fcntl       \
+    python3-io          \
+    python3-logging     \
+    python3-misc        \
+    python3-numbers     \
+    python3-pycairo     \
+    python3-pygobject   \
+    python3-pyparsing   \
+    python3-shell       \
+    python3-stringold   \
+    python3-threading   \
+    python3-unittest    \
+    python3-pyyaml      \
+    python3-pexpect     \
+    python3-evdev       \
     "
