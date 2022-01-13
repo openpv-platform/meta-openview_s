@@ -6,24 +6,27 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
-#           packagegroup-hlio-rcd-tools-python3
 PROVIDES = "${PACKAGES}"
 PACKAGES = "\
             packagegroup-hlio-rcd \
             packagegroup-hlio-rcd-tools-core \
             packagegroup-hlio-rcd-tools-kernel \
             packagegroup-hlio-rcd-tools-network \
+            packagegroup-hlio-rcd-tools-python3 \
+            packagegroup-hlio-rcd-core-display \
+            packagegroup-hlio-rcd-core-fs \
             "
 
-# python3-can
+#   gpio
 RDEPENDS_packagegroup-hlio-rcd = "\
     esp-hosted \
-    python3-pip \
-    python3-protobuf \
     rs485-example \
     packagegroup-hlio-rcd-tools-core \
     packagegroup-hlio-rcd-tools-kernel \
     packagegroup-hlio-rcd-tools-network \
+    packagegroup-hlio-rcd-tools-python3 \
+    packagegroup-hlio-rcd-core-display \
+    packagegroup-hlio-rcd-core-fs \
     "
 
 # Packages removed from the packagegroup-framework-tools-core packagegroup that this is based off of
@@ -102,6 +105,8 @@ RDEPENDS_packagegroup-hlio-rcd-tools-network = "\
 
 SUMMARY_packagegroup-hlio-rcd-tools-python3 = "Framework tools components for python3, copied over to rcd"
 RDEPENDS_packagegroup-hlio-rcd-tools-python3 = "\
+    python3-pip         \
+    python3-protobuf    \
     python3-datetime    \
     python3-dateutil    \
     python3-distutils   \
@@ -121,4 +126,19 @@ RDEPENDS_packagegroup-hlio-rcd-tools-python3 = "\
     python3-pyyaml      \
     python3-pexpect     \
     python3-evdev       \
+    python3-can         \
+    python3-pyserial    \
     "
+
+#   libdrm-tests
+SUMMARY_packagegroup-hlio-rcd-core-display = "Framework core components for display, copied over to rcd"
+RDEPENDS_packagegroup-hlio-rcd-core-display = "\
+    libdrm          \
+    "
+
+SUMMARY_packagegroup-hlio-rcd-core-fs = "Framework core components for filesystem, copied over to rcd"
+RDEPENDS_packagegroup-hlio-rcd-core-fs = "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd-mount-partitions', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'userfs-cleanup-package', '', d)} \
+    "
+
