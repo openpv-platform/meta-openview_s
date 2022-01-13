@@ -35,7 +35,6 @@ RDEPENDS_packagegroup-hlio-rcd = "\
 #   lrzsz
 #   util-linux
 #   util-linux-lscpu
-#   procps
 #   kbd
 #   bc
 #   sysstat
@@ -65,6 +64,7 @@ RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
     db              \
     sqlite3         \
     stm32-ddr-tools \
+    procps          \
     "
 
 # Packages removed from the packagegroup-hlio-rcd-tools-kernel packagegroup that this is based off of
