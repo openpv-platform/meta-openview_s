@@ -44,6 +44,7 @@ RDEPENDS_packagegroup-hlio-rcd = "\
 #   bzip2
 #   wget
 #   xz
+#   rng-tools
 #   rt-tests
 SUMMARY_packagegroup-hlio-rcd-tools-core = "Framework tools components for core, copied over to rcd"
 RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
@@ -57,7 +58,6 @@ RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
     e2fsprogs       \
     e2fsprogs-resize2fs \
     minicom         \
-    rng-tools       \
     apt-openstlinux \
     tar             \
     cracklib        \
@@ -70,6 +70,8 @@ RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
 # Packages removed from the packagegroup-hlio-rcd-tools-kernel packagegroup that this is based off of
 #   evtest
 #   memtester
+#   util-linux
+#   util-linux-fdisk
 SUMMARY_packagegroup-hlio-rcd-tools-kernel = "Framework tools components for kernel, copied over to rcd"
 RDEPENDS_packagegroup-hlio-rcd-tools-kernel = "\
     can-utils       \
@@ -79,20 +81,18 @@ RDEPENDS_packagegroup-hlio-rcd-tools-kernel = "\
     \
     mtd-utils       \
     v4l-utils       \
-    util-linux      \
-    util-linux-fdisk\
     pciutils        \
     "
 
 # Packages removed from the packagegroup-framework-tools-network packagegroup that this is based off of
 #   openssh-sftp
+#   packagegroup-core-full-cmdline-extended
 SUMMARY_packagegroup-hlio-rcd-tools-network = "Framework tools components for network, copied over to rcd"
 RDEPENDS_packagegroup-hlio-rcd-tools-network = "\
     ethtool         \
     iproute2        \
     curl            \
     tcpdump         \
-    packagegroup-core-full-cmdline-extended \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'iw', '', d)}                       \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'wpa-supplicant', '', d)}           \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'hostapd', '', d)}                  \
