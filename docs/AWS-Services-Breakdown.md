@@ -9,3 +9,9 @@ Currently, the only image we have in the ECR is a docker image that has the yoct
 
 This is a simple little web app that Doug requested I make to help keep track of projects that HCEE should be working on. The code is held in the following repository, and it is hosted/deployed to AWS in an EC2 t2.micro instance.
 
+Repository Link: https://enovationexternal.visualstudio.com/HCEE/_git/ProjectPrioritization
+
+EC2 Instance Link: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#InstanceDetails:instanceId=i-0464d4fd9fa4df926
+
+App Public Url: ec2-54-204-224-55.compute-1.amazonaws.com/admin
+
