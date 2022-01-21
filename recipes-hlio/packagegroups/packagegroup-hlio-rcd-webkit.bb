@@ -6,11 +6,12 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 inherit packagegroup
 
+PROVIDES = "${PACKAGES}"
 PACKAGES = "\
-            packagegroup-hlio-webkit \
+            packagegroup-hlio-rcd-webkit \
             "
 
-RDEPENDS_${PN} += " \
+RDEPENDS_packagegroup-hlio-rcd-webkit += " \
         qtbase-plugins \
         wpewebkit-qtwpe-qml-plugin \
         qt-wpe-simple-browser \
