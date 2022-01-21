@@ -63,6 +63,9 @@ FRAMEWORKLAYERS += "${@'${OEROOT}/layers/meta-st/meta-st-openstlinux' if os.path
 RCDLAYERS = "${@'${OEROOT}/layers/meta-st/meta-hlio-rcd' if os.path.isfile('${OEROOT}/layers/meta-st/meta-hlio-rcd/conf/layer.conf') else ''}"
 RCDLAYERS += "${@'${OEROOT}/layers/meta-st/meta-st-stm32mp-addons' if os.path.isfile('${OEROOT}/layers/meta-st/meta-st-stm32mp-addons/conf/layer.conf') else ''}"
 
+# grab meta-webkit layer
+WPELAYER = "${@'${OEROOT}/layers/meta-webkit' if os.path.isfile('${OEROOT}/layers/meta-webkit/conf/layer.conf') else ''}"
+
 # add BSP layer
 BBLAYERS += " \
     ${BASELAYERS} \
@@ -71,4 +74,5 @@ BBLAYERS += " \
     ${FRAMEWORKLAYERS} \
     ${@'${OPENEMBEDDED}' if os.path.isfile('${OEROOT}/layers/openembedded-core/meta/conf/layer.conf') else '${POKY}'} \
     ${RCDLAYERS} \
+    ${WPELAYER} \
     "
