@@ -35,17 +35,14 @@ addtask add_platform_dtsi before do_configure after do_patch
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
                             ${WORKDIR}/fragments/fragment_03_enable_hycon_touch.cfg \
                             ${WORKDIR}/fragments/fragment_04_major_kernel_cleanup.cfg \
-                            ${WORKDIR}/fragments/fragment_05_test_fastmap.cfg \
                             "
 
 SRC_URI_append = "file://fragments/fragment_01_enable_j1939.cfg \
                   file://fragments/fragment_03_enable_hycon_touch.cfg \
                   file://fragments/fragment_04_major_kernel_cleanup.cfg \
-                  file://fragments/fragment_05_test_fastmap.cfg \
                   "
 
 SRC_URI_class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_03_enable_hycon_touch.cfg \
                               file://fragments/fragment_04_major_kernel_cleanup.cfg \
-                              file://fragments/fragment_05_test_fastmap.cfg \
                               "

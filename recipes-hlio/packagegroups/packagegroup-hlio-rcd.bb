@@ -20,6 +20,8 @@ PACKAGES = "\
 #   gpio
 RDEPENDS_packagegroup-hlio-rcd = "\
     esp-hosted \
+    ldd \
+    gdb \
     rs485-example \
     packagegroup-hlio-rcd-tools-core \
     packagegroup-hlio-rcd-tools-kernel \

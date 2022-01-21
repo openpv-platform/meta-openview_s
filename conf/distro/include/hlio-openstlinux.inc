@@ -87,8 +87,11 @@ DISTRO_FEATURES_append = " efi "
 # add support of autoresize through InitRD
 DISTRO_FEATURES_append = " autoresize "
 
-# add support of tpm2
-# #DISTRO_FEATURES_append = " tpm2 "
+# add support of KDE (since OE thud version)
+DISTRO_FEATURES_append = " kde "
+
+# add support of wayland
+DISTRO_FEATURES_append = " wayland "
 
 # =========================================================================
 # DISTRO removed features
@@ -99,13 +102,13 @@ DISTRO_FEATURES_append = " autoresize "
 # DISTRO_FEATURES += "bluez5"
 # add support of gstreamer
 # DISTRO_FEATURES_append = " gstreamer "
-# add support of wayland
-# DISTRO_FEATURES_append = " wayland pam "
-# add support of KDE (since OE thud version)
-# DISTRO_FEATURES_append = " kde "
+# add support of pam (Pluggable Authentication Modules)
+# DISTRO_FEATURES_append = " pam "
 # Disabling pulseaudio
-#DISTRO_FEATURES_BACKFILL_CONSIDERED += "pulseaudio"
+# DISTRO_FEATURES_BACKFILL_CONSIDERED += "pulseaudio"
 # DISTRO_FEATURES_append = "pulseaudio"
+# add support of tpm2
+# #DISTRO_FEATURES_append = " tpm2 "
 
 DISTRO_FEATURES_remove = " pulseaudio "
 DISTRO_FEATURES_remove = " pci "
