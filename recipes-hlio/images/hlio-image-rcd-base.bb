@@ -11,7 +11,7 @@ inherit core-image features_check
 IMAGE_LINGUAS = "en-us"
 
 # Add image features
-# eclipse-debug
+#   eclipse-debug
 IMAGE_FEATURES += "\
     splash              \
     package-management  \

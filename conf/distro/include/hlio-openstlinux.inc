@@ -67,6 +67,7 @@ DISTRO_FEATURES += "usbhost"
 DISTRO_FEATURES += "xattr"
 DISTRO_FEATURES += "zeroconf"
 DISTRO_FEATURES += "bluetooth"
+DISTRO_FEATURES += "bluez5"
 DISTRO_FEATURES += "${DISTRO_FEATURES_LIBC}"
 
 # add support of optee
@@ -99,7 +100,6 @@ DISTRO_FEATURES_append = " wayland "
 # DISTRO_FEATURES  = "alsa"
 # DISTRO_FEATURES += "multiarch"
 # DISTRO_FEATURES += "nfs"
-# DISTRO_FEATURES += "bluez5"
 # add support of gstreamer
 # DISTRO_FEATURES_append = " gstreamer "
 # add support of pam (Pluggable Authentication Modules)

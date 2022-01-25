@@ -9,6 +9,7 @@ inherit packagegroup
 PROVIDES = "${PACKAGES}"
 PACKAGES = "\
             packagegroup-hlio-rcd \
+            packagegroup-hlio-rcd-tools-audio \
             packagegroup-hlio-rcd-tools-core \
             packagegroup-hlio-rcd-tools-kernel \
             packagegroup-hlio-rcd-tools-network \
@@ -23,12 +24,25 @@ RDEPENDS_packagegroup-hlio-rcd = "\
     ldd \
     gdb \
     rs485-example \
+    packagegroup-hlio-rcd-tools-audio \
     packagegroup-hlio-rcd-tools-core \
     packagegroup-hlio-rcd-tools-kernel \
     packagegroup-hlio-rcd-tools-network \
     packagegroup-hlio-rcd-tools-python3 \
     packagegroup-hlio-rcd-core-display \
     packagegroup-hlio-rcd-core-fs \
+    "
+
+SUMMARY_packagegroup-hlio-rcd-tools-audio = "Framework tools components for audio, copied over to rcd"
+RDEPENDS_packagegroup-hlio-rcd-tools-audio = "\
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio', 'pulseaudio', '', d)}                     \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio', 'pulseaudio-server', '', d)}              \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio', 'pulseaudio-misc', '', d)}                \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio', 'pulseaudio-module-combine-sink', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio bluetooth', 'pulseaudio-module-bluetooth-discover', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio bluetooth', 'pulseaudio-module-bluetooth-policy', '', d)}   \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio bluetooth', 'pulseaudio-module-bluez5-device', '', d)}      \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'pulseaudio bluetooth', 'pulseaudio-module-bluez5-discover', '', d)}    \
     "
 
 # Packages removed from the packagegroup-framework-tools-core packagegroup that this is based off of
@@ -76,6 +90,14 @@ RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
 #   util-linux-fdisk
 SUMMARY_packagegroup-hlio-rcd-tools-kernel = "Framework tools components for kernel, copied over to rcd"
 RDEPENDS_packagegroup-hlio-rcd-tools-kernel = "\
+    cpufrequtils    \
+    sysfsutils      \
+    dosfstools      \
+    mmc-utils       \
+    blktool         \
+    mtd-utils-ubifs \
+    sysprof         \
+    \
     can-utils       \
     i2c-tools       \
     strace          \
