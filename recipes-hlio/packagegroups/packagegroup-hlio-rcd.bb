@@ -15,5 +15,6 @@ RDEPENDS_packagegroup-hlio-rcd = "\
     python3-can \
     python3-pip \
     python3-protobuf \
+    type-c-role-switch \
     rs485-example \
     "
