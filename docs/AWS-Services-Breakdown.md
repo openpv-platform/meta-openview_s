@@ -18,3 +18,11 @@ EC2 Instance Link: https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#I
 
 App Public Url: ec2-54-204-224-55.compute-1.amazonaws.com/admin
 
+# AWS Best practices
+
+## 1. Don't give out root credentials ever.
+If somebody needs to have credentials to aws, you should make them a new User in IAM. This will spit out credentials for that individual. Of course, you can set specific permissions for that user as well. Note that this is also appropriate for any CI/CD pipelines that need AWS access. You should make a new User with a name like "CI/CD", then configure your pipeline with that "user"'s access token.
+
+## 2. PLEASE stick to "infrastructure as code"
+AWS has come a long way in terms of documenting/automating provisioning resources. The tool you want to use is AWS CloudFormation, or AWS SAM. AWS SAM is a subset of CloudFormation specifically designed for serverless apps. These tools let you specify a yaml file that is checked into a repository that is a registry of all the infrastructure/aws config you want to spin up. This way your infrastructure can be version controlled, it's all in one place, and it's really clear what is going on. I used this pattern for the smart-pool project from the BJN days if you want an example. Or check out a personal project of mine, like this one here: https://github.com/JordanKoeller/TrinityMutualAid/blob/main/lambdas/template.yml
+
