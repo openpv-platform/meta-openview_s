@@ -55,16 +55,13 @@ IMAGE_LINGUAS = "en-us en-gb"
 # =========================================================================
 # DISTRO features
 # =========================================================================
-DISTRO_FEATURES  = "alsa"
 DISTRO_FEATURES += "argp"
 DISTRO_FEATURES += "ext2"
 DISTRO_FEATURES += "ext4"
 DISTRO_FEATURES += "largefile"
 DISTRO_FEATURES += "ipv4"
 DISTRO_FEATURES += "ipv6"
-DISTRO_FEATURES += "multiarch"
 DISTRO_FEATURES += "wifi"
-DISTRO_FEATURES += "nfs"
 DISTRO_FEATURES += "usbgadget"
 DISTRO_FEATURES += "usbhost"
 DISTRO_FEATURES += "xattr"
@@ -73,23 +70,14 @@ DISTRO_FEATURES += "bluetooth"
 DISTRO_FEATURES += "bluez5"
 DISTRO_FEATURES += "${DISTRO_FEATURES_LIBC}"
 
-# add support of gstreamer
-DISTRO_FEATURES_append = " gstreamer "
-
 # add support of optee
 DISTRO_FEATURES_append = " optee "
 
 # add support of splashscreen
 DISTRO_FEATURES_append = " splashscreen "
 
-# add support of wayland
-DISTRO_FEATURES_append = " wayland pam "
-
 # add support of X11
 DISTRO_FEATURES_append = " x11 "
-
-# add support of KDE (since OE thud version)
-DISTRO_FEATURES_append = " kde "
 
 # add support of systemd
 DISTRO_FEATURES_append = " systemd polkit "
@@ -100,12 +88,33 @@ DISTRO_FEATURES_append = " efi "
 # add support of autoresize through InitRD
 DISTRO_FEATURES_append = " autoresize "
 
+# add support of KDE (since OE thud version)
+DISTRO_FEATURES_append = " kde "
+
+# add support of wayland
+DISTRO_FEATURES_append = " wayland "
+
+# =========================================================================
+# DISTRO removed features
+# =========================================================================
+# DISTRO_FEATURES  = "alsa"
+# DISTRO_FEATURES += "multiarch"
+# DISTRO_FEATURES += "nfs"
+# add support of gstreamer
+# DISTRO_FEATURES_append = " gstreamer "
+# add support of pam (Pluggable Authentication Modules)
+# DISTRO_FEATURES_append = " pam "
+# Disabling pulseaudio
+# DISTRO_FEATURES_BACKFILL_CONSIDERED += "pulseaudio"
+# DISTRO_FEATURES_append = "pulseaudio"
 # add support of tpm2
 # #DISTRO_FEATURES_append = " tpm2 "
 
-# Disabling pulseaudio
-#DISTRO_FEATURES_BACKFILL_CONSIDERED += "pulseaudio"
-DISTRO_FEATURES_append = "pulseaudio"
+DISTRO_FEATURES_remove = " pulseaudio "
+DISTRO_FEATURES_remove = " pci "
+DISTRO_FEATURES_remove = " 3g "
+DISTRO_FEATURES_remove = " nfc "
+DISTRO_FEATURES_remove = " api-documentation "
 
 # Disabling sysvinit
 DISTRO_FEATURES_BACKFILL_CONSIDERED += "sysvinit"

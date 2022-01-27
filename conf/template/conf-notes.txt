@@ -1,5 +1,5 @@
 Available images for OpenSTLinux layers are:
 
   - Official Helios Right Cost Display images:
-      hlio-image-rcd          -   OpenSTLinux weston image with basic Wayland support
-      hlio-image-rcd-no-demo  -   Same image without Electron support and Electron demo
+      hlio-image-rcd-base     -   The Hlio-RCD image containing only the base packages necessary for the distribution.
+      hlio-image-rcd-webkit   -   The Hlio-RCD adding a webkit browser to the base image.
