@@ -18,7 +18,7 @@ Electron apps can interface with the RCD board via a custom-made node extension 
 3. Once the token is made, it will give you a random string that you need to copy to your clipboard.
 4. Run the following command, using the token, and copy the output to your clipboard. This output is your `b64Token`:
    ```
-   echo "<YOUR_TOKEN>" | base64
+   echo -n "<YOUR_TOKEN>" | base64
    ```
 5. Make a new user `~/.npmrc` file and paste the following template into it. Make sure to substitute in your `b64Token` to <B64_TOKEN> in the template:
 ```
