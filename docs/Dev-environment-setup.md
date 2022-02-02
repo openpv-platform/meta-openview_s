@@ -1,8 +1,8 @@
 # Dev environment
 We have a few tools that all developers will probably want to make contributing to the rcd project easier.
 
-# Electron App Development
-If you're developing electron apps, you will want to set up the following in your environment.
+#  App Development
+If you're developing apps, you will want to set up the following in your environment.
 
 NOTE: This is assuming you are running on a linux build or linux VM
 
@@ -10,7 +10,7 @@ Please install the following:
 + Node.js (I have version 16)
 + Npm (I have version 8)
 
-Electron apps can interface with the RCD board via a custom-made node extension that wraps low-level code in a nice, user-friendly Node api. This module is distributed via npm from a private helios-owned NPM registry.
+Apps can interface with the RCD board via a custom-made node extension that wraps low-level code in a nice, user-friendly Node api. This module is distributed via npm from a private helios-owned NPM registry.
 
 ### To connect to our NPM registry, you will need to add it to your npm config. The steps are below:
 1. Sign into DevOps, click on your user settings => "Personal Access Tokens"
