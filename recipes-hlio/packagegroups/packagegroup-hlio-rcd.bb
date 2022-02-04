@@ -21,6 +21,7 @@ PACKAGES = "\
 #   gpio
 RDEPENDS_packagegroup-hlio-rcd = "\
     esp-hosted \
+    type-c-role-switch-bin \
     ldd \
     gdb \
     rs485-example \
