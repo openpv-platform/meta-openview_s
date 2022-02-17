@@ -55,12 +55,12 @@ IMAGE_LINGUAS = "en-us en-gb"
 # =========================================================================
 # DISTRO features
 # =========================================================================
+DISTRO_FEATURES  = "alsa"
 DISTRO_FEATURES += "argp"
 DISTRO_FEATURES += "ext2"
 DISTRO_FEATURES += "ext4"
 DISTRO_FEATURES += "largefile"
 DISTRO_FEATURES += "ipv4"
-DISTRO_FEATURES += "ipv6"
 DISTRO_FEATURES += "wifi"
 DISTRO_FEATURES += "usbgadget"
 DISTRO_FEATURES += "usbhost"
@@ -97,8 +97,8 @@ DISTRO_FEATURES_append = " wayland "
 # =========================================================================
 # DISTRO removed features
 # =========================================================================
-# DISTRO_FEATURES  = "alsa"
 # DISTRO_FEATURES += "multiarch"
+# DISTRO_FEATURES += "ipv6"
 # DISTRO_FEATURES += "nfs"
 # add support of gstreamer
 # DISTRO_FEATURES_append = " gstreamer "
