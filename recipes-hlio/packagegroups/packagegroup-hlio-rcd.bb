@@ -9,6 +9,7 @@ inherit packagegroup
 PROVIDES = "${PACKAGES}"
 PACKAGES = "\
             packagegroup-hlio-rcd \
+            packagegroup-hlio-rcd-debugging \
             packagegroup-hlio-rcd-tools-audio \
             packagegroup-hlio-rcd-tools-core \
             packagegroup-hlio-rcd-tools-kernel \
@@ -24,6 +25,7 @@ RDEPENDS_packagegroup-hlio-rcd = "\
     esp-hosted \
     type-c-role-switch-bin \
     rs485-example \
+    packagegroup-hlio-rcd-debugging \
     packagegroup-hlio-rcd-tools-audio \
     packagegroup-hlio-rcd-tools-core \
     packagegroup-hlio-rcd-tools-kernel \
@@ -31,6 +33,13 @@ RDEPENDS_packagegroup-hlio-rcd = "\
     packagegroup-hlio-rcd-tools-python3 \
     packagegroup-hlio-rcd-core-display \
     packagegroup-hlio-rcd-core-fs \
+    "
+
+SUMMARY_packagegroup-hlio-rcd-debugging = "Framework tools components for debugging the application on the distribution"
+RDEPENDS_packagegroup-hlio-rcd-debugging = "\
+    ldd             \
+    gdb             \
+    systemd-analyze \
     "
 
 SUMMARY_packagegroup-hlio-rcd-tools-audio = "Framework tools components for audio, copied over to rcd"
@@ -87,7 +96,6 @@ RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
     ldd             \
     gdb             \
     nodejs          \
-    systemd-analyze \
     "
 
 # Packages removed from the packagegroup-hlio-rcd-tools-kernel packagegroup that this is based off of
