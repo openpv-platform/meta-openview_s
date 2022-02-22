@@ -1,14 +1,13 @@
 SUMMARY = "Universal Boot Loader Splash Screen for HELIOS RCD Embedded Devices"
 LICENSE = "CLOSED"
 
-
 SRC_URI += "\
-    file://hlio-logo.bmp \
+    file://Helios_Color_White_BG_800x480px.bmp \
 "
 
 S = "${WORKDIR}"
 
-UBOOT_SPLASH_SRC = "hlio-logo.bmp"
+UBOOT_SPLASH_SRC = "Helios_Color_White_BG_800x480px.bmp"
 UBOOT_SPLASH_IMAGE ?= "splash"
 
 inherit deploy
