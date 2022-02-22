@@ -9,6 +9,7 @@ inherit packagegroup
 PROVIDES = "${PACKAGES}"
 PACKAGES = "\
             packagegroup-hlio-rcd \
+            packagegroup-hlio-rcd-debugging \
             packagegroup-hlio-rcd-tools-audio \
             packagegroup-hlio-rcd-tools-core \
             packagegroup-hlio-rcd-tools-kernel \
@@ -19,12 +20,12 @@ PACKAGES = "\
             "
 
 #   gpio
+#   can-standby-enable-bin
 RDEPENDS_packagegroup-hlio-rcd = "\
     esp-hosted \
     type-c-role-switch-bin \
-    ldd \
-    gdb \
     rs485-example \
+    packagegroup-hlio-rcd-debugging \
     packagegroup-hlio-rcd-tools-audio \
     packagegroup-hlio-rcd-tools-core \
     packagegroup-hlio-rcd-tools-kernel \
@@ -32,6 +33,13 @@ RDEPENDS_packagegroup-hlio-rcd = "\
     packagegroup-hlio-rcd-tools-python3 \
     packagegroup-hlio-rcd-core-display \
     packagegroup-hlio-rcd-core-fs \
+    "
+
+SUMMARY_packagegroup-hlio-rcd-debugging = "Framework tools components for debugging the application on the distribution"
+RDEPENDS_packagegroup-hlio-rcd-debugging = "\
+    ldd             \
+    gdb             \
+    systemd-analyze \
     "
 
 SUMMARY_packagegroup-hlio-rcd-tools-audio = "Framework tools components for audio, copied over to rcd"
@@ -47,24 +55,25 @@ RDEPENDS_packagegroup-hlio-rcd-tools-audio = "\
     "
 
 # Packages removed from the packagegroup-framework-tools-core packagegroup that this is based off of
-#   libiio-iiod
-#   libiio-tests
-#   lrzsz
-#   util-linux
-#   util-linux-lscpu
-#   kbd
-#   bc
-#   sysstat
-#   ntp
-#   systemtap
-#   gptfdisk
-#   bzip2
-#   wget
-#   xz
-#   rng-tools
-#   rt-tests
 SUMMARY_packagegroup-hlio-rcd-tools-core = "Framework tools components for core, copied over to rcd"
 RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
+    libiio-iiod     \
+    libiio-tests    \
+    lrzsz           \
+    util-linux      \
+    util-linux-lscpu\
+    kbd             \
+    bc              \
+    sysstat         \
+    ntp             \
+    systemtap       \
+    gptfdisk        \
+    bzip2           \
+    wget            \
+    xz              \
+    rng-tools       \
+    rt-tests        \
+    \
     ckermit         \
     coreutils       \
     libgpiod        \
@@ -82,6 +91,11 @@ RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
     sqlite3         \
     stm32-ddr-tools \
     procps          \
+    \
+    nfs-utils       \
+    ldd             \
+    gdb             \
+    nodejs          \
     "
 
 # Packages removed from the packagegroup-hlio-rcd-tools-kernel packagegroup that this is based off of
@@ -156,9 +170,31 @@ RDEPENDS_packagegroup-hlio-rcd-tools-python3 = "\
     "
 
 #   libdrm-tests
+#   ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston-examples', '', d)}
+#   ${@bb.utils.contains_any('DISTRO_FEATURES', '${GTK3DISTROFEATURES}', 'gtk+3-demo', '', d)}
+#   ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xclock', '', d)}
+#   ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xinput', '', d)}
+#   ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xkbcomp', '', d)}
+#   ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xterm', '', d)}
+#   ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xeyes', '', d)}
 SUMMARY_packagegroup-hlio-rcd-core-display = "Framework core components for display, copied over to rcd"
 RDEPENDS_packagegroup-hlio-rcd-core-display = "\
     libdrm          \
+    \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston', '', d)}                        \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston-init', '', d)}                   \
+    ${@bb.utils.contains_any('DISTRO_FEATURES', '${GTK3DISTROFEATURES}', 'gtk+3', '', d)}       \
+    \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'weston-xwayland', '', d)}       \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xserver-xorg-xwayland', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'libx11-locale', '', d)}         \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'libx11', '', d)}                \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'libxcb', '', d)}                \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'libxcursor', '', d)}            \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xf86-input-evdev', '', d)}      \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xf86-input-mouse', '', d)}      \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xf86-input-keyboard', '', d)}   \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', 'xorg-minimal-fonts', '', d)}    \
     "
 
 SUMMARY_packagegroup-hlio-rcd-core-fs = "Framework core components for filesystem, copied over to rcd"

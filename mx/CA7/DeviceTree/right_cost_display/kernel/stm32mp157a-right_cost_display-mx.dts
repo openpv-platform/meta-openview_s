@@ -948,7 +948,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&fdcan1_pins_mx>;
 	pinctrl-1 = <&fdcan1_sleep_pins_mx>;
-	status = "disabled";
+	status = "okay";
 
 	/* USER CODE BEGIN m_can1 */
 	/* USER CODE END m_can1 */
@@ -958,7 +958,7 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&fdcan2_pins_mx>;
 	pinctrl-1 = <&fdcan2_sleep_pins_mx>;
-	status = "disabled";
+	status = "okay";
 
 	/* USER CODE BEGIN m_can2 */
 	/* USER CODE END m_can2 */
