@@ -26,5 +26,19 @@ user@RCDBoard:/usr/bin# bash -c ./my-service-start.sh
 ```
 user@RCDBoard:/# systemctl start my-program
 ```
-      - needs to be 'my-program' because we initially named the service file to be 'my-program.service'
+   - needs to be 'my-program' because we initially named the service file to be 'my-program.service'
       - if you get an error 'service not found' power cycle the board.
+   - check the service status:
+```
+user@RCDBoard:/# systemctl status my-program
+```
+   - Note: the status command is also useful for debugging
+   - Next enable the service on start up:
+```
+user@RCDBoard:/# systemctl enable my-program
+```
+   - You should see something like this:
+```
+user@RCDBoard:/# systemctl enable my-program
+
+```
