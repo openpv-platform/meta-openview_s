@@ -42,3 +42,12 @@ user@RCDBoard:/# systemctl enable my-program
 user@RCDBoard:/# systemctl enable my-program
 Created symlink /etc/systemd/system/multi-user.target.wants/my-program.service → /lib/systemd/system/my-porgram.service.
 ```
+   - Now stop the service:
+```
+user@RCDBoard:/# systemctl stop my-program
+```
+   - power cycle the board and watch your program run on start up
+   - Debugging:
+```
+user@RCDBoard:/# systemctl status my-program
+```
