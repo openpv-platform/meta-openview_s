@@ -40,5 +40,5 @@ user@RCDBoard:/# systemctl enable my-program
    - You should see something like this:
 ```
 user@RCDBoard:/# systemctl enable my-program
-
+Created symlink /etc/systemd/system/multi-user.target.wants/my-program.service → /lib/systemd/system/my-porgram.service.
 ```
