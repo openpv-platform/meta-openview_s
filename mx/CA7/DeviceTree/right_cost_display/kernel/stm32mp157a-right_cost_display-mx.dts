@@ -262,23 +262,7 @@
 &pinctrl {
 	u-boot,dm-pre-reloc;
 
-	adc_pins_mx: adc_mx-0 {
-		pins {
-			pinmux = <STM32_PINMUX('A', 0, ANALOG)>, /* ADC1_INP16 */
-					 <STM32_PINMUX('B', 1, ANALOG)>, /* ADC1_INP5 */
-					 <STM32_PINMUX('C', 2, ANALOG)>, /* ADC1_INP12 */
-					 <STM32_PINMUX('C', 3, ANALOG)>; /* ADC1_INP13 */
-		};
-	};
 
-	adc_sleep_pins_mx: adc_sleep_mx-0 {
-		pins {
-			pinmux = <STM32_PINMUX('A', 0, ANALOG)>, /* ADC1_INP16 */
-					 <STM32_PINMUX('B', 1, ANALOG)>, /* ADC1_INP5 */
-					 <STM32_PINMUX('C', 2, ANALOG)>, /* ADC1_INP12 */
-					 <STM32_PINMUX('C', 3, ANALOG)>; /* ADC1_INP13 */
-		};
-	};
 
 	eth1_pins_mx: eth1_mx-0 {
 		pins1 {
@@ -758,8 +742,45 @@
 		};
 	};
 
-	/* USER CODE BEGIN pinctrl */
-	/* USER CODE END pinctrl */
+	/* adc pin-controller config */
+	adc1_in5_pins_a: adc1-in5 {
+		pins {
+			pinmux = <STM32_PINMUX('B', 1, ANALOG)>; /* configure 'PB1' as ANALOG */
+		};
+	};
+
+	adc1_sleep_in5_pins_a: adc1-sleep-in5 {
+		pins {
+			pinmux = <STM32_PINMUX('B', 1, ANALOG)>; /* configure 'PB1' as ANALOG */
+		};
+	};
+};
+
+
+&adc {
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&adc1_in5_pins_a>; /* Use PB1 pin as ANALOG */
+	pinctrl-1 = <&adc1_sleep_in5_pins_a>;
+    vdda-supply = <&vdd_io_reg>;
+    vref-supply = <&vdd_io_reg>;
+	status = "okay";
+	compatible = "st,stm32mp1-adc-core";
+	st,syscfg = <&syscfg>;
+
+	adc@0 {
+		/* private resources for ADC1 */
+		status = "okay";                     /* Enable ADC1 */
+		compatible = "st,stm32mp1-adc";
+		#io-channel-cells = <1>;
+        reg = <0x0>;
+		st,adc-channels = <5>; 	// only 1 channel
+		st,min-sample-time-nsec = <10000>;
+		channel@5 {
+			reg = <5>;               /* ADC1 in5 channel is used */
+			st,min-sample-time-nsec = <10000>;  /* 10µs sampling time */
+		};
+	};
+
 };
 
 // JK: Secure GPIO-z controller - not sure what to do with this
@@ -795,15 +816,7 @@
 	};
 };
 
-&adc{
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&adc_pins_mx>;
-	pinctrl-1 = <&adc_sleep_pins_mx>;
-	status = "disabled";
 
-	/* USER CODE BEGIN adc */
-	/* USER CODE END adc */
-};
 
 &bsec{
 	status = "okay";
