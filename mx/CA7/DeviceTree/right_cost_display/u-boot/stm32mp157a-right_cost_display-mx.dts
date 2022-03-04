@@ -131,7 +131,7 @@
 			clock-frequency = <4000000>;
 		};
 		clk_lse: clk-lse {
-			clock-frequency = <32768>;
+			status = "disabled";
 		};
 		clk_hse: clk-hse {
 			clock-frequency = <24000000>;

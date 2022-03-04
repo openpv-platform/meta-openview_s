@@ -28,9 +28,12 @@ SRC_URI = "gitsm://github.com/espressif/esp-hosted.git \
            file://0001-Update-Makefile-for-Yocto.patch;striplevel=5 \
            "
 
-# Modify these as desired
+BUILDTAG_esp-hosted ?= "release/v0.4"
+
 PV = "0.3.2+git${SRCPV}"
-SRCREV = "80ef3f61ce64e568484e195426a44b8b5cc5ee55"
+SRCREV = "${BUILDTAG_esp-hosted}"
+# The following commit was what we used for v0.3, preserved for reference
+# SRCREV = "80ef3f61ce64e568484e195426a44b8b5cc5ee55"
 
 S = "${WORKDIR}/git/host/linux/host_driver/esp32"
 
@@ -38,4 +41,7 @@ inherit module
 
 EXTRA_OEMAKE_append_task-install = " -C ${STAGING_KERNEL_DIR} M=${S}"
 
-KERNEL_MODULE_AUTOLOAD += "esp32_sdio"
+RDEPENDS_${PN} = " \
+                  esp-systemd \
+                  esp-support \
+                  "

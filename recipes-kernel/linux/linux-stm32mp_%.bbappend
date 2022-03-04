@@ -8,10 +8,10 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRC_URI_append = " \
    file://0001-Add-hlio-specific-dtsi.patch \
    file://0002-Modify-SDIO-core-memcpy-to-copy-mis-aligned-buffers.patch \
-   file://0003-Add-debug-messages-to-mmc-and-modify-trace-msgs.patch \
    file://0004-Set-initial-state-of-USB-C-dual-role-based-on-dts.patch \
    file://0005-Input-add-Hycon-HY46XX-Touchscreen-controller.patch \
    file://0006-fix-1s-reset-delay-and-checksum-on-old-firmware.patch \
+   file://0007-Added-support-to-manually-force-card-detection-sdio.patch \
    "
 
 # The following idea is adapted from: 

@@ -21,11 +21,6 @@ Provides a single image:
 
 * ESP-Hosted **https://github.com/espressif/esp-hosted**
 
-
-## Adding the meta-hlio-rcd layer to your build
-
-Run 'bitbake-layers add-layer meta-hlio-rcd'
-
 ## Contributors
 
 ### Basic Development Steps
@@ -48,13 +43,6 @@ There are currently two machine names available:
     ```
     DISTRO=hlio-rcd MACHINE=stm32mp1-hlio-rcd source layers/meta-st/scripts/envsetup.sh
     ```
-
-3. Legacy prior to merge of DISTRO changes:
-    ```
-    DISTRO=openstlinux-weston MACHINE=stm32mp1 source layers/meta-st/scripts/envsetup.sh
-    ```
-    - Followed by a one-time command:  
-    `bitbake-layers add-layer ../layers/meta-st/meta-hlio-rcd/`
 
 #### Making changes to the meta-hlio-rcd layer
 
@@ -99,18 +87,18 @@ The following documentation is available for Distribution Team developers:
 
 #### Documentation related to the Linux Kernel
 
-- TODO: Modifying the Kernel
+- [Modifying the Kernel Config](https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_git/meta-hlio-rcd?path=%2Fdocs%2FUpdate_Kernel_Config.md&version=GBdev&_a=preview)
 
-- [Modifying the Device Tree](https://enovationexternal.visualstudio.com/HCEE/_git/meta-hlio-rcd?path=/docs/Modify_Device_Tree.md&version=GBmain&_a=preview)
+- [Modifying the Device Tree](https://enovationexternal.visualstudio.com/HCEE/_git/meta-hlio-rcd?path=/docs/Modify_Device_Tree.md&version=GBdev&_a=preview)
 
 - Adding an OpenEmbedded supported kernel driver
   - Add `IMAGE_INSTALL_append = " python3-pip"` to `layers/meta-st/meta-hlio-rcd/conf/layer.conf` config file
 
-- [Adding an unsupported (by OpenEmbedded) kernel driver](https://enovationexternal.visualstudio.com/HCEE/_git/meta-hlio-rcd?path=/docs/Add_Kernel_Driver.md&version=GBmain&_a=preview)
+- [Adding an unsupported (by OpenEmbedded) kernel driver](https://enovationexternal.visualstudio.com/HCEE/_git/meta-hlio-rcd?path=/docs/Add_Kernel_Driver.md&version=GBdev&_a=preview)
 
 #### Other Recipes and Applications
 
-- TODO: Adding an existing OpenEmbedded recipe
+- [WiFi/Bluetooth ESP32 Module](https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_git/meta-hlio-rcd?path=/docs/WLAN_ESP32_Module.md&version=GBdev&_a=preview)
 
 ## Maintainers
   - Steve Livingston <stephen.livingston@hlioengineering.com>

@@ -1,0 +1,84 @@
+From ba89ea5364fbbdd49a6ce7a9fd6ab7f3f08d5d55 Mon Sep 17 00:00:00 2001
+From: Jonathan Kaufmann <jonathan.kaufmann@hlioengineering.com>
+Date: Wed, 9 Feb 2022 21:12:31 -0600
+Subject: [PATCH] Added support to manually force card detection of the mmc
+ bus.
+
+---
+ drivers/mmc/host/mmci.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+index fa6d85190..70ff7853f 100644
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -1927,6 +1927,26 @@ static int mmci_of_parse(struct device_node *np, struct mmc_host *mmc)
+ 	return 0;
+ }
+ 
++static ssize_t manual_detect_card_change_store(struct device *dev, struct device_attribute *attr, const char *buf, size_t size)
++{
++	struct mmc_host *mmc = dev_get_drvdata(dev);
++	if (size >= 1 && buf[0] == '1') {		
++		mmc_detect_change(mmc, 10);
++		dev_warn(mmc_dev(mmc), "cd detect\n");		
++	} else {
++		dev_warn(mmc_dev(mmc), "expected \"1\" to run cd detect\n");
++	}
++	return size;
++}
++
++static DEVICE_ATTR_WO(manual_detect_card_change);
++
++static int add_manual_detect_card_change(struct device *dev)
++{	
++	return device_create_file(dev, &dev_attr_manual_detect_card_change);
++}
++
++
+ static int mmci_probe(struct amba_device *dev,
+ 	const struct amba_id *id)
+ {
+@@ -2189,6 +2209,7 @@ static int mmci_probe(struct amba_device *dev,
+ 	pm_runtime_use_autosuspend(&dev->dev);
+ 
+ 	mmc_add_host(mmc);
++	add_manual_detect_card_change(mmc_dev(mmc));
+ 
+ 	pm_runtime_put(&dev->dev);
+ 	return 0;
+@@ -2238,6 +2259,7 @@ static void mmci_save(struct mmci_host *host)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&host->lock, flags);
++	//if (host->phybase < 0x58007000) dev_err(mmc_dev(host->mmc), "save\n");
+ 
+ 	writel(0, host->base + MMCIMASK0);
+ 	if (host->variant->pwrreg_nopower) {
+@@ -2255,6 +2277,7 @@ static void mmci_restore(struct mmci_host *host)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&host->lock, flags);
++	//if (host->phybase < 0x58007000) dev_err(mmc_dev(host->mmc), "restore\n");
+ 
+ 	if (host->variant->pwrreg_nopower) {
+ 		writel(host->clk_reg, host->base + MMCICLOCK);
+@@ -2275,6 +2298,7 @@ static int mmci_runtime_suspend(struct device *dev)
+ 
+ 	if (mmc) {
+ 		struct mmci_host *host = mmc_priv(mmc);
++		//if (host->phybase < 0x58007000) dev_err(dev, "suspend\n");
+ 		pinctrl_pm_select_sleep_state(dev);
+ 		mmci_save(host);
+ 		clk_disable_unprepare(host->clk);
+@@ -2290,6 +2314,7 @@ static int mmci_runtime_resume(struct device *dev)
+ 
+ 	if (mmc) {
+ 		struct mmci_host *host = mmc_priv(mmc);
++		//if (host->phybase < 0x58007000) dev_err(dev, "resume\n");
+ 		clk_prepare_enable(host->clk);
+ 		mmci_restore(host);
+ 		pinctrl_select_default_state(dev);
+-- 
+2.25.1
+

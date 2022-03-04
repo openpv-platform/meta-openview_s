@@ -5,8 +5,11 @@
 
 # Source Code we do not use #
 #############################
-mx/Drivers
-mx/CM4
-mx/Common
-mx/EWARM
+mx/Drivers/
+mx/CM4/
+mx/Common/
+mx/EWARM/
 
+# vscode #
+##########
+**/.vscode/

@@ -90,6 +90,17 @@
 		ethernet0 = &ethernet0;
 	};
 
+	// This must be controlled manually by userspace so we can easily take control of GPIO to reset the ESP32 and update firmware
+	// vdd_wlan_reg: vdd_wlan_reg {
+	// 	compatible = "regulator-fixed";
+	// 	regulator-name = "vdd_wlan_reg";
+	// 	regulator-min-microvolt = <3300000>;
+	// 	regulator-max-microvolt = <3300000>;
+	// 	enable-active-high;			
+	// 	gpio = <&gpioc 15 GPIO_ACTIVE_HIGH>;
+	// 	regulator-boot-on;		/* Turn on immediately */
+	// };
+
 	vdd_io_reg: vdd_io_reg {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_io_reg";
@@ -249,7 +260,7 @@
 			clock-frequency = <4000000>;
 		};
 		clk_lse: clk-lse {
-			clock-frequency = <32768>;
+			status = "disabled";
 		};
 		clk_hse: clk-hse {
 			clock-frequency = <24000000>;
@@ -633,24 +644,27 @@
 					 <STM32_PINMUX('D', 5, AF10)>, /* SDMMC3_D2 */
 					 <STM32_PINMUX('D', 7, AF10)>; /* SDMMC3_D3 */
 			bias-disable;
-			drive-push-pull;
+			drive-open-drain;
 			slew-rate = <1>;
 		};
 		pins3 {
 			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
 			bias-disable;
-			drive-push-pull;
+			drive-open-drain;
 			slew-rate = <3>;
 		};
 	};
 
 	sdmmc3_sleep_pins_mx: sdmmc3_sleep_mx-0 {
 		pins {
-			pinmux = <STM32_PINMUX('D', 0, ANALOG)>, /* SDMMC3_CMD */
-					 <STM32_PINMUX('D', 1, ANALOG)>, /* SDMMC3_D0 */
-					 <STM32_PINMUX('D', 4, ANALOG)>, /* SDMMC3_D1 */
-					 <STM32_PINMUX('D', 5, ANALOG)>, /* SDMMC3_D2 */
-					 <STM32_PINMUX('D', 7, ANALOG)>, /* SDMMC3_D3 */
+			// By not using these pins in "sleep", any time the EMMC port is not in use, for
+			// example when the esp32 driver is not loaded/probed, then the EMMC sort will be
+			// put in sleep power management mode, and these pins are free to be used in userspace
+			pinmux = //<STM32_PINMUX('D', 0, ANALOG)>, /* SDMMC3_CMD */
+					 //<STM32_PINMUX('D', 1, ANALOG)>, /* SDMMC3_D0 */
+					 //<STM32_PINMUX('D', 4, ANALOG)>, /* SDMMC3_D1 */
+					 //<STM32_PINMUX('D', 5, ANALOG)>, /* SDMMC3_D2 */
+					 //<STM32_PINMUX('D', 7, ANALOG)>, /* SDMMC3_D3 */
 					 <STM32_PINMUX('G', 15, ANALOG)>; /* SDMMC3_CK */
 		};
 	};
@@ -1088,7 +1102,26 @@
 	pinctrl-0 = <&sdmmc3_pins_mx>;
 	pinctrl-1 = <&sdmmc3_opendrain_pins_mx>;
 	pinctrl-2 = <&sdmmc3_sleep_pins_mx>;
-	status = "disabled";
+	bus-width = <4>;
+	vmmc-supply = <&vdd_io_reg>;
+	vqmmc-supply = <&vdd_io_reg>;
+	st,neg-edge;
+	no-1-8-v;
+	//cd-gpios = <&gpioc 15 GPIO_ACTIVE_HIGH>;
+	//cd-inverted;
+	cap-sd-highspeed;
+	mmc-ddr-3_3v;
+	no-mmc;
+	no-sd;
+	disable-wp;
+	//broken-cd;
+	//non-removable;
+	//sd-uhs-sdr12;
+	sd-uhs-sdr25;
+	sd-uhs-sdr50;
+	sd-uhs-ddr50;
+	sd-uhs-sdr104;
+	status = "okay";
 
 	/* USER CODE BEGIN sdmmc3 */
 	/* USER CODE END sdmmc3 */

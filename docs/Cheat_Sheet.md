@@ -22,5 +22,22 @@ __BBPATH is temporarily prepended to include the directory the recipe lives in, 
 ### New bitbake topic here
 
 ## DEVTOOL
+### Reference Links
+- [Reference Manual](https://docs.yoctoproject.org/ref-manual/devtool-reference.html)
+### Primary Commands
+- `devtool modify <recipe-name>`
+  - Will check out the source code into <tmp-dir>/workspace/sources
+  - Allows modification and creation of patches
+  - For examples, see [Add_Kernel_Driver.md](https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_git/meta-hlio-rcd?path=/docs/Add_Kernel_Driver.md) and [Modify_Device_tree.md](https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_git/meta-hlio-rcd?path=/docs/Modify_Device_Tree.md)
+- `devtool build <recipe-name>`
+  - Can also use bitbake, which will also grab changes from the working directory.
+- `devtool finish <recipe-name> <path-to-layer>`
+  - Creates patches based on *commits* in the working directory.
+  - Updates the recipe
+  - Resets the recipe to build normally rather than from the workspace
+- `devtool reset <recipe-name>`
+  - Remove the working directory settings, reverting builds to use the recipe
+  - Does not remove the source directory, which is required for before future modifications
+  - Use the `-r` or `--remove-work` to clean up the sources directory automatically
 
 ## New Category Here

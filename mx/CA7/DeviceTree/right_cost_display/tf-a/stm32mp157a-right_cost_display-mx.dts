@@ -42,7 +42,7 @@
 		/* USER CODE END clocks */
 
 		clk_lse: clk-lse {
-
+			status = "disabled";
 			/* USER CODE BEGIN clk_lse */
 			/* USER CODE END clk_lse */
 		};

@@ -55,7 +55,7 @@ IMAGE_LINGUAS = "en-us en-gb"
 # =========================================================================
 # DISTRO features
 # =========================================================================
-DISTRO_FEATURES  = "alsa"
+DISTRO_FEATURES += "alsa"
 DISTRO_FEATURES += "argp"
 DISTRO_FEATURES += "ext2"
 DISTRO_FEATURES += "ext4"
@@ -110,7 +110,7 @@ DISTRO_FEATURES_append = " wayland "
 # add support of tpm2
 # #DISTRO_FEATURES_append = " tpm2 "
 
-DISTRO_FEATURES_remove = " pulseaudio "
+# DISTRO_FEATURES_remove = " pulseaudio "
 DISTRO_FEATURES_remove = " pci "
 DISTRO_FEATURES_remove = " 3g "
 DISTRO_FEATURES_remove = " nfc "

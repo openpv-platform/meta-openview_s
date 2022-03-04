@@ -1,0 +1,13 @@
+[Unit]
+Description=Check and update esp32 firmware as necessary and start the module
+DefaultDependencies=false
+After=local-fs.target
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/lib/esp32/tools/esp32_init.sh 0.4
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

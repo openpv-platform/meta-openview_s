@@ -1,15 +1,15 @@
-From eb5faf47e6e69207e9327559a28574bffe4ccf19 Mon Sep 17 00:00:00 2001
+From b694eba469858216f5f0012034b51bb1233c8304 Mon Sep 17 00:00:00 2001
 From: Stephen Livingston <stephen.livingston@hlioengineering.com>
 Date: Tue, 14 Sep 2021 17:03:28 -0400
-Subject: [PATCH 2/3] Modify SDIO core memcpy to copy buffers that are not
- 4-byte aligned (due to limitation of ST iDMA).
+Subject: [PATCH] Modify SDIO core memcpy to copy buffers that are not 4-byte
+ aligned (due to limitation of ST iDMA).
 
 ---
- drivers/mmc/core/sdio_io.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/mmc/core/sdio_io.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mmc/core/sdio_io.c b/drivers/mmc/core/sdio_io.c
-index 79dbf9021..ef155bf0f 100644
+index 79dbf9021..270d25f4e 100644
 --- a/drivers/mmc/core/sdio_io.c
 +++ b/drivers/mmc/core/sdio_io.c
 @@ -7,6 +7,7 @@
@@ -20,7 +20,7 @@ index 79dbf9021..ef155bf0f 100644
  #include <linux/mmc/host.h>
  #include <linux/mmc/card.h>
  #include <linux/mmc/sdio.h>
-@@ -485,7 +486,25 @@ EXPORT_SYMBOL_GPL(sdio_memcpy_fromio);
+@@ -485,7 +486,26 @@ EXPORT_SYMBOL_GPL(sdio_memcpy_fromio);
  int sdio_memcpy_toio(struct sdio_func *func, unsigned int addr,
  	void *src, int count)
  {
@@ -29,9 +29,10 @@ index 79dbf9021..ef155bf0f 100644
 +	int ret;
 +
 +	if ((unsigned long)src & 0x3) {
++		// S.Livingston Copying mis-aligned buffer due to dma limitations.
++		// Experience shows this is always 512 bytes
 +		new_src = kmalloc(count, GFP_KERNEL);
 +		if (new_src) {
-+			pr_info("Copying mis-aligned %d byte buffer", count);
 +			memcpy(new_src, src, count);
 +			ret = sdio_io_rw_ext_helper(func, 1, addr, 1, new_src, count);
 +			kfree(new_src);

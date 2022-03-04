@@ -7,4 +7,5 @@ PACKAGE_INSTALL := "${@oe.utils.str_filter_out('u-boot-stm32mp-splash', '${PACKA
 
 PACKAGE_INSTALL += "\
     u-boot-hlio-splashscreen \
+    esp-hosted \
     "
