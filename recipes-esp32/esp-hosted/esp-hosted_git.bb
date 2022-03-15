@@ -24,7 +24,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=8264535c0c4e9c6c335635c4026a8022"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
-SRC_URI = "gitsm://github.com/espressif/esp-hosted.git \
+SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https \
            file://0001-Update-Makefile-for-Yocto.patch;striplevel=5 \
            "
 

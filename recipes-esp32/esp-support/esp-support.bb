@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 
 ESP_FW_VER := "v0.4"
 
-SRC_URI = "gitsm://github.com/espressif/esp-hosted.git \
+SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https \
            file://0001-Update-Makefile-for-Yocto.patch;striplevel=5 \
            file://firmware/esp_hosted_bootloader_esp32_sdio_${ESP_FW_VER}.bin \
            file://firmware/esp_hosted_partition-table_esp32_sdio_${ESP_FW_VER}.bin \
