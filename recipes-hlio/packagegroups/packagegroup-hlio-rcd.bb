@@ -96,7 +96,6 @@ RDEPENDS_packagegroup-hlio-rcd-tools-core = "\
     nfs-utils       \
     ldd             \
     gdb             \
-    nodejs          \
     "
 
 # Packages removed from the packagegroup-hlio-rcd-tools-kernel packagegroup that this is based off of
