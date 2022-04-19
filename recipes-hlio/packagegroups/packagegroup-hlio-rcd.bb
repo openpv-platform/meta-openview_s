@@ -128,6 +128,7 @@ RDEPENDS_packagegroup-hlio-rcd-tools-kernel = "\
 #   packagegroup-core-full-cmdline-extended
 SUMMARY_packagegroup-hlio-rcd-tools-network = "Framework tools components for network, copied over to rcd"
 RDEPENDS_packagegroup-hlio-rcd-tools-network = "\
+    openssh-sftp-server \
     ethtool         \
     iproute2        \
     curl            \
