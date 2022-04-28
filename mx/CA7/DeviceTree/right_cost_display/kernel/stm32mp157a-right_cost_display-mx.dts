@@ -15,6 +15,7 @@
 #include "stm32mp15xa.dtsi"
 #include "stm32mp15xxad-pinctrl.dtsi"
 #include "stm32mp15-m4-srm.dtsi"
+#include "rcd-lcd.dtsi"
 
 /* USER CODE BEGIN includes */
 /* USER CODE END includes */
@@ -185,6 +186,7 @@
 		regulator-max-microvolt = <3300000>;
 		gpio = <&gpioa 14 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+		regulator-always-on;
 	};
 
 	panel_backlight: panel_backlight {
@@ -938,19 +940,6 @@
 
 	/delete-property/dmas;
 	/delete-property/dma-names;
-
-	touchscreen@38 {
-		compatible = "hycon,hy4635";
-		reg = <0x38>;
-		vcc-supply = <&vdd_tp_reg>;
-		interrupt-parent = <&gpioc>;
-		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-		//reset-gpios = <&gpioc 13 GPIO_ACTIVE_LOW>;
-		touchscreen-size-x = <800>;
-		touchscreen-size-y = <480>;
-		hycon,report-speed-hz = <60>;
-		// wakeup-source;
-	};
 
 	/* USER CODE BEGIN i2c4 */
 	/* USER CODE END i2c4 */

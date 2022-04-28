@@ -1,0 +1,19 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) Helios Technologies 2021 - All Rights Reserved
+ * atmel lcd driver
+ * 
+ */
+
+&i2c4 {
+	atmel_mxt_ts@4a {
+		compatible = "atmel,atmel_mxt_ts";
+		// compatible = "atmel,mXT244";
+		reg = <0x4a>;
+		interrupt-parent = <&gpioc>;
+		interrupts = <13 0x2>;
+
+		touchscreen-inverted-x;
+		touchscreen-inverted-y;
+	};
+};

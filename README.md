@@ -21,11 +21,9 @@ Provides a single image:
 
 * ESP-Hosted **https://github.com/espressif/esp-hosted**
 
-## Contributors
+## Basic Development Steps
 
-### Basic Development Steps
-
-#### Build Directory and Environment Script
+### Build Directory and Environment Script
 
 - All work is done in a build directory that gets created by an environment script.
 
@@ -44,7 +42,16 @@ There are currently two machine names available:
     DISTRO=hlio-rcd MACHINE=stm32mp1-hlio-rcd source layers/meta-st/scripts/envsetup.sh
     ```
 
-#### Making changes to the meta-hlio-rcd layer
+### Temporary Build for Original LCDs
+
+- In the build directory created above, change the RCD_LCD variable in the conf/local.conf file to 'hycon' in order to build for the original LCDs. The default is the new Atmel New Vision LCDs.
+- If you do not want to modify local.conf, you can set the variable in a single console with the following:
+  - After sourcing the [build environment](#build-directory-and-environment-script),
+  - `export RCD_LCD="hycon"`
+  - `export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE RCD_LCD"`
+  - Subsequent builds in this console will use the new value for RCD_LCD.
+
+### Making changes to the meta-hlio-rcd layer
 
 All changes should be captured in the meta-hlio-rcd layer. This layer exists in the ST Yocto build environment under __layers/meta-st/meta-hlio-rcd__. Several existing recipes are already in place in this layer:
   - recipes-kernel - For kernel related changes, currently limited to device tree changes to the ST DK2 device tree.
@@ -81,11 +88,11 @@ The meta-hlio-rcd repository
   - You may also want to have a local tracking branch for the remote dev branch, for merging purposes:  
 `git checkout -b dev hlio-devops/dev`
 
-### Further Documentation
+## Further Documentation
 
 The following documentation is available for Distribution Team developers:
 
-#### Documentation related to the Linux Kernel
+### Documentation related to the Linux Kernel
 
 - [Modifying the Kernel Config](https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_git/meta-hlio-rcd?path=%2Fdocs%2FUpdate_Kernel_Config.md&version=GBdev&_a=preview)
 
@@ -96,9 +103,7 @@ The following documentation is available for Distribution Team developers:
 
 - [Adding an unsupported (by OpenEmbedded) kernel driver](https://enovationexternal.visualstudio.com/HCEE/_git/meta-hlio-rcd?path=/docs/Add_Kernel_Driver.md&version=GBdev&_a=preview)
 
-#### Other Recipes and Applications
+### Other Recipes and Applications
 
 - [WiFi/Bluetooth ESP32 Module](https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_git/meta-hlio-rcd?path=/docs/WLAN_ESP32_Module.md&version=GBdev&_a=preview)
 
-## Maintainers
-  - Steve Livingston <stephen.livingston@hlioengineering.com>

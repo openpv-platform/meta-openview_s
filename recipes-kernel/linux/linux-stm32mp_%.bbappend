@@ -12,18 +12,31 @@ SRC_URI_append = " \
    file://0005-Input-add-Hycon-HY46XX-Touchscreen-controller.patch \
    file://0006-fix-1s-reset-delay-and-checksum-on-old-firmware.patch \
    file://0007-Added-support-to-manually-force-card-detection-sdio.patch \
+   file://0008-Updated-the-atmel-driver-source-code.patch \
+   file://0009-Updated-the-atmel-driver-add-invert-support.patch \
    "
 
 # The following idea is adapted from: 
 # https://www.yoctoproject.org/pipermail/yocto/2019-May/045121.html
 # This moves our source device tree file to the working source directory prior 
-# to building the device tree. The .dtsi file is included by the dev kit device
-# tree (accomplished by the patch above)
+# to building the device tree. The generically named .dtsi file is included by 
+# the primary device tree file. The source file to copy is based on the selected
+# RCD_LCD - set by default to "atmel" or manually by user in local.conf
 ###############################################################################
 do_add_platform_dtsi() {
+   # Copy the rcd specific device tree for ST DK2 development
 	echo 'cp -f "${THISAPPENDFILESDIR}/stm32mp15xx-hlio-rcd.dtsi" "${STAGING_KERNEL_DIR}/arch/arm/boot/dts"'
 	cp -f "${THISAPPENDFILESDIR}/stm32mp15xx-hlio-rcd.dtsi" \
              "${STAGING_KERNEL_DIR}/arch/arm/boot/dts"
+   # Copy the rcd LCD specific device tree
+   echo 'cp -f "${THISAPPENDFILESDIR}/rcd-atmel.dtsi" "${THISAPPENDFILESDIR}/rcd-hycon.dtsi" "${STAGING_KERNEL_DIR}/arch/arm/boot/dts"'
+   if [ ${RCD_LCD} = "hycon" ]; then
+      cp -f "${THISAPPENDFILESDIR}/rcd-hycon.dtsi" \
+                "${STAGING_KERNEL_DIR}/arch/arm/boot/dts/rcd-lcd.dtsi";
+   else
+      cp -f "${THISAPPENDFILESDIR}/rcd-atmel.dtsi" \
+                "${STAGING_KERNEL_DIR}/arch/arm/boot/dts/rcd-lcd.dtsi";
+   fi
 }
 
 addtask add_platform_dtsi before do_configure after do_patch 
@@ -35,14 +48,17 @@ addtask add_platform_dtsi before do_configure after do_patch
 KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
                             ${WORKDIR}/fragments/fragment_03_enable_hycon_touch.cfg \
                             ${WORKDIR}/fragments/fragment_04_major_kernel_cleanup.cfg \
+                            ${WORKDIR}/fragments/fragment_05_add_atmel_mxt_touch_driver.cfg \
                             "
 
 SRC_URI_append = "file://fragments/fragment_01_enable_j1939.cfg \
                   file://fragments/fragment_03_enable_hycon_touch.cfg \
                   file://fragments/fragment_04_major_kernel_cleanup.cfg \
+                  file://fragments/fragment_05_add_atmel_mxt_touch_driver.cfg \
                   "
 
 SRC_URI_class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_03_enable_hycon_touch.cfg \
                               file://fragments/fragment_04_major_kernel_cleanup.cfg \
+                              file://fragments/fragment_05_add_atmel_mxt_touch_driver.cfg \
                               "

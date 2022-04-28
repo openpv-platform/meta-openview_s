@@ -29,6 +29,15 @@
 MACHINE ??= "qemux86"
 
 #
+# RCD LCD Selection
+#
+# Default build is for Atmel LCD's
+# Change to "hycon" to build for original LCD's
+#
+# RCD_LCD ?= "hycon"
+RCD_LCD ?= "atmel"
+
+#
 # Default policy config
 #
 # The distribution setting controls which policy settings are used as defaults.
