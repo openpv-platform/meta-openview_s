@@ -20,11 +20,11 @@ PACKAGES = "\
             "
 
 #   gpio
-#   can-standby-enable-bin
 RDEPENDS_packagegroup-hlio-rcd = "\
     esp-hosted \
     esp-support \
     type-c-role-switch-bin \
+    can-standby-enable-bin \
     rs485-example \
     packagegroup-hlio-rcd-debugging \
     packagegroup-hlio-rcd-tools-audio \

@@ -1,0 +1,12 @@
+#ifndef CAN_STANDBY_ENABLE_LIB_H
+#define CAN_STANDBY_ENABLE_LIB_H
+
+typedef enum {
+    CAN_STANDBY_ENABLE_TRUE,
+    CAN_STANDBY_ENABLE_FALSE,
+} CAN_STANDBY_ENABLE_ENUM;
+
+int can_standby_enable(CAN_STANDBY_ENABLE_ENUM can_standby_enable);
+
+// CAN_STANDBY_ENABLE_LIB_H
+#endif
