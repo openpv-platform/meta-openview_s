@@ -30,6 +30,11 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     \
     ${@bb.utils.contains('COMBINED_FEATURES', 'tpm2', 'packagegroup-security-tpm2', '', d)} \
     \
+    packagegroup-framework-core-base \
+    packagegroup-framework-tools-base \
+    packagegroup-framework-core \
+    packagegroup-framework-tools \
+    packagegroup-framework-core-extra \
     packagegroup-hlio-rcd \
     \
     packagegroup-hlio-rcd-webkit \

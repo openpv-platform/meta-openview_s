@@ -1,24 +1,27 @@
-SUMMARY = "Helios Engineering Low Cost Display image based on ST wayland image with basic Wayland support (if enabled in distro)."
+SUMMARY = "RCD-Base-image recipe based on ST-Image-Weston recipe"
 LICENSE = "Proprietary"
 
 # overlay the st-image-weston recipe
 include recipes-st/images/st-image.inc
 inherit core-image features_check
 
-# Include wayland graphics framework
+
+# Wayland graphics framework is not a required feature for RCD
 # REQUIRED_DISTRO_FEATURES = "wayland"
 
 IMAGE_LINGUAS = "en-us"
 
-# Add image features
-#   eclipse-debug
-#   package-management
-#   tools-profile
 IMAGE_FEATURES += "\
     splash              \
     ssh-server-dropbear \
     hwcodecs            \
+    package-management  \
     "
+# Note: features listed below are removed for lack of use case
+#   eclipse-debug
+#   tools-profile
+
+
 
 #
 # INSTALL addon packages
@@ -30,14 +33,10 @@ CORE_IMAGE_EXTRA_INSTALL += " \
     \
     ${@bb.utils.contains('COMBINED_FEATURES', 'tpm2', 'packagegroup-security-tpm2', '', d)} \
     \
+    packagegroup-framework-core-base \
+    packagegroup-framework-tools-base \
+    packagegroup-framework-core \
+    packagegroup-framework-tools \
+    packagegroup-framework-core-extra \
     packagegroup-hlio-rcd \
     "
-
-# removed packagegroups
-#   packagegroup-st-demo
-#   packagegroup-framework-core-base
-#   packagegroup-framework-tools-base
-#   packagegroup-framework-core
-#   packagegroup-framework-tools
-#   ${@bb.utils.contains('COMBINED_FEATURES', 'optee', 'packagegroup-optee-test', '', d)}
-#   packagegroup-framework-core-extra
