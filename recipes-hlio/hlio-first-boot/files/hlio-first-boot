@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "copying kernel new parameters"
+cp /usr/share/hlio-first-boot/extlinux.conf  /boot/extlinux
+
+systemctl disable hlio-first-boot
+systemctl disable psplash-drm-start
