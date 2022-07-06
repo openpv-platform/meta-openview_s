@@ -232,13 +232,16 @@
 	/* USER CODE END etzpc */
 };
 
+// removed for optimization purposes
+/*
 &iwdg2{
 	status = "disabled";
 	secure-status = "disabled";
 
-	/* USER CODE BEGIN iwdg2 */
-	/* USER CODE END iwdg2 */
+	/* USER CODE BEGIN iwdg2 *//*
+	/* USER CODE END iwdg2 *//*
 };
+*/
 
 &pwr_regulators{
 	status = "okay";
@@ -262,13 +265,16 @@
 	/* USER CODE END rcc */
 };
 
+// removed for optimization purposes
+/*
 &rtc{
 	status = "okay";
 	secure-status = "okay";
 
-	/* USER CODE BEGIN rtc */
-	/* USER CODE END rtc */
+	/* USER CODE BEGIN rtc *//*
+	/* USER CODE END rtc *//*
 };
+*/
 
 &sdmmc2{
 	pinctrl-names = "default";
@@ -281,13 +287,16 @@
 	/* USER CODE END sdmmc2 */
 };
 
+// removed for optimization purposes
+/*
 &tamp{
 	status = "okay";
 	secure-status = "okay";
 
-	/* USER CODE BEGIN tamp */
-	/* USER CODE END tamp */
+	/* USER CODE BEGIN tamp *//*
+	/* USER CODE END tamp *//*
 };
+*/
 
 &uart4{
 	pinctrl-names = "default";
