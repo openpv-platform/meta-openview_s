@@ -31,6 +31,8 @@ RDEPENDS_packagegroup-hlio-rcd-custom = "\
     rs485-example \
     can-utils \
     can-standby-enable-bin \
+    hlio-init \
+    hlio-first-boot \
     "
 
 
