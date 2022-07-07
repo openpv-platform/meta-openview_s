@@ -190,9 +190,19 @@
 	};
 
 	panel_backlight: panel_backlight {
-		compatible = "gpio-backlight";
-		gpios = <&gpiod 14 GPIO_ACTIVE_HIGH>;
-		default-on; // turn on at boot/probe time
+		status = "okay";
+		compatible = "pwm-backlight";
+		// request pwmChip0-channel 2 at 50K nano secs period (20KHz frequency)
+		pwms = <&bl_pwm 2 50000>;
+		// brightness levels (0-19 inclusive) corresponding to backlight intensity
+		brightness-levels = <0 15 30 45 60 75 90 105 120 135 150 165 180 195 210 225 240 255 270 285>;
+		// defualt as index into brightness levels array
+		default-brightness-level = <10>;
+		// power supply may not be neccesary but suggested by example bindings
+		power-supply = <&v5v0_core_reg>;
+		// linear scale for increase/decreasing brightness
+		scale = "linear";
+		default-on;
 	};
 
 	panel {
@@ -665,18 +675,20 @@
 		};
 	};
 
-	tim4_backlight_pwm_mx: tim4_backlight_pwm_mx {
+	bl_pwm_pins_a: bl_pwm-0 {
+		// set PD14 as backlight pwm input
 		pins {
 			pinmux = <STM32_PINMUX('D', 14, AF2)>; // TIM4_CH3
-			bias-disable;
+			// all 3 configs below come from st wiki: https://wiki.st.com/stm32mpu/wiki/TIM_device_tree_configuration
+			bias-pull-down;
 			drive-push-pull;
 			slew-rate = <0>;
 		};
 	};
 
-	tim4_backlight_sleep_pwm_mx: tim4_backlight_pwm_mx {
+	bl_pwm_sleep_pins_a: bl_pwm-sleep-0 {
 		pins {
-			pinmux = <STM32_PINMUX('D', 14, AF2)>; // TIM4_CH3
+			pinmux = <STM32_PINMUX('D', 14, AF2)>;
 		};
 	};
 
@@ -1133,14 +1145,15 @@
 	/delete-property/dma-names;
 	/* USER CODE END timers4 */
 
-	backlight_pwm: pwm {
-		pinctrl-names = "default", "sleep";
-		pinctrl-0 = <&tim4_backlight_pwm_mx>;
-		pinctrl-1 = <&tim4_backlight_sleep_pwm_mx>;
+	bl_pwm: pwm {
 		status = "okay";
-
-		/* USER CODE BEGIN timers4_pwm */
-		/* USER CODE END timers4_pwm */
+		compatible = "st,stm32-pwm";
+		pinctrl-names = "default", "sleep";
+		// set pwm pin (PD14) to this timer
+		pinctrl-0 = <&bl_pwm_pins_a>;
+		pinctrl-1 = <&bl_pwm_sleep_pins_a>;
+		// number of cells expected in the device tree PWM specifier
+		#pwm-cells = <2>;
 	};
 };
 
