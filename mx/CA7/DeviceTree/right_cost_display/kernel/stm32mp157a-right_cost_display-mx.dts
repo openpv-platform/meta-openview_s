@@ -692,6 +692,21 @@
 		};
 	};
 
+	buzzer_pwm_pins_b: buzzer_pwm_pins_b {
+		pins {
+			pinmux = <STM32_PINMUX('B', 6, AF1)>; // TIM16_CH1N
+			bias-disable;
+			drive-push-pull;
+			slew-rate = <0>;
+		};
+	};
+
+	buzzer_pwm_sleep_pins_b: buzzer_pwm_sleep_pins_b {
+		pins {
+			pinmux = <STM32_PINMUX('B', 6, AF1)>; // TIM16_CH1N
+		};
+	};
+	
 	uart4_pins_mx: uart4_mx-0 {
 		u-boot,dm-pre-reloc;
 		pins1 {
@@ -1133,6 +1148,28 @@
 	dma_pool: dma_pool@0 {
 		reg = <0x50000 0x10000>;
 		pool;
+	};
+};
+
+/* Using timer16_CH1N for the onboard buzzer. */
+&timers16 {
+	status = "okay";
+
+	/* USER CODE BEGIN timers16 */
+	// spare all DMA channels since they are not needed for PWM output
+	/delete-property/dmas;
+	/delete-property/dma-names;
+	/* USER CODE END timers16 */
+
+	// tie together pwm pin to timer 16
+	buzzer_pwm: pwm {
+		pinctrl-names = "default", "sleep";
+		pinctrl-0 = <&buzzer_pwm_pins_b>;
+		pinctrl-1 = <&buzzer_pwm_sleep_pins_b>;
+		status = "okay";
+
+		/* USER CODE BEGIN timers16_buzzer_pwm */
+		/* USER CODE END timers16_buzzer_pwm */
 	};
 };
 
