@@ -33,6 +33,7 @@ RDEPENDS_packagegroup-hlio-rcd-custom = "\
     can-standby-enable-bin \
     hlio-init \
     hlio-first-boot \
+    hlio-startup-config \
     "
 
 

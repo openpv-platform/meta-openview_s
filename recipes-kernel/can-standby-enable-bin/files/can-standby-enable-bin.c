@@ -40,11 +40,11 @@ int main(int argc, char *argv[]) {
     char can_stby_state_string[9];
     if (strcmp(argv[1], TRUE_STRING) == 0) {
         can_standby_en = CAN_STANDBY_ENABLE_TRUE;
-        strncpy(can_stby_state_string, "enabled", 7);
+        strncpy(can_stby_state_string, "enabled", 8);
     }
     else if (strcmp(argv[1], FALSE_STRING) == 0) {
         can_standby_en = CAN_STANDBY_ENABLE_FALSE;
-        strncpy(can_stby_state_string, "disabled", 8);
+        strncpy(can_stby_state_string, "disabled", 9);
     }
     else {
         ret = -errno;
@@ -57,5 +57,6 @@ int main(int argc, char *argv[]) {
     IF_RET;
 
     printf("Successfully changed the CAN standby enable state. CAN standby is now %s\n", can_stby_state_string);
+    printf("\n");
     return ret;
 }
