@@ -34,6 +34,7 @@ RDEPENDS_packagegroup-hlio-rcd-custom = "\
     hlio-init \
     hlio-first-boot \
     hlio-startup-config \
+    bsp-info    \
     "
 
 
