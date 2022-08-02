@@ -1209,6 +1209,13 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&uart5_pins_mx>;
 	pinctrl-1 = <&uart5_sleep_pins_mx>;
+
+	/* Defining the default rs485 configuration here so that we don't have to make ioctl calls in user-space to
+	configure rs485 to be enabled. This allows us to use the rs485 output in any environment as long as it supports
+	configuring a serial port.*/
+	linux,rs485-enabled-at-boot-time;
+	rs485-rts-delay = <60 60>;
+
 	status = "okay";
 
 	/* USER CODE BEGIN uart5 */
