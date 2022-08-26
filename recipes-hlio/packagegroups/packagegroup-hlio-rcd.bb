@@ -14,6 +14,7 @@ PACKAGES = "\
             packagegroup-hlio-rcd-tools-network \
             packagegroup-hlio-rcd-tools-python3 \
             packagegroup-hlio-rcd-qt5-support \
+            packagegroup-hlio-rcd-development-support \
             "
 
 RDEPENDS_packagegroup-hlio-rcd = "\
@@ -22,6 +23,7 @@ RDEPENDS_packagegroup-hlio-rcd = "\
     packagegroup-hlio-rcd-tools-network \
     packagegroup-hlio-rcd-tools-python3 \
     packagegroup-hlio-rcd-qt5-support \
+    packagegroup-hlio-rcd-development-support \
     "
 
 SUMMARY_packagegroup-hlio-rcd-custom = "Custom tools for RCD added by HCEE team."
@@ -44,6 +46,7 @@ SUMMARY_packagegroup-hlio-rcd-debugging = "Tools for debugging user space applic
 RDEPENDS_packagegroup-hlio-rcd-debugging = "\
     ldd \
     gdb \
+    gdbserver \
     "
 
 
@@ -67,4 +70,13 @@ RDEPENDS_packagegroup-hlio-rcd-qt5-support = "\
     qtwayland                           \
     qtwayland-plugins                   \
     openstlinux-qt-wayland              \
+    "
+
+SUMMARY_packagegroup-hlio-rcd-development-support = "Packages for Ahsoka supported development environments"
+RDEPENDS_packagegroup-hlio-rcd-development-support = "\
+    icu \
+    zeromq \
+    cppzmq-dev \
+    protobuf \
+    jsoncpp \
     "
