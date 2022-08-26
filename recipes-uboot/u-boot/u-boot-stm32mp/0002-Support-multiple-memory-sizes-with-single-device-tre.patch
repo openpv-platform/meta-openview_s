@@ -1,0 +1,106 @@
+From 86312d1246a9bf2f641a7fed7e7557b8921c98ca Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Thu, 18 Aug 2022 12:14:33 -0400
+Subject: [PATCH] Support multiple memory sizes with single device tree.
+
+---
+ arch/arm/mach-stm32mp/dram_init.c | 73 +++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
+
+diff --git a/arch/arm/mach-stm32mp/dram_init.c b/arch/arm/mach-stm32mp/dram_init.c
+index 0e8ce63f4a..4688f649f3 100644
+--- a/arch/arm/mach-stm32mp/dram_init.c
++++ b/arch/arm/mach-stm32mp/dram_init.c
+@@ -10,9 +10,67 @@
+ #include <lmb.h>
+ #include <log.h>
+ #include <ram.h>
++#include <cpu_func.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
++/*
++ * SL: (2022-Aug) Hard coded function to determine actual memory size for 
++ * Right Cost Display. Expects 1GiB, 512MiB or 256MiB and assumes
++ * the device tree is set up for 1GiB (max supported size). Based loosely
++ * on get_ram_size in ./common/memsize.c with required flush of dcache.
++ */
++#define NumOfRamSizes 3
++long get_ddr_size(uint *base, long max_size)
++{
++	long		   result = max_size;	// Assume max size unless failure
++	uint           save[NumOfRamSizes];
++	volatile uint *ptrs[NumOfRamSizes];
++
++	// Set up pointers and save the existing value from memory
++	for  (int i = 0; i < NumOfRamSizes; ++i)
++	{
++		if (i == 0)
++			ptrs[i] = base;
++		else
++			ptrs[i] = base + ( (max_size / sizeof(uint)) >> (NumOfRamSizes - i)); /* pointer arith! */
++
++		save[i] = *ptrs[i];
++		debug("Saved %x from %p\n", save[i], ptrs[i]);
++	}
++
++	// Write top to bottom (because smaller memory writes tto top will overwrite bottom)
++	for (int i = NumOfRamSizes - 1; i >= 0; --i)
++	{
++		debug("Writing %x @ %p\n", ~i, ptrs[i]);
++		*ptrs[i] = ~i;
++	}
++
++	// Flush the data cache to ensure reads are from memory
++	flush_dcache_all();
++
++	// Read back and determine boundary at first non-matching read
++	int i; // Keep i as index for restoring saved values
++	for (i = 1; i < NumOfRamSizes; ++i)
++	{
++		debug("Reading %x @ %p\n", *ptrs[i], ptrs[i]);
++		if (*ptrs[i] != ~i)
++		{
++			result = (long)ptrs[i] - (long)base;
++			break;
++		}
++	}
++	// Restore saved values to valid memory locations
++	for (--i; i >= 0; --i)
++	{
++		*ptrs[i] = save[i];
++		debug("Restored %x @ %p\n", save[i], ptrs[i]);
++	}
++
++	debug("reporting %iMiB\n", (uint)result / (1024 * 1024));
++	return result;
++} /* End get_ddr_size() RCD specific function */
++
+ int dram_init(void)
+ {
+ 	struct ram_info ram;
+@@ -29,6 +87,21 @@ int dram_init(void)
+ 		debug("Cannot get RAM size: %d\n", ret);
+ 		return ret;
+ 	}
++
++	/* SL: (2022-Aug) This is a hard coded solution for RCD single image with 3
++	 * possible  memory sizes. Tests for our expected device tree values first.
++	 */
++	if (ram.base == 0xC0000000 && ram.size == 0x40000000)
++	{
++		int actualSize = get_ddr_size((uint *)ram.base, ram.size);
++		if (actualSize < ram.size)
++		{
++			pr_warning("Actual RAM size [%x] < dt[%x], using actual size\n", actualSize, ram.size);
++			ram.size = actualSize;
++		}
++	}
++	/* End RCD specific code */
++
+ 	debug("RAM init base=%lx, size=%x\n", ram.base, ram.size);
+ 
+ 	gd->ram_size = ram.size;
+-- 
+2.25.1
+

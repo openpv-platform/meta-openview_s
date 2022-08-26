@@ -26,7 +26,8 @@
 
 	memory@c0000000 {
 		device_type = "memory";
-		reg = <0xc0000000 0x10000000>;
+		/* SL: Currently set to maximum supported 8Gb (1GiB) programmatically modified in tf-a & u-boot */
+		reg = <0xc0000000 0x40000000>;
 
 		/* USER CODE BEGIN memory */
 		/* USER CODE END memory */
