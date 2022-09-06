@@ -79,4 +79,5 @@ RDEPENDS_packagegroup-hlio-rcd-development-support = "\
     cppzmq-dev \
     protobuf \
     jsoncpp \
+    libgpiod-dev \
     "
