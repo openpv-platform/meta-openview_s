@@ -14,6 +14,7 @@ SRC_URI_append = " \
    file://0007-Added-support-to-manually-force-card-detection-sdio.patch \
    file://0008-Updated-the-atmel-driver-source-code.patch \
    file://0009-Updated-the-atmel-driver-add-invert-support.patch \
+   file://0010-Updating-display-clock-to-avoid-emi-interference.patch \
    "
 
 # The following idea is adapted from: 

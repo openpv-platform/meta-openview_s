@@ -296,7 +296,7 @@
 					 <STM32_PINMUX('G', 14, AF11)>; /* ETH1_TXD1 */
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('A', 2, AF11)>; /* ETH1_MDIO */
@@ -379,7 +379,7 @@
 					 <STM32_PINMUX('E', 2, AF4)>; /* I2C4_SCL */
 			bias-pull-up;
 			drive-open-drain;
-			slew-rate = <3>;
+			slew-rate = <0>;
 		};
 	};
 
@@ -425,15 +425,15 @@
 					 <STM32_PINMUX('F', 11, AF14)>, /* LTDC_G5 */
 					 <STM32_PINMUX('G', 8, AF14)>, /* LTDC_G7 */
 					 <STM32_PINMUX('G', 13, AF14)>; /* LTDC_R0 */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <0>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('G', 7, AF14)>; /* LTDC_CLK */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 	};
 
@@ -557,16 +557,16 @@
 					 <STM32_PINMUX('E', 4, AF9)>, /* SDMMC2_D4 */
 					 <STM32_PINMUX('E', 5, AF9)>, /* SDMMC2_D6 */
 					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <1>;
 		};
 		pins2 {
 			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <3>;
+			slew-rate = <1>;
 		};
 	};
 
@@ -591,7 +591,7 @@
 			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <3>;
+			slew-rate = <1>;
 		};
 		pins3 {
 			u-boot,dm-pre-reloc;
@@ -626,15 +626,15 @@
 					 <STM32_PINMUX('D', 4, AF10)>, /* SDMMC3_D1 */
 					 <STM32_PINMUX('D', 5, AF10)>, /* SDMMC3_D2 */
 					 <STM32_PINMUX('D', 7, AF10)>; /* SDMMC3_D3 */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <3>;
+			slew-rate = <0>;
 		};
 	};
 
@@ -643,7 +643,7 @@
 			pinmux = <STM32_PINMUX('D', 0, AF10)>; /* SDMMC3_CMD */
 			bias-disable;
 			drive-open-drain;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('D', 1, AF10)>, /* SDMMC3_D0 */
@@ -652,13 +652,13 @@
 					 <STM32_PINMUX('D', 7, AF10)>; /* SDMMC3_D3 */
 			bias-disable;
 			drive-open-drain;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 		pins3 {
 			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
 			bias-disable;
 			drive-open-drain;
-			slew-rate = <3>;
+			slew-rate = <0>;
 		};
 	};
 
@@ -1104,6 +1104,7 @@
 	bus-width = <8>;
 	vmmc-supply = <&vdd_emmc_reg>;
 	vqmmc-supply = <&vdd_io_reg>;
+	//max-frequency=<99000000>;
 	mmc-ddr-3_3v;
 	/* USER CODE END sdmmc2 */
 };
@@ -1118,20 +1119,21 @@
 	vqmmc-supply = <&vdd_io_reg>;
 	st,neg-edge;
 	no-1-8-v;
+	max-frequency=<23500000>;  // Seems to pick 25Mhz, so declock a bit to avoid the 50Mhz multiples //TODO: why not 50Mhz per ESP32 datasheet???
 	//cd-gpios = <&gpioc 15 GPIO_ACTIVE_HIGH>;
 	//cd-inverted;
 	cap-sd-highspeed;
-	mmc-ddr-3_3v;
+	//mmc-ddr-3_3v;
 	no-mmc;
-	no-sd;
+	//no-sd;
 	disable-wp;
 	//broken-cd;
 	//non-removable;
 	//sd-uhs-sdr12;
-	sd-uhs-sdr25;
+	//sd-uhs-sdr25;
 	sd-uhs-sdr50;
-	sd-uhs-ddr50;
-	sd-uhs-sdr104;
+	//sd-uhs-ddr50;
+	//sd-uhs-sdr104;
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc3 */

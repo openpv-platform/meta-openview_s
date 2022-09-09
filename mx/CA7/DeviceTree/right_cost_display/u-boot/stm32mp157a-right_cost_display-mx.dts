@@ -176,7 +176,7 @@
 					 <STM32_PINMUX('G', 14, AF11)>; /* ETH1_TXD1 *//*
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('A', 2, AF11)>; /* ETH1_MDIO *//*
@@ -312,7 +312,7 @@
 			pinmux = <STM32_PINMUX('G', 7, AF14)>; /* LTDC_CLK *//*
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 	};
 
@@ -437,16 +437,16 @@
 					 <STM32_PINMUX('E', 4, AF9)>, /* SDMMC2_D4 */
 					 <STM32_PINMUX('E', 5, AF9)>, /* SDMMC2_D6 */
 					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <1>;
 		};
 		pins2 {
 			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <3>;
+			slew-rate = <1>;
 		};
 	};
 
@@ -471,7 +471,7 @@
 			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <3>;
+			slew-rate = <1>;
 		};
 		pins3 {
 			u-boot,dm-pre-reloc;
@@ -506,15 +506,15 @@
 					 <STM32_PINMUX('D', 4, AF10)>, /* SDMMC3_D1 */
 					 <STM32_PINMUX('D', 5, AF10)>, /* SDMMC3_D2 */
 					 <STM32_PINMUX('D', 7, AF10)>; /* SDMMC3_D3 */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <3>;
+			slew-rate = <0>;
 		};
 	};
 
@@ -523,7 +523,7 @@
 			pinmux = <STM32_PINMUX('D', 0, AF10)>; /* SDMMC3_CMD */
 			bias-disable;
 			drive-open-drain;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('D', 1, AF10)>, /* SDMMC3_D0 */
@@ -532,13 +532,13 @@
 					 <STM32_PINMUX('D', 7, AF10)>; /* SDMMC3_D3 */
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <0>;
 		};
 		pins3 {
 			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <3>;
+			slew-rate = <0>;
 		};
 	};
 
