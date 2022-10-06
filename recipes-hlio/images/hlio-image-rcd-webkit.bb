@@ -12,12 +12,12 @@ IMAGE_LINGUAS = "en-us"
 
 # Add image features
 #   eclipse-debug
-#   package-management
 #   tools-profile
 IMAGE_FEATURES += "\
     splash              \
     ssh-server-dropbear \
     hwcodecs            \
+    package-management  \
     "
 
 #

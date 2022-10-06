@@ -47,6 +47,7 @@ RDEPENDS_packagegroup-hlio-rcd-debugging = "\
     ldd \
     gdb \
     gdbserver \
+    systemd-analyze \
     "
 
 
