@@ -21,8 +21,6 @@ IMAGE_FEATURES += "\
 #   eclipse-debug
 #   tools-profile
 
-
-
 #
 # INSTALL addon packages
 #
