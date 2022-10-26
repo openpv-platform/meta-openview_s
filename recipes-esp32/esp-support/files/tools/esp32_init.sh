@@ -35,7 +35,7 @@ function power_on() {
 function force_sdio_card_detect() {
 
 	# This will force a manual card detect to effectively detect the driver/device since we have no CD pin                             
-        echo 1 > /sys/devices/platform/soc/48004000.sdmmc/manual_detect_card_change 
+        echo 1 > /sys/devices/platform/soc/48004000.mmc/manual_detect_card_change 
 }
 
 function get_firmware_version() {

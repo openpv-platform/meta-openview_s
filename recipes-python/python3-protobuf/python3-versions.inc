@@ -1,1 +1,0 @@
-PREFERRED_VERSION_python3-protobuf = "3.19.3"

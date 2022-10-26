@@ -48,7 +48,7 @@ There are currently two machine names available:
 - If you do not want to modify local.conf, you can set the variable in a single console with the following:
   - After sourcing the [build environment](#build-directory-and-environment-script),
   - `export RCD_LCD="hycon"`
-  - `export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE RCD_LCD"`
+  - `export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS RCD_LCD"`
   - Subsequent builds in this console will use the new value for RCD_LCD.
 
 ### Making changes to the meta-hlio-rcd layer

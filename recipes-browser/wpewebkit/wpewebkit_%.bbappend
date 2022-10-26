@@ -1,7 +1,6 @@
 PACKAGECONFIG = " \
-    fetchapi \
-    indexeddb \
     mediasource \
+    mediastream \
     video \
     webaudio \
     webcrypto \
@@ -11,6 +10,5 @@ PACKAGECONFIG = " \
     openjpeg \
     unified-builds \
     service-worker \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd', '' ,d)} \
     qtwpe \
     "

@@ -3,7 +3,7 @@ LICENSE = "Proprietary"
 
 # overlay the st-image-weston recipe
 include recipes-st/images/st-image.inc
-inherit core-image features_check
+inherit core-image
 
 # Include wayland graphics framework
 # REQUIRED_DISTRO_FEATURES = "wayland"

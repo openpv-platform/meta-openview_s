@@ -22,7 +22,4 @@ Initialization script for updating the ESP32 module firmware and starting the mo
 
 Systemd services for running the esp32 module startup script and creating the node device.
 
-## protobuf
-
-A temporary necessity to update the vesrion of protobuf installed on the board for compatibility with the esp-hosted kernel driver.
 

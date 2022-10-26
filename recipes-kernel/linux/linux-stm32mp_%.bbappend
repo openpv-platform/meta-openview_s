@@ -1,19 +1,27 @@
 # require linux-add-custom-dtsi.inc
 
 THISAPPENDFILESDIR := "${THISDIR}/${PN}"
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-# file://0005-Input-add-Hycon-HY46XX-Touchscreen-controller.patch comes from the following link:
+# file://0005-Input-add-Hycon-HY46XX-Touchscreen-controller.patch came from the following link:
 #   https://patchwork.kernel.org/project/linux-input/list/?series=466405&state=%2A&archive=both
-SRC_URI_append = " \
+# Removed as of 2022-August by S.Livingston as part of upgrade to Kernel 5.15 / Yocto 4.0 kirkstone
+#   file://0004-Set-initial-state-of-USB-C-dual-role-based-on-dts.patch
+#     Already done in latest driver
+#   file://0005-Input-add-Hycon-HY46XX-Touchscreen-controller.patch
+#     Already added in latest kernel
+# Modified as of 2022-August by S.Livingston as part of upgrade to Kernel 5.15 / Yocto 4.0 kirkstone
+#   file://0008-Updated-the-atmel-driver-source-code.patch --> file://0008-Update-atmel-mxt-touch-driver-to-v3.5.patch
+#   file://0009-Updated-the-atmel-driver-add-invert-support.patch --> file://0009-Updated-the-atmel-driver-add-invert-support-v3.5.patch
+# Provided patch if desired to fall back to the Linux kernel default atmel driver and just adjust for invert support:
+#   file://0009-Update-default-atmel-driver-add-invert-support.patch
+SRC_URI:append = " \
    file://0001-Add-hlio-specific-dtsi.patch \
    file://0002-Modify-SDIO-core-memcpy-to-copy-mis-aligned-buffers.patch \
-   file://0004-Set-initial-state-of-USB-C-dual-role-based-on-dts.patch \
-   file://0005-Input-add-Hycon-HY46XX-Touchscreen-controller.patch \
    file://0006-fix-1s-reset-delay-and-checksum-on-old-firmware.patch \
    file://0007-Added-support-to-manually-force-card-detection-sdio.patch \
-   file://0008-Updated-the-atmel-driver-source-code.patch \
-   file://0009-Updated-the-atmel-driver-add-invert-support.patch \
+   file://0008-Update-atmel-mxt-touch-driver-to-v3.5.patch \
+   file://0009-Updated-the-atmel-driver-add-invert-support-v3.5.patch \
    file://0010-Updating-display-clock-to-avoid-emi-interference.patch \
    "
 
@@ -57,7 +65,8 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
                             ${WORKDIR}/fragments/fragment_10_interrupt_frequency.cfg \
                             "
 
-SRC_URI_append = "file://fragments/fragment_01_enable_j1939.cfg \
+SRC_URI:append = " \
+                  file://fragments/fragment_01_enable_j1939.cfg \
                   file://fragments/fragment_03_enable_hycon_touch.cfg \
                   file://fragments/fragment_04_major_kernel_cleanup.cfg \
                   file://fragments/fragment_05_remove_debug.cfg \
@@ -68,7 +77,7 @@ SRC_URI_append = "file://fragments/fragment_01_enable_j1939.cfg \
                   file://fragments/fragment_10_interrupt_frequency.cfg \
                   "
 
-SRC_URI_class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
+SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_03_enable_hycon_touch.cfg \
                               file://fragments/fragment_04_major_kernel_cleanup.cfg \
                               file://fragments/fragment_05_remove_debug.cfg \

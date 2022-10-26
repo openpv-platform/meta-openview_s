@@ -8,7 +8,7 @@ SRC_URI += "\
 "
 
 # Indicate that the json file is a configuration file
-CONFFILES_${PN} = "${sysconfdir}/eglfs_config.json"
+CONFFILES:${PN} = "${sysconfdir}/eglfs_config.json"
 
 do_install() {
         install -d ${D}${sysconfdir}
@@ -17,4 +17,4 @@ do_install() {
 
 
 # make sure to ship the files as part of the package group
-FILES_${PN} += "${sysconfdir}/eglfs_config.json"
+FILES:${PN} += "${sysconfdir}/eglfs_config.json"

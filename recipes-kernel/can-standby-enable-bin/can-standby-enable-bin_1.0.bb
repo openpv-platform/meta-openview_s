@@ -25,4 +25,4 @@ do_install() {
     install -m 0755 can-standby-enable-bin ${D}${bindir}
 }
 
-FILES_${PN} = "${bindir}/*"
+FILES:${PN} = "${bindir}/*"

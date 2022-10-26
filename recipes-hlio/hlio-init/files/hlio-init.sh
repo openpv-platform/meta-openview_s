@@ -115,7 +115,7 @@ if [ $$ -eq 1 ]; then
                         break
                 fi
 	done
-	export PATH=$OLDPATHps -
+	export PATH=$OLDPATH
 	# switch to - either the initrd's init, or the main system's
 	exec $init $*
 fi

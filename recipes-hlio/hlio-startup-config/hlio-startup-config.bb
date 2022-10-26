@@ -7,11 +7,11 @@ SRC_URI = "file://${BPN}.sh \
 
 inherit systemd
 SYSTEMD_AUTO_ENABLE = "enable"
-SYSTEMD_SERVICE_${PN} = "${PN}.service"
+SYSTEMD_SERVICE:${PN} = "${PN}.service"
 
-RDEPENDS_${PN} += "bash"
+RDEPENDS:${PN} += "bash"
 
-do_install_append() {
+do_install:append() {
     # Service and first boot script
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/${PN}.service ${D}${systemd_unitdir}/system
@@ -20,4 +20,4 @@ do_install_append() {
     install -m 0755 ${WORKDIR}/${PN}.sh ${D}${bindir}
 }
 
-FILES_${PN} += "${systemd_unitdir} ${bindir}"
+FILES:${PN} += "${systemd_unitdir} ${bindir}"

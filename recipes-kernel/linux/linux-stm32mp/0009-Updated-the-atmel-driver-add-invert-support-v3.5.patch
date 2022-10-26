@@ -1,31 +1,36 @@
-From 19acc0c777479f267d9c82c90cc7717dd6bb7345 Mon Sep 17 00:00:00 2001
-From: Bernardo Garza <bernardo.garza@hlioengineering.com>
-Date: Wed, 20 Apr 2022 16:03:16 -0500
+From 5d504f93d303ab54a2c37fa0abad8be43fdb55ad Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Wed, 24 Aug 2022 12:59:09 -0400
 Subject: [PATCH] Updated the atmel driver to add support for the
  touchscreen-inverted-x and touchscreen-inverted-y parameters to invert the
  orientation of the touch for the corresponding axis.
 
 ---
- .../devicetree/bindings/input/atmel,maxtouch.txt    |  3 +++
- drivers/input/touchscreen/atmel_mxt_ts.c            | 13 ++++++++++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/input/atmel,maxtouch.yaml     |  8 ++++++++
+ drivers/input/touchscreen/atmel_mxt_ts.c              | 11 +++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/input/atmel,maxtouch.txt b/Documentation/devicetree/bindings/input/atmel,maxtouch.txt
-index c88919480..33bd256dd 100644
---- a/Documentation/devicetree/bindings/input/atmel,maxtouch.txt
-+++ b/Documentation/devicetree/bindings/input/atmel,maxtouch.txt
-@@ -31,6 +31,9 @@ Optional properties for main touchpad device:
+diff --git a/Documentation/devicetree/bindings/input/atmel,maxtouch.yaml b/Documentation/devicetree/bindings/input/atmel,maxtouch.yaml
+index 3ec579d63..8579b0bd1 100644
+--- a/Documentation/devicetree/bindings/input/atmel,maxtouch.yaml
++++ b/Documentation/devicetree/bindings/input/atmel,maxtouch.yaml
+@@ -83,6 +83,14 @@ properties:
+   wakeup-source:
+     type: boolean
  
- - reset-gpios: GPIO specifier for the touchscreen's reset pin (active low)
- 
-+- touchscreen-inverted-x: Invert the X axis on the touch driver
-+- touchscreen-inverted-y: Invert the Y axis on the touch driver
++  touchscreen-inverted-x:
++    type: boolean
++    description: Invert the X axis on the touch driver
 +
- Example:
- 
- 	touch@4b {
++  touchscreen-inverted-y:
++    type: boolean
++    description: Invert the Y axis on the touch driver
++
+ required:
+   - compatible
+   - reg
 diff --git a/drivers/input/touchscreen/atmel_mxt_ts.c b/drivers/input/touchscreen/atmel_mxt_ts.c
-index 3699af93d..fdef9b7cb 100644
+index ba80a2476..809e1fa56 100644
 --- a/drivers/input/touchscreen/atmel_mxt_ts.c
 +++ b/drivers/input/touchscreen/atmel_mxt_ts.c
 @@ -417,6 +417,9 @@ struct mxt_data {
@@ -38,12 +43,10 @@ index 3699af93d..fdef9b7cb 100644
  	/* Cached parameters from object table */
  	u16 T5_address;
  	u8 T5_msg_size;
-@@ -1467,7 +1470,12 @@ static void mxt_proc_t100_message(struct mxt_data *data, u8 *message)
- 	status = message[1];
+@@ -1468,6 +1471,11 @@ static void mxt_proc_t100_message(struct mxt_data *data, u8 *message)
  	x = get_unaligned_le16(&message[2]);
  	y = get_unaligned_le16(&message[4]);
--	
-+
+ 	
 +	if (data->touchscreen_inverted_x)
 +		x = data->max_x - x;
 +	if (data->touchscreen_inverted_y)

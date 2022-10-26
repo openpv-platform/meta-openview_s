@@ -11,6 +11,6 @@ SRC_URI[sha256sum] = "023e007f1c884bd9775d9c286c16d82cb4a79c7f1a033259437d7619bf
 
 S = "${WORKDIR}/gpiod-1.5.1"
 
-RDEPENDS_${PN} = ""
+RDEPENDS:${PN} = ""
 
 inherit setuptools3

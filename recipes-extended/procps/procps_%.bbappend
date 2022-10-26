@@ -4,4 +4,4 @@
 #  that are in the original recipe, allowing us to add the file without having to copy the recipe and while also
 #  ensuring that the file is processed by all the same functions. It's basically a way of adding to a recipe without
 #  changing it.
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"

@@ -8,7 +8,7 @@ SRC_URI = " \
         file://bsp-version \
     "
 
-RDEPENDS_bsp-info = "bash"
+RDEPENDS:bsp-info = "bash"
 INFO_PATH = "${D}${datadir}/bsp-info"
 
 
@@ -22,5 +22,5 @@ do_install() {
 
 }
 
-FILES_${PN} += "${bindir}"
-FILES_${PN} += "${datadir}"
+FILES:${PN} += "${bindir}"
+FILES:${PN} += "${datadir}"

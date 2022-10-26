@@ -1,9 +1,9 @@
+require conf/include/esp-hosted-srcrev.inc
+
 DESCRIPTION = "Support files and scripts for esp-hosted"
 LICENSE = "CLOSED"
 
-ESP_FW_VER := "v0.4"
-
-SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https \
+SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https;branch=master \
            file://0001-Update-Makefile-for-Yocto.patch;striplevel=5 \
            file://firmware/esp_hosted_bootloader_esp32_sdio_${ESP_FW_VER}.bin \
            file://firmware/esp_hosted_partition-table_esp32_sdio_${ESP_FW_VER}.bin \
@@ -15,24 +15,22 @@ SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https \
            file://tools/esptool.py \
            "
 
-BUILDTAG_esp-hosted ?= "release/v0.4"
-
-SRCREV = "${BUILDTAG_esp-hosted}"
+SRCREV = "${ESP_HOSTED_SRCREV}"
 
 S = "${WORKDIR}/git/host/linux/host_control/python_support"
 
-FILES_${PN} += "${base_libdir}/esp32/firmware/"
-FILES_${PN} += "${base_libdir}/esp32/python_support/*"
-FILES_${PN} += "${base_libdir}/esp32/tools/*"
+FILES:${PN} += "${base_libdir}/esp32/firmware/"
+FILES:${PN} += "${base_libdir}/esp32/python_support/*"
+FILES:${PN} += "${base_libdir}/esp32/tools/*"
 
 # Library for flashing module
-RDEPENDS_${PN} += "libgpiod"
+RDEPENDS:${PN} += "libgpiod"
 # Libraries for python script support
-RDEPENDS_${PN} += "python3-core python3-pyserial python3-gpiod python3-protobuf"
+RDEPENDS:${PN} += "python3-core python3-pyserial python3-gpiod python3-protobuf"
 # Library for testing WiFI
-RDEPENDS_${PN} += "iperf3"
+RDEPENDS:${PN} += "iperf3"
 # Library for audio decoding and streaming for bluetooth
-RDEPENDS_${PN} += "pulseaudio ffmpeg"
+RDEPENDS:${PN} += "pulseaudio ffmpeg"
 
 TARGET_CC_ARCH += "${LDFLAGS}"
 

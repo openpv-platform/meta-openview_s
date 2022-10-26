@@ -1,21 +1,23 @@
-From 86312d1246a9bf2f641a7fed7e7557b8921c98ca Mon Sep 17 00:00:00 2001
+From b657871927500932e6920f9f6507e5b5b44ce86e Mon Sep 17 00:00:00 2001
 From: Stephen Livingston <stephen.livingston@hlioengineering.com>
-Date: Thu, 18 Aug 2022 12:14:33 -0400
-Subject: [PATCH] Support multiple memory sizes with single device tree.
+Date: Mon, 29 Aug 2022 12:12:17 -0400
+Subject: [PATCH] Support multiple dram sizes with single device tree
 
 ---
  arch/arm/mach-stm32mp/dram_init.c | 73 +++++++++++++++++++++++++++++++
  1 file changed, 73 insertions(+)
 
 diff --git a/arch/arm/mach-stm32mp/dram_init.c b/arch/arm/mach-stm32mp/dram_init.c
-index 0e8ce63f4a..4688f649f3 100644
+index 920b99bb68..6e89ee911b 100644
 --- a/arch/arm/mach-stm32mp/dram_init.c
 +++ b/arch/arm/mach-stm32mp/dram_init.c
-@@ -10,9 +10,67 @@
+@@ -12,11 +12,69 @@
  #include <lmb.h>
  #include <log.h>
  #include <ram.h>
 +#include <cpu_func.h>
+ #include <asm/global_data.h>
+ #include <asm/system.h>
  
  DECLARE_GLOBAL_DATA_PTR;
  
@@ -41,13 +43,13 @@ index 0e8ce63f4a..4688f649f3 100644
 +			ptrs[i] = base + ( (max_size / sizeof(uint)) >> (NumOfRamSizes - i)); /* pointer arith! */
 +
 +		save[i] = *ptrs[i];
-+		debug("Saved %x from %p\n", save[i], ptrs[i]);
++		log_debug("Saved %x from %p\n", save[i], ptrs[i]);
 +	}
 +
 +	// Write top to bottom (because smaller memory writes tto top will overwrite bottom)
 +	for (int i = NumOfRamSizes - 1; i >= 0; --i)
 +	{
-+		debug("Writing %x @ %p\n", ~i, ptrs[i]);
++		log_debug("Writing %x @ %p\n", ~i, ptrs[i]);
 +		*ptrs[i] = ~i;
 +	}
 +
@@ -58,7 +60,7 @@ index 0e8ce63f4a..4688f649f3 100644
 +	int i; // Keep i as index for restoring saved values
 +	for (i = 1; i < NumOfRamSizes; ++i)
 +	{
-+		debug("Reading %x @ %p\n", *ptrs[i], ptrs[i]);
++		log_debug("Reading %x @ %p\n", *ptrs[i], ptrs[i]);
 +		if (*ptrs[i] != ~i)
 +		{
 +			result = (long)ptrs[i] - (long)base;
@@ -69,18 +71,18 @@ index 0e8ce63f4a..4688f649f3 100644
 +	for (--i; i >= 0; --i)
 +	{
 +		*ptrs[i] = save[i];
-+		debug("Restored %x @ %p\n", save[i], ptrs[i]);
++		log_debug("Restored %x @ %p\n", save[i], ptrs[i]);
 +	}
 +
-+	debug("reporting %iMiB\n", (uint)result / (1024 * 1024));
++	log_debug("reporting %iMiB\n", (uint)result / (1024 * 1024));
 +	return result;
 +} /* End get_ddr_size() RCD specific function */
 +
  int dram_init(void)
  {
  	struct ram_info ram;
-@@ -29,6 +87,21 @@ int dram_init(void)
- 		debug("Cannot get RAM size: %d\n", ret);
+@@ -33,6 +91,21 @@ int dram_init(void)
+ 		log_debug("Cannot get RAM size: %d\n", ret);
  		return ret;
  	}
 +
@@ -92,15 +94,15 @@ index 0e8ce63f4a..4688f649f3 100644
 +		int actualSize = get_ddr_size((uint *)ram.base, ram.size);
 +		if (actualSize < ram.size)
 +		{
-+			pr_warning("Actual RAM size [%x] < dt[%x], using actual size\n", actualSize, ram.size);
++			log_warning("Actual RAM size [%x] < dt[%x], using actual size\n", actualSize, ram.size);
 +			ram.size = actualSize;
 +		}
 +	}
 +	/* End RCD specific code */
 +
- 	debug("RAM init base=%lx, size=%x\n", ram.base, ram.size);
+ 	log_debug("RAM init base=%lx, size=%x\n", ram.base, ram.size);
  
  	gd->ram_size = ram.size;
 -- 
-2.25.1
+2.17.1
 

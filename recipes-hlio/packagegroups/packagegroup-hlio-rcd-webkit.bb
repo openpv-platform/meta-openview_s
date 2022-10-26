@@ -11,7 +11,7 @@ PACKAGES = "\
             packagegroup-hlio-rcd-webkit \
             "
 
-RDEPENDS_packagegroup-hlio-rcd-webkit += " \
+RDEPENDS:packagegroup-hlio-rcd-webkit += " \
         qtbase-plugins \
         wpewebkit-qtwpe-qml-plugin \
         qt-wpe-simple-browser \

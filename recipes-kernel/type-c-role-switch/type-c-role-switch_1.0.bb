@@ -7,7 +7,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 # PROVIDES += "libtype-c-role-switch.so"
-# RPROVIDES_${PN} += "libtype-c-role-switch.so"
+# RPROVIDES:${PN} += "libtype-c-role-switch.so"
 
 SRC_URI = " \
     file://Makefile \
@@ -31,4 +31,4 @@ do_install() {
     ln -sf libtype-c-role-switch.so.1.0 ${D}${libdir}/libtype-c-role-switch.so
 }
 
-FILES_${PN} = "${includedir}/type-c-role-switch.h ${libdir}/*.so.* ${libdir}/*.so"
+FILES:${PN} = "${includedir}/type-c-role-switch.h ${libdir}/*.so.* ${libdir}/*.so"

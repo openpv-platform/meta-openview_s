@@ -1,0 +1,18 @@
+--- ./meta-st/meta-st-openstlinux/conf/template/local.conf.sample	2022-08-31 08:56:13.465823980 -0400
++++ ./meta-st/meta-hlio-rcd/conf/template/local.conf.sample	2022-09-08 17:14:50.019451196 -0400
+@@ -30,6 +30,15 @@
+ MACHINE ??= "qemux86-64"
+ 
+ #
++# RCD LCD Selection
++#
++# Default build is for Atmel LCD's
++# Change to "hycon" to build for original LCD's
++#
++# RCD_LCD ?= "hycon"
++RCD_LCD ?= "atmel"
++
++#
+ # Default policy config
+ #
+ # The distribution setting controls which policy settings are used as defaults.

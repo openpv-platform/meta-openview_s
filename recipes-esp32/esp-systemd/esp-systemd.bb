@@ -11,14 +11,14 @@ S = "${WORKDIR}"
 
 inherit systemd
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
                   esp-hosted \
                   esp-support \
                   "
 
 SYSTEMD_PACKAGES = "${PN}"
-SYSTEMD_SERVICE_${PN} = "esp-devnode.service esp-firmware.service"
-SYSTEMD_AUTO_ENABLE_${PN} = "enable"
+SYSTEMD_SERVICE:${PN} = "esp-devnode.service esp-firmware.service"
+SYSTEMD_AUTO_ENABLE:${PN} = "enable"
 
 do_install() {
     install -d ${D}${systemd_unitdir}/system

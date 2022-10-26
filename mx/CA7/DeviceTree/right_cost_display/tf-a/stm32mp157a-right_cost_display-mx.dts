@@ -24,8 +24,13 @@
 /* USER CODE END includes */
 
 / {
-	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-5.10-dunfell-mp1-21-03-31";
+	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-5.15-yocto-kirkstone-mp1-v22.06.15";
 	compatible = "st,stm32mp157a-right_cost_display-mx", "st,stm32mp157";
+
+	memory@c0000000 {
+		device_type = "memory";
+		reg = <0xc0000000 0x40000000>;
+	};
 
 	/* USER CODE BEGIN root */
 	/*aliases {
@@ -159,6 +164,7 @@
 		CLK_SAI2_CKPER
 		CLK_SAI3_DISABLED
 		CLK_SAI4_DISABLED
+		CLK_RNG1_CSI
 		CLK_LPTIM1_DISABLED
 		CLK_LPTIM23_DISABLED
 		CLK_LPTIM45_DISABLED
@@ -223,6 +229,7 @@
 		/*STM32CubeMX generates a basic and standard configuration for ETZPC.
 		Additional device configurations can be added here if needed.
 		"etzpc" node could be also overloaded in "addons" User-Section.*/
+	DECPROT(STM32MP1_ETZPC_RNG1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	/* USER CODE END etzpc_decprot */
 	>;
 
@@ -341,5 +348,9 @@
 };
 
 /* USER CODE BEGIN addons */
+&rng1{
+	status = "okay";
+	secure-status = "okay";
+};
 /* USER CODE END addons */
 

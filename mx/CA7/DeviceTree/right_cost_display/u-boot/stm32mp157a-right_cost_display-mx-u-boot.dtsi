@@ -8,11 +8,7 @@
  * https://wiki.st.com/stm32mpu/wiki/Category:Device_tree_configuration
  */
 
-#include <dt-bindings/clock/stm32mp1-clksrc.h>
-#include "stm32mp15-mx.dtsi"
-
 #include "stm32mp15-u-boot.dtsi"
-#include "stm32mp15-ddr.dtsi"
 
 /* USER CODE BEGIN includes */
 /* USER CODE END includes */

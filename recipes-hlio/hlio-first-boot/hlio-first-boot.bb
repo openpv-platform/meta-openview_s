@@ -8,11 +8,11 @@ SRC_URI = "file://${PN} \
 
 inherit systemd
 SYSTEMD_AUTO_ENABLE = "enable"
-SYSTEMD_SERVICE_${PN} = "${PN}.service"
+SYSTEMD_SERVICE:${PN} = "${PN}.service"
 
-RDEPENDS_${PN} += "bash psplash-drm hlio-init"
+RDEPENDS:${PN} += "bash psplash-drm hlio-init"
 
-do_install_append() {
+do_install:append() {
     # Service and first boot script
     install -d ${D}${systemd_unitdir}/system
     install -m 0644 ${WORKDIR}/${PN}.service ${D}${systemd_unitdir}/system
@@ -25,4 +25,4 @@ do_install_append() {
     install -m 0644 ${WORKDIR}/extlinux.conf ${D}${datadir}/${PN}
 }
 
-FILES_${PN} += "${systemd_unitdir} ${bindir} ${datadir}"
+FILES:${PN} += "${systemd_unitdir} ${bindir} ${datadir}"

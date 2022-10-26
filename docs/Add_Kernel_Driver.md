@@ -42,7 +42,7 @@ In the {build} directory of the yocto project.
         - Add the patch file to the SRC_URI:
           ```
           SRC_URI = " \
-              gitsm://github.com/espressif/esp-hosted.git \
+              gitsm://github.com/espressif/esp-hosted.git;branch=master;protocol=https \
               file://0001-Update-Makefile-for-Yocto.patch \
               "
           ```
@@ -73,7 +73,7 @@ In the {build} directory of the yocto project.
     - `bitbake hlio-image-rcd`
     - **NB: I had to fix 3 issues with the esp-hosted_git.bb recipe:**
       - Patch file needed `striplevel` option because of mismatch between git repository root directory and compile directory. This sets the -p option referenced in the error without the change. See also `patchdir`.
-        - `SRC_URI = "gitsm://github.com/espressif/esp-hosted.git \
+        - `SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;branch=master;protocol=https \
           file://0001-Update-Makefile-for-Yocto.patch;striplevel=5"
       - LICENSE and LIC_FILES_CHKSUM had to be updated:
         - Deleted unnecessary licenses and license file references and deleted the path directories above the build directory. Only the license in the build directory is preserved.

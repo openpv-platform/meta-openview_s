@@ -17,7 +17,7 @@ PACKAGES = "\
             packagegroup-hlio-rcd-development-support \
             "
 
-RDEPENDS_packagegroup-hlio-rcd = "\
+RDEPENDS:packagegroup-hlio-rcd = "\
     packagegroup-hlio-rcd-custom \
     packagegroup-hlio-rcd-debugging \
     packagegroup-hlio-rcd-tools-network \
@@ -26,12 +26,11 @@ RDEPENDS_packagegroup-hlio-rcd = "\
     packagegroup-hlio-rcd-development-support \
     "
 
-SUMMARY_packagegroup-hlio-rcd-custom = "Custom tools for RCD added by HCEE team."
-RDEPENDS_packagegroup-hlio-rcd-custom = "\
+SUMMARY:packagegroup-hlio-rcd-custom = "Custom tools for RCD added by HCEE team."
+RDEPENDS:packagegroup-hlio-rcd-custom = "\
     esp-hosted \
     esp-support \
     type-c-role-switch-bin \
-    rs485-example \
     can-utils \
     can-standby-enable-bin \
     hlio-init \
@@ -42,8 +41,8 @@ RDEPENDS_packagegroup-hlio-rcd-custom = "\
 
 
 
-SUMMARY_packagegroup-hlio-rcd-debugging = "Tools for debugging user space applications on the RCD"
-RDEPENDS_packagegroup-hlio-rcd-debugging = "\
+SUMMARY:packagegroup-hlio-rcd-debugging = "Tools for debugging user space applications on the RCD"
+RDEPENDS:packagegroup-hlio-rcd-debugging = "\
     ldd \
     gdb \
     gdbserver \
@@ -51,22 +50,22 @@ RDEPENDS_packagegroup-hlio-rcd-debugging = "\
     "
 
 
-SUMMARY_packagegroup-hlio-rcd-tools-network = "Network tools for connectivity and debugging with Visual studio"
-RDEPENDS_packagegroup-hlio-rcd-tools-network = "\
+SUMMARY:packagegroup-hlio-rcd-tools-network = "Network tools for connectivity and debugging with Visual studio"
+RDEPENDS:packagegroup-hlio-rcd-tools-network = "\
     nfs-utils \
     openssh-sftp-server \
     openssh-sftp \
     "
 
-SUMMARY_packagegroup-hlio-rcd-tools-python3 = "Python3 specific tools"
-RDEPENDS_packagegroup-hlio-rcd-tools-python3 = "\
+SUMMARY:packagegroup-hlio-rcd-tools-python3 = "Python3 specific tools"
+RDEPENDS:packagegroup-hlio-rcd-tools-python3 = "\
     python3-can \
     python3-protobuf \
     python3-pyserial \
     "
 
 # reference: .../layers/meta-st/meta-st-openstlinux/recipes-samples/images/st-example-image-qtwayland.bb
-RDEPENDS_packagegroup-hlio-rcd-qt5-support = "\
+RDEPENDS:packagegroup-hlio-rcd-qt5-support = "\
     packagegroup-framework-sample-qt    \
     qtwayland                           \
     qtwayland-plugins                   \
