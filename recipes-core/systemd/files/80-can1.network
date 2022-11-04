@@ -3,3 +3,4 @@ Name=can1
 
 [CAN]
 BitRate=250000
+RestartSec=100ms
