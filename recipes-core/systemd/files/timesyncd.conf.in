@@ -16,6 +16,7 @@
 NTP=time.nist.gov
 FallbackNTP=time-a-g.nist.gov time-b-g.nist.gov time-c-g.nist.gov time-d-g.nist.gov
 #RootDistanceMaxSec=5
-#PollIntervalMinSec=32
+ConnectionRetrySec=1
+PollIntervalMinSec=16
 #PollIntervalMaxSec=2048
 #SaveIntervalSec=60
