@@ -36,4 +36,14 @@ export QT_QPA_PLATFORM=eglfs
 export QT_QPA_EGLFS_ALWAYS_SET_MODE='1'
 export QML2_IMPORT_PATH='/usr/lib/qt5/qml/'
 export QT_QPA_EGLFS_KMS_CONFIG='/etc/eglfs_config.json'
-export LD_LIBRARY_PATH=/vendor/lib/:$LD_LIBRARY_PATH
+
+# Neccesary to work with wayland command line utils in kirkstone build
+export XDG_RUNTIME_DIR=/run/user/`id -u weston`
+WESTON_RUNTIME_DIR=/run/user/`id -u weston`
+if [ -e $WESTON_RUNTIME_DIR/wayland-0 ]; then
+	export WAYLAND_DISPLAY=wayland-0
+else
+	if [ -e $WESTON_RUNTIME_DIR/wayland-1 ]; then
+		export WAYLAND_DISPLAY=wayland-1
+	fi
+fi

@@ -5,6 +5,17 @@
 # Ziga Mahkovec  <ziga.mahkovec@klika.si>
 # Michael Meeks  <michael.meeks@novell.com>
 
+#	*****************AAL NOTE********************
+#	Updating our init script by adding a single
+# 	command (lcd-pin-config line 101) as a temporary
+#	way to adjust the LCD U/D & L/R pins for
+# 	new rev 7 boards. old boards should be
+# 	uneffected. I could not find a faster
+# 	way to do this in order to have the splash
+# 	screen present in the proper orientation,
+# 	but this should be a temporary solution!
+#	****************************************
+
 #Path of executable
 PATHDIR=/usr/bin 
 #Path of SPLASH file
@@ -86,7 +97,8 @@ if [ $$ -eq 1 ]; then
         # Or - started after the initrd has completed, in which case
         # we try to do nothing much.
 	INIT_PROCESS="yes"
-	echo "Starting psplash "
+	echo "Configuring screen then starting psplash... "
+	lcd-pin-config
 
 	# Are we running in the initrd ?
 	if [ ! -e /dev/random ]; then

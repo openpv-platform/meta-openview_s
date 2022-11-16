@@ -15,6 +15,14 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 #   file://0009-Updated-the-atmel-driver-add-invert-support.patch --> file://0009-Updated-the-atmel-driver-add-invert-support-v3.5.patch
 # Provided patch if desired to fall back to the Linux kernel default atmel driver and just adjust for invert support:
 #   file://0009-Update-default-atmel-driver-add-invert-support.patch
+
+#  ******* 7 INCH High Resolution Patches *******
+#  Patch 0011-dtc-symbols-flag.patch:
+#     - Force our device tree to compile with symbols so that overlays can work.
+#  Patch 0012-drm-display-mode-7-inch.patch:
+#     - Updates the front / back porch values in the drm display mode structure.
+
+
 SRC_URI:append = " \
    file://0001-Add-hlio-specific-dtsi.patch \
    file://0002-Modify-SDIO-core-memcpy-to-copy-mis-aligned-buffers.patch \
@@ -23,6 +31,8 @@ SRC_URI:append = " \
    file://0008-Update-atmel-mxt-touch-driver-to-v3.5.patch \
    file://0009-Updated-the-atmel-driver-add-invert-support-v3.5.patch \
    file://0010-Updating-display-clock-to-avoid-emi-interference.patch \
+   file://0011-dtc-symbols-flag.patch \
+   file://0012-drm-display-mode-7-inch.patch \
    "
 
 # The following idea is adapted from: 

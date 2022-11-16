@@ -140,7 +140,7 @@ ERROR: Task (/home/storage/Projects/hlio-rcd-dist/layers/meta-st/meta-hlio-rcd/r
   Apr 28 17:47:56 openView Ahsoka.Installe[807]: cannot open display: :0
   ```
 - Resolved with changes to Ahsoka, 
-  - add "export XDG_RUNTIME_DIR=/run/user/`id -u weston" to start scripts
+  - add "export XDG_RUNTIME_DIR=/run/user/`id -u weston`" to start scripts
   - add WAYLAND_DISPLAY to LinuxDotNetProfile.sh:
     ```
     WESTON_RUNTIME_DIR=/run/user/`id -u weston`

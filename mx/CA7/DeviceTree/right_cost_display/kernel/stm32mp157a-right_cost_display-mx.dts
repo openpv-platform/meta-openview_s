@@ -206,43 +206,23 @@
 		default-on;
 	};
 
-	panel {
-		//compatible = "panel-dpi";
-		//compatible = "panel-dpi";
-		//compatible = "okaya,rs800480t-7x0gp","panel-dpi";
-		//compatible = "starry,kr070pe2t";
-		compatible = "innolux,at070tn92";
+	panel: panel {
+		// panel node configures physical screen
+
+		// default is 5 inch for now. Overlay will take care of setting 7 inch config
+		compatible = "innolux,at070tn92";	// 5inch compatibility
 		power-supply = <&vdd_lcd_reg>;
 		backlight = <&panel_backlight>;
 		//enable-gpios = <&gpioe 12 GPIO_ACTIVE_HIGH>;
 		//reset-gpios = <&gpioe 11 GPIO_ACTIVE_HIGH>;
-		status = "okay";	
+		status = "okay";
 
 		port@0 {
         	reg = <0>;          		
           	panel_in: endpoint {
             	remote-endpoint = <&ltdc_ep0_out>;
 			};
-		};		
-
-/*
-		panel-timing {
-			clock-frequency = <33300000>;
-			hactive = <800>;
-			vactive = <480>;
-			hfront-porch = <210>;
-			hback-porch = <46>;
-			hsync-len = <46>;
-			vback-porch = <23>;
-			vfront-porch = <22>;
-			vsync-len = <23>;
-			hsync-active = <1>;
-			vsync-active = <1>;
-			de-active = <0>;
-			pixelclk-active = <1>;
 		};
-		*/
-		
 	};
 
 	usb_phy_tuning: usb-phy-tuning {
@@ -429,7 +409,8 @@
 			drive-push-pull;
 			slew-rate = <0>;
 		};
-		pins2 {
+		// adding 'ltdc_mx-0-pins2' label to force phandle generation by device tree compiler
+		ltdc_mx_0_pins2: pins2 {
 			pinmux = <STM32_PINMUX('G', 7, AF14)>; /* LTDC_CLK */
 			bias-pull-up;
 			drive-push-pull;

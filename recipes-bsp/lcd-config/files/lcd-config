@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "[] Starting Screen Config Process..."
+echo "[] Probing 7 inch select pin..."
+
+
+lcd-pin-config
+if [ $? -eq 1 ]
+then
+    echo "[+] Connected LCD is 7inch High Resolution..."
+    cp /boot/overlays/disabled_7-inch-screen-overlay.dtbo /boot/overlays/active_7-inch-screen-overlay.dtbo
+    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1024x600px.png /usr/share/weston/backgrounds/Helios_background.png
+    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1024x600px.png /usr/share/psplash/splash.jpg
+
+
+else
+    echo "[+] Connected LCD is 5 inch..."
+    rm -rf /boot/overlays/active_7-inch-screen-overlay.dtbo
+    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_800x480px.png /usr/share/weston/backgrounds/Helios_background.png
+    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_800x480px.png /usr/share/psplash/splash.jpg
+
+fi
+
+sync
+
+
+echo "[] Done configuring LCD. Rebooting..."
+reboot

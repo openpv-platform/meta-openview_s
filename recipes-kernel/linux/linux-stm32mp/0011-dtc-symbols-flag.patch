@@ -1,0 +1,33 @@
+From ebbf469ac496b2d358c4e8eecb5aabc20bc1f1b8 Mon Sep 17 00:00:00 2001
+From: Alfredo Avila <alfredo.avila@hlioengineering.com>
+Date: Thu, 27 Oct 2022 16:18:33 -0500
+Subject: [PATCH] dtc symbols flag
+
+---
+ arch/arm/boot/dts/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index 09460432d..ffca8b0da 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -34,6 +34,8 @@ DTC_FLAGS_stm32mp157c-ev1-a7-examples += -@
+ DTC_FLAGS_stm32mp157c-ev1-m4-examples += -@
+ DTC_FLAGS_stm32mp157f-ev1-a7-examples += -@
+ DTC_FLAGS_stm32mp157f-ev1-m4-examples += -@
++# our device tree must be compiled with symbols to allow overlays to work
++DTC_FLAGS_stm32mp157a-right_cost_display-mx += -@
+ 
+ dtb-$(CONFIG_ARCH_ALPINE) += \
+ 	alpine-db.dtb
+@@ -1186,7 +1188,9 @@ dtb-$(CONFIG_ARCH_STM32) += \
+ 	stm32mp157f-ev1-a7-examples.dtb \
+ 	stm32mp157f-ev1-m4-examples.dtb \
+ 	stm32mp157c-lxa-mc1.dtb \
+-	stm32mp157c-odyssey.dtb
++	stm32mp157c-odyssey.dtb \
++	stm32mp157a-right_cost_display-mx.dtb
++
+ dtb-$(CONFIG_MACH_SUN4I) += \
+ 	sun4i-a10-a1000.dtb \
+ 	sun4i-a10-ba10-tvbox.dtb \
