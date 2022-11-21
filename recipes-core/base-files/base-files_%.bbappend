@@ -5,3 +5,5 @@
 #  ensuring that the file is processed by all the same functions. It's basically a way of adding to a recipe without
 #  changing it.
 FILESEXTRAPATHS:prepend := "${THISDIR}/files/:"
+
+hostname="openview"
