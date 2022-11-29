@@ -73,9 +73,10 @@ RDEPENDS:packagegroup-hlio-rcd-qt5-support = "\
     openstlinux-qt-wayland              \
     "
 
-SUMMARY_packagegroup-hlio-rcd-development-support = "Packages for Ahsoka supported development environments"
-RDEPENDS_packagegroup-hlio-rcd-development-support = "\
+SUMMARY:packagegroup-hlio-rcd-development-support = "Packages for Ahsoka supported development environments"
+RDEPENDS:packagegroup-hlio-rcd-development-support = "\
     icu \
+    libicudata \
     zeromq \
     cppzmq-dev \
     protobuf \
