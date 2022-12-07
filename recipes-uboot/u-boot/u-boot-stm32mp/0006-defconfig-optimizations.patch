@@ -1,0 +1,37 @@
+From e94de717d92de32699f67fc4ad6f9481297c12c8 Mon Sep 17 00:00:00 2001
+From: Alfredo Avila <alfredo.avila@hlioengineering.com>
+Date: Fri, 2 Dec 2022 16:00:08 -0600
+Subject: [PATCH] defconfig optimizations
+
+---
+ configs/stm32mp15_defconfig | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/configs/stm32mp15_defconfig b/configs/stm32mp15_defconfig
+index 8dd239c656..96665f9476 100644
+--- a/configs/stm32mp15_defconfig
++++ b/configs/stm32mp15_defconfig
+@@ -208,4 +208,20 @@ CONFIG_OF_LIBFDT=y
+ # enable LIBFDT overlay support
+ CONFIG_OF_LIBFDT_OVERLAY=y
+ # enable the fdt command in u-boot console
+-CONFIG_CMD_FDT=y
+\ No newline at end of file
++CONFIG_CMD_FDT=y
++
++# Boot time optimizations
++CONFIG_MTD_UBI_FASTMAP=y
++CONFIG_SYS_MALLOC_CLEAR_ON_INIT=n
++CONFIG_NET=n
++CONFIG_ENV_APPEND=n
++CONFIG_CMD_STM32PROG_OTP=n
++CONFIG_USE_PREBOOT=n
++CONFIG_CMD_KGDB=n
++CONFIG_TIMER_EARLY=n
++CONFIG_MULTIPLEXER=n
++CONFIG_BINMAN_FDT=n
++CONFIG_CBMEM_CONSOLE=n
++CONFIG_NETCONSOLE=n
++CONFIG_DEBUG_UART=n
++CONFIG_SPL_BUILD=n
+\ No newline at end of file
