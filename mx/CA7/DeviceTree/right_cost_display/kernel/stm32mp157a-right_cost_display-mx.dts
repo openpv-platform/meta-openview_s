@@ -190,6 +190,16 @@
 		regulator-always-on;
 	};
 
+	ign_hold: ign_hold {
+		compatible = "regulator-fixed";
+		regulator-name = "ign_hold";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpiof 6 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-always-on;
+	};
+
 	panel_backlight: panel_backlight {
 		status = "okay";
 		compatible = "pwm-backlight";
