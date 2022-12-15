@@ -1,0 +1,51 @@
+From 7606bc42dfee7c741e5b42d23c22170932acdc27 Mon Sep 17 00:00:00 2001
+From: "kirk.smith" <kirk.smith@hlioengineering.com>
+Date: Thu, 15 Dec 2022 15:13:40 -0600
+Subject: [PATCH] fix for touchscreen firmware update via driver
+
+---
+ drivers/input/touchscreen/atmel_mxt_ts.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/input/touchscreen/atmel_mxt_ts.c b/drivers/input/touchscreen/atmel_mxt_ts.c
+index 809e1fa56..b9b257b80 100644
+--- a/drivers/input/touchscreen/atmel_mxt_ts.c
++++ b/drivers/input/touchscreen/atmel_mxt_ts.c
+@@ -3749,7 +3749,7 @@ static int mxt_initialize(struct mxt_data *data)
+ 			break;
+ 
+ 		if (!data->crc_enabled) {
+-		/* Check bootloader state */
++			/* Check bootloader state */
+ 			error = mxt_probe_bootloader(data, false);
+ 			if (error) {
+ 				dev_info(&client->dev, "Trying alternate bootloader address\n");
+@@ -4707,6 +4707,16 @@ static ssize_t mxt_update_fw_store(struct device *dev,
+ 
+ 	msleep(MXT_FW_FLASH_TIME);
+ 
++	// Reset controller
++	if (!IS_ERR_OR_NULL(data->reset_gpio)) {
++		gpiod_direction_output(data->reset_gpio, 1);
++		dev_info(dev, "Resetting chip\n");
++		gpiod_set_value(data->reset_gpio, 1);
++		msleep(MXT_RESET_GPIO_TIME);
++		gpiod_set_value(data->reset_gpio, 0);
++		msleep(MXT_RESET_INVALID_CHG);
++	}
++
+ 	mxt_update_seq_num(data, true, 0x00);
+ 
+ 	/* Read infoblock to determine device type */
+@@ -5271,7 +5281,7 @@ static int mxt_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 		return error;
+ 
+ 	data->reset_gpio = devm_gpiod_get_optional(&client->dev,
+-						   "reset", GPIOD_OUT_LOW);
++			               "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(data->reset_gpio)) {
+ 		error = PTR_ERR(data->reset_gpio);
+ 		dev_err(&client->dev, "Failed to get reset gpio: %d\n", error);
+-- 
+2.25.1
+

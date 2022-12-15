@@ -33,6 +33,7 @@ SRC_URI:append = " \
    file://0010-Updating-display-clock-to-avoid-emi-interference.patch \
    file://0011-dtc-symbols-flag.patch \
    file://0012-drm-display-mode-7-inch.patch \
+   file://0013-fix-for-touchscreen-firmware-update-via-driver.patch \
    "
 
 # The following idea is adapted from: 

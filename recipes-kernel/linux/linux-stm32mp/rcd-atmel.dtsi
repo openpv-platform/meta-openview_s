@@ -12,6 +12,7 @@
 		reg = <0x4a>;
 		interrupt-parent = <&gpioc>;
 		interrupts = <13 0x2>;
+	    reset-gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
 
 		touchscreen-inverted-x;
 		touchscreen-inverted-y;

@@ -185,9 +185,8 @@
 		regulator-name = "vdd_tp_reg";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		gpio = <&gpioa 14 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		regulator-always-on;
+		regulator-boot-on;
 	};
 
 	panel_backlight: panel_backlight {
@@ -197,7 +196,7 @@
 		pwms = <&bl_pwm 2 50000>;
 		// brightness levels (0-19 inclusive) corresponding to backlight intensity
 		brightness-levels = <0 15 30 45 60 75 90 105 120 135 150 165 180 195 210 225 240 255 270 285>;
-		// defualt as index into brightness levels array
+		// default as index into brightness levels array
 		default-brightness-level = <10>;
 		// power supply may not be neccesary but suggested by example bindings
 		power-supply = <&v5v0_core_reg>;
