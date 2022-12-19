@@ -180,11 +180,15 @@
 		regulator-boot-on;		/* Turn on immediately */
 	};
 	
+	// This regulator was defined for the unused Hycon screen. This unused 
+	//   definition caused a conflict with GPIOA pin 14 needed as a reset
+	//   line by the Atmel touchscreen driver so has been commented out. 
 	// vdd_tp_reg: vdd_tp_reg {
 	// 	compatible = "regulator-fixed";
 	// 	regulator-name = "vdd_tp_reg";
 	// 	regulator-min-microvolt = <3300000>;
 	// 	regulator-max-microvolt = <3300000>;
+	//	gpio = <&gpioa 14 GPIO_ACTIVE_HIGH>;
 	// 	enable-active-high;
 	// 	regulator-boot-on;
 	// };

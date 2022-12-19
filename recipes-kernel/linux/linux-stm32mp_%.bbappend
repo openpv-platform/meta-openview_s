@@ -22,6 +22,9 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 #  Patch 0012-drm-display-mode-7-inch.patch:
 #     - Updates the front / back porch values in the drm display mode structure.
 
+#  Patch 0013-fix-for-touchscreen-firmware-update-via-driver.patch:
+#     - This patch updates the atmel_mxt_ts driver to reset the touch controller once a firmware update has been written to memory.
+#         This resolves an error where the i2c bus is left in a bad state due to the controller not leaving the boot block state.
 
 SRC_URI:append = " \
    file://0001-Add-hlio-specific-dtsi.patch \
