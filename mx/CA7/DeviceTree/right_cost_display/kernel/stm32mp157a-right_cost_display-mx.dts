@@ -180,14 +180,14 @@
 		regulator-boot-on;		/* Turn on immediately */
 	};
 	
-	vdd_tp_reg: vdd_tp_reg {
-		compatible = "regulator-fixed";
-		regulator-name = "vdd_tp_reg";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		enable-active-high;
-		regulator-boot-on;
-	};
+	// vdd_tp_reg: vdd_tp_reg {
+	// 	compatible = "regulator-fixed";
+	// 	regulator-name = "vdd_tp_reg";
+	// 	regulator-min-microvolt = <3300000>;
+	// 	regulator-max-microvolt = <3300000>;
+	// 	enable-active-high;
+	// 	regulator-boot-on;
+	// };
 
 	panel_backlight: panel_backlight {
 		status = "okay";
