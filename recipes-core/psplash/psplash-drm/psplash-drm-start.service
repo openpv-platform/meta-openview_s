@@ -2,11 +2,12 @@
 Description=Starts Psplash Boot screen
 #Wants=systemd-remount-fs.service
 #After=systemd-vconsole-setup.service systemd-udev-trigger.service systemd-udevd.service
-After=systemd-remount-fs.service
+# After=systemd-remount-fs.service
+After=hlio-first-boot.service
 DefaultDependencies=no
 
 [Service]
-ExecStart=/usr/bin/psplash-drm /usr/share/psplash/splash.jpg /usr/share/psplash/default.jpg -w
+ExecStart=/usr/bin/lcd-config
 
 [Install]
 WantedBy=local-fs.target

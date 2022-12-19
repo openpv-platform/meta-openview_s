@@ -3,26 +3,26 @@
 echo "[] Starting Screen Config Process..."
 echo "[] Probing 7 inch select pin..."
 
-
 lcd-pin-config
 if [ $? -eq 1 ]
 then
     echo "[+] Connected LCD is 7inch High Resolution..."
-    cp /boot/overlays/disabled_7-inch-screen-overlay.dtbo /boot/overlays/active_7-inch-screen-overlay.dtbo
-    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1024x600px.png /usr/share/weston/backgrounds/Helios_background.png
-    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1024x600px.png /usr/share/psplash/splash.jpg
-
+    # if the overlay does not exist, apply it and then reboot
+    if [ ! -f /boot/overlays/active_7-inch-screen-overlay.dtbo ];
+    then
+        cp /boot/overlays/disabled_7-inch-screen-overlay.dtbo /boot/overlays/active_7-inch-screen-overlay.dtbo
+        cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1024x600px.png /usr/share/weston/backgrounds/Helios_background.png
+        cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1024x600px.png /usr/share/psplash/splash.jpg
+        # if we are 7 inch, need a reboot before screen comes up...
+        sync
+        reboot
+    fi
 
 else
     echo "[+] Connected LCD is 5 inch..."
-    rm -rf /boot/overlays/active_7-inch-screen-overlay.dtbo
     cp /usr/share/helios_backgrounds/Helios_Color_White_BG_800x480px.png /usr/share/weston/backgrounds/Helios_background.png
     cp /usr/share/helios_backgrounds/Helios_Color_White_BG_800x480px.png /usr/share/psplash/splash.jpg
-
+    # if we are 5 inch, default configs are fine and can proceed to render splash
+    sync
+    psplash-drm /usr/share/psplash/splash.jpg /usr/share/psplash/default.jpg -w
 fi
-
-sync
-
-
-echo "[] Done configuring LCD. Rebooting..."
-reboot
