@@ -1,7 +1,9 @@
 require conf/include/esp-hosted-srcrev.inc
 
 DESCRIPTION = "Support files and scripts for esp-hosted"
-LICENSE = "CLOSED"
+LICENSE = "GPL-2.0-only & Enovation-Proprietary"
+LIC_FILES_CHKSUM = "file://../LICENSE;md5=8264535c0c4e9c6c335635c4026a8022 \
+                    file://${STM32MP_META_HLIO_RCD_BASE}/licenses/Enovation-Controls-License.rtf;md5=7a35371310afae6d2edc9c24089f674f"
 
 SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https;branch=master \
            file://0001-Update-Makefile-for-Yocto.patch;striplevel=5 \

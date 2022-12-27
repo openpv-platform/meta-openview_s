@@ -1,14 +1,6 @@
-# SUMMARY = "Helios empty image"
-# LICENSE = "MIT"
-# 
-# include recipes-st/images/st-image-partitions.inc
-# 
-# # Add specific package for our image:
-# PACKAGE_INSTALL += ""
-# 
-# # Add specific initrd package to bootfs
-# INITRD_PACKAGE ?= ""
-# PACKAGE_INSTALL += ""
+SUMMARY = "Helios empty image"
+LICENSE = "Enovation-Proprietary"
+LIC_FILES_CHKSUM = "file://${STM32MP_META_HLIO_RCD_BASE}/licenses/Enovation-Controls-License.rtf;md5=7a35371310afae6d2edc9c24089f674f"
 
 SUMMARY = "An empty image."
 IMAGE_INSTALL = ""

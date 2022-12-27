@@ -1,14 +1,15 @@
 SUMMARY = "Hlio first boot"
-LICENSE = "CLOSED"
+LICENSE = "Enovation-Proprietary"
+LIC_FILES_CHKSUM = "file://${STM32MP_META_HLIO_RCD_BASE}/licenses/Enovation-Controls-License.rtf;md5=7a35371310afae6d2edc9c24089f674f"
 
-SRC_URI = "file://${PN} \
-           file://${PN}.service \
+SRC_URI = "file://${BPN} \
+           file://${BPN}.service \
            file://extlinux.conf \
            "
 
 inherit systemd
 SYSTEMD_AUTO_ENABLE = "enable"
-SYSTEMD_SERVICE:${PN} = "${PN}.service"
+SYSTEMD_SERVICE:${BPN} = "${BPN}.service"
 
 RDEPENDS:${PN} += "bash psplash-drm hlio-init"
 
