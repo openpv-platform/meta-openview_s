@@ -112,12 +112,14 @@ int main()
     int is7Inch = probe_7in_select();
     if (is7Inch)
     {
+        printf("[] 7 inch LCD detected...\n\r");
         // 7 inch needs U/D pin high and L/R pin low
         set_LR_pin(0);
         set_UD_pin(1);
         return 1;
     }
 
+    printf("[] 5 inch LCD detected...\n\r");
     // 5 inch needs both U/D pins low
     set_LR_pin(0);
     set_UD_pin(0);

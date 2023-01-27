@@ -72,12 +72,18 @@ export QML2_IMPORT_PATH='/usr/lib/qt5/qml/'
 export QT_QPA_EGLFS_KMS_CONFIG='/etc/eglfs_config.json'
 
 # Neccesary to work with wayland command line utils in kirkstone build
-export XDG_RUNTIME_DIR=/run/user/`id -u weston`
-WESTON_RUNTIME_DIR=/run/user/`id -u weston`
-if [ -e $WESTON_RUNTIME_DIR/wayland-0 ]; then
-	export WAYLAND_DISPLAY=wayland-0
-else
-	if [ -e $WESTON_RUNTIME_DIR/wayland-1 ]; then
-		export WAYLAND_DISPLAY=wayland-1
-	fi
-fi
+# export XDG_RUNTIME_DIR=/run/user/`id -u weston`
+# WESTON_RUNTIME_DIR=/run/user/`id -u weston`
+# if [ -e $WESTON_RUNTIME_DIR/wayland-0 ]; then
+# 	export WAYLAND_DISPLAY=wayland-0
+# else
+# 	if [ -e $WESTON_RUNTIME_DIR/wayland-1 ]; then
+# 		export WAYLAND_DISPLAY=wayland-1
+# 	fi
+# fi
+
+# weston environment variables when weston is launched pre-systemd
+export XDG_RUNTIME_DIR=/tmp/xdg-runtime-dir
+export WAYLAND_DISPLAY="wayland-1"
+export WESTON_USER=root
+export WL_EGL_GBM_FENCE=0

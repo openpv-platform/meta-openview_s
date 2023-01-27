@@ -1,18 +1,5 @@
-# Change the Files path for the procps directory with the one that is in our repository.
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+# disabling psplash service. weston will handle splash screen
+SYSTEMD_AUTO_ENABLE:${PN} = "disable"
 
-DEPENDS += "gdk-pixbuf"
-
-SRC_URI += " \
-        file://splash.jpg \
-    "
-
-SPLASH_PATH = "${D}${datadir}/psplash"
-
-do_install:append() {
-    install -d ${SPLASH_PATH}
-    install -m 755 ${WORKDIR}/splash.jpg ${SPLASH_PATH}
-    install -m 755 ${WORKDIR}/splash.jpg ${SPLASH_PATH}/default.jpg  
-}
-
-FILES:${PN} += "${datadir}"
+# Files in psplash-drm folder are kept in case we need to add
+# psplash back into system

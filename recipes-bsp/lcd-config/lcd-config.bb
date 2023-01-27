@@ -19,9 +19,9 @@ do_compile() {
 }
 
 do_install() {    
-    install -d ${D}${bindir}
-    install -m 755 lcd-pin-config ${D}${bindir}
-    install -m 755 lcd-config ${D}${bindir}
+    install -d ${D}${base_sbindir}
+    install -m 755 lcd-pin-config ${D}${base_sbindir}/lcd-pin-config
+    install -m 755 lcd-config ${D}${base_sbindir}/lcd-config
 }
 
-FILES:${PN} += "${bindir}/lcd-pin-config ${bindir}/lcd-config"
+FILES:${PN} += "${base_sbindir}/lcd-pin-config ${base_sbindir}/lcd-config"

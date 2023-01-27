@@ -7,4 +7,5 @@ SRC_URI:append = " \
         file://0004-fdt-overlay-comments.patch \
         file://0005-boot-cmd-strip-down.patch \
         file://0006-defconfig-optimizations.patch \
+        file://0007-disable-console.patch \
         "
