@@ -1,0 +1,26 @@
+[Unit]
+Description=Briefly describe your service here
+DefaultDependencies=false
+Wants=early-unit.target
+
+# Before lists all the services we want to defer until the systemd-notify command allows them to run
+# Some are suggested and may not actually hurt our boot time
+Before=systemd-timesyncd.service \
+        kmod-static-nodes.service \
+        local-fs.target \
+        mount-partitions.service \
+        proc-fs-nfsd.mount \
+        rpcbind.service \
+        systemd-journald.service \
+        systemd-network-generator.service \
+        systemd-random-seed.service \
+        systemd-sysctl.service \
+        systemd-udevd.service
+
+[Service]
+# service must be type notoify for proper systemd-notify execution
+Type=notify
+ExecStart=/usr/bin/early-service.sh
+
+[Install]
+WantedBy=multi-user.target
