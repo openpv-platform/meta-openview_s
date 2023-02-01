@@ -41,7 +41,7 @@ function force_sdio_card_detect() {
 function get_firmware_version() {
 	power_off
 
-	REGEX='ESP-Hosted Firmware version :: ([0-9]+\.[0-9]+)'
+	REGEX='ESP-Hosted(-FG)? Firmware version :: ([0-9]+\.[0-9]+\.?[0-9]+?)'
 
 	# Set baud to 115200, then start listening, then enable power, then search for string for up to 3 seconds.  Else assume no firmware
 	stty -F /dev/ttySTM2 raw -echo -echoe -echok 115200
@@ -53,7 +53,7 @@ function get_firmware_version() {
 		# DOESNT WORK WITHIN A FUNCTION echo ${LOGLINE}
 
 		# Search for the version string, and using regexp groups, make sure it matches what we expect
-		MATCH=$(echo "${LOGLINE}" | sed -nr "s/.*${REGEX}.*/\1/p")
+		MATCH=$(echo "${LOGLINE}" | sed -nr "s/.*${REGEX}.*/\2/p")
 		if [ "$MATCH" != "" ]; then
 			pkill -P $$ cat
 

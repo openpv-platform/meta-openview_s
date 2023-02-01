@@ -1,12 +1,11 @@
 require conf/include/esp-hosted-srcrev.inc
 
 DESCRIPTION = "Support files and scripts for esp-hosted"
-LICENSE = "GPL-2.0-only & Enovation-Proprietary"
-LIC_FILES_CHKSUM = "file://../LICENSE;md5=8264535c0c4e9c6c335635c4026a8022 \
-                    file://${STM32MP_META_HLIO_RCD_BASE}/licenses/Enovation-Controls-License.rtf;md5=7a35371310afae6d2edc9c24089f674f"
 
-SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https;branch=master \
-           file://0001-Update-Makefile-for-Yocto.patch;striplevel=5 \
+LICENSE = "Enovation-Proprietary"
+LIC_FILES_CHKSUM = "file://${STM32MP_META_HLIO_RCD_BASE}/licenses/Enovation-Controls-License.rtf;md5=7a35371310afae6d2edc9c24089f674f"
+
+SRC_URI = " \
            file://firmware/esp_hosted_bootloader_esp32_sdio_${ESP_FW_VER}.bin \
            file://firmware/esp_hosted_partition-table_esp32_sdio_${ESP_FW_VER}.bin \
            file://firmware/esp_hosted_ota_data_initial_${ESP_FW_VER}.bin \
@@ -19,10 +18,7 @@ SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https;branch=mas
 
 SRCREV = "${ESP_HOSTED_SRCREV}"
 
-S = "${WORKDIR}/git/host/linux/host_control/python_support"
-
 FILES:${PN} += "${base_libdir}/esp32/firmware/"
-FILES:${PN} += "${base_libdir}/esp32/python_support/*"
 FILES:${PN} += "${base_libdir}/esp32/tools/*"
 
 # Library for flashing module
@@ -33,14 +29,6 @@ RDEPENDS:${PN} += "python3-core python3-pyserial python3-gpiod python3-protobuf"
 RDEPENDS:${PN} += "iperf3"
 # Library for audio decoding and streaming for bluetooth
 RDEPENDS:${PN} += "pulseaudio ffmpeg"
-
-TARGET_CC_ARCH += "${LDFLAGS}"
-
-do_compile () {
-	# Build the shared library of C commands for WiFi
-  oe_runmake clean
-  oe_runmake
-}
 
 do_install () {
   # directory for esp32 related files
@@ -57,8 +45,4 @@ do_install () {
   install -d ${D}${base_libdir}/esp32/tools/
   install -m 0700 ${WORKDIR}/tools/* ${D}${base_libdir}/esp32/tools/
 
-	# Python modules and shared library
-  install -d ${D}${base_libdir}/esp32/python_support/
-  install -m 0700 ${S}/*.py ${D}${base_libdir}/esp32/python_support/
-  install -m 0700 ${S}/commands.so ${D}${base_libdir}/esp32/python_support/
 }

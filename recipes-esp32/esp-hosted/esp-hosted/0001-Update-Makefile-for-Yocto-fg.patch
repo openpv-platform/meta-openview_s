@@ -1,0 +1,27 @@
+From 91f30d1473bc790b6c3527a3742c1a5db95d6e0e Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Tue, 17 Jan 2023 16:35:21 -0500
+Subject: [PATCH] Update Makefile for Yocto
+
+---
+ esp_hosted_fg/host/linux/host_driver/esp32/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/esp_hosted_fg/host/linux/host_driver/esp32/Makefile b/esp_hosted_fg/host/linux/host_driver/esp32/Makefile
+index ab0e8c5..73d954c 100644
+--- a/esp_hosted_fg/host/linux/host_driver/esp32/Makefile
++++ b/esp_hosted_fg/host/linux/host_driver/esp32/Makefile
+@@ -55,8 +55,8 @@ ifeq ($(CONFIG_SUPPORT_ESP_SERIAL), y)
+ endif
+ 
+ all: clean
+-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL) M=$(PWD) modules
++	make -C $(KERNEL_SRC) M=$(PWD) modules
+ 
+ clean:
+ 	rm -rf *.o sdio/*.o spi/*.o *.ko
+-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL) M=$(PWD) clean
++	make -C $(KERNEL_SRC) M=$(PWD) clean
+-- 
+2.25.1
+

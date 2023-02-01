@@ -5,18 +5,18 @@
 require conf/include/esp-hosted-srcrev.inc
 
 LICENSE = "GPL-2.0-only"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=8264535c0c4e9c6c335635c4026a8022"
+LIC_FILES_CHKSUM = "${ESP_LIC_FILES_CHKSUM}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI = "gitsm://github.com/espressif/esp-hosted.git;protocol=https;branch=master \
-           file://0001-Update-Makefile-for-Yocto.patch;striplevel=5 \
+           ${ESP_MAKEFILE_PATCH} \
            "
 
 PV = "${ESP_HOSTED_PV}+git${SRCPV}"
 SRCREV = "${ESP_HOSTED_SRCREV}"
 
-S = "${WORKDIR}/git/host/linux/host_driver/esp32"
+S = "${WORKDIR}/git/${ESP_S_PATH}"
 
 inherit module
 
