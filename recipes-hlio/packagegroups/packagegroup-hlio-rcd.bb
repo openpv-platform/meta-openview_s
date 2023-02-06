@@ -38,6 +38,7 @@ RDEPENDS:packagegroup-hlio-rcd-custom = "\
     hlio-startup-config \
     bsp-info    \
     lcd-config \
+    lmsensors-dev \
     "
 
 
