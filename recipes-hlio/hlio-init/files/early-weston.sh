@@ -59,7 +59,15 @@ modprobe i2c_stm32f7_drv
 # [ -n "$CAN0_BITRATE" ] && ip link set can0 up type can bitrate $CAN0_BITRATE &> /dev/null
 # [ -n "$CAN1_BITRATE" ] && ip link set can1 up type can bitrate $CAN1_BITRATE &> /dev/null
 
+# Wait for udev to load touch
+END_TIME=$((SECONDS+2))
+while [ ! -e /dev/input/event0 ]; do
+    if [ $SECONDS -gt $END_TIME ]; then    # allow an exit after 2 seconds
+        echo "Timed out waiting for touch screen input device"
+        break;
+    fi
+    sleep 0.05;
+done
+
+sleep 0.05
 kill -TERM $UDEV
-
-
-

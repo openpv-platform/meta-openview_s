@@ -84,4 +84,5 @@ RDEPENDS:packagegroup-hlio-rcd-development-support = "\
     protobuf \
     jsoncpp \
     libgpiod-dev \
+    glfw \
     "
