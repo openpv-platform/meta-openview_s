@@ -39,6 +39,7 @@ RDEPENDS:packagegroup-hlio-rcd-custom = "\
     bsp-info    \
     lcd-config \
     lmsensors-dev \
+    uvlo \
     "
 
 
