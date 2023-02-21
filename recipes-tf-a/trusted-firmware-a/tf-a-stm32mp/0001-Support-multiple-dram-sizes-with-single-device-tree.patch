@@ -1,0 +1,105 @@
+From 0488a432a27d4b81f405add2e8a7ac0d00c5549f Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Mon, 29 Aug 2022 17:03:51 -0400
+Subject: [PATCH] Support multiple dram sizes with single device tree
+
+---
+ drivers/st/ddr/stm32mp1_ddr.c     | 11 ++++++++
+ drivers/st/ddr/stm32mp1_ram.c     | 47 +++++++++++++++++++++++++++++++
+ include/drivers/st/stm32mp1_ddr.h |  1 +
+ 3 files changed, 59 insertions(+)
+
+diff --git a/drivers/st/ddr/stm32mp1_ddr.c b/drivers/st/ddr/stm32mp1_ddr.c
+index befdfacbf..9c5d2e11e 100644
+--- a/drivers/st/ddr/stm32mp1_ddr.c
++++ b/drivers/st/ddr/stm32mp1_ddr.c
+@@ -659,6 +659,17 @@ static void stm32mp1_self_refresh_zcal(struct stm32mp_ddr_priv *priv, uint32_t z
+ 	stm32mp1_ddrphy_init(priv->phy, DDRPHYC_PIR_ZCAL);
+ }
+ 
++/* 
++ * SL: 2022-08-10 Add address line initialization help function for
++ * hard coded solution to allow support for different memory
++ * size from Device Tree. 
++ */
++void stm32mp1_ddr_map_init(struct stm32mp_ddr_priv *priv,
++		       struct stm32mp1_ddrctrl_map *c_map)
++{
++	stm32mp_ddr_set_reg(priv, REG_MAP, c_map, ddr_registers);
++}
++
+ void stm32mp1_ddr_init(struct stm32mp_ddr_priv *priv,
+ 		       struct stm32mp_ddr_config *config)
+ {
+diff --git a/drivers/st/ddr/stm32mp1_ram.c b/drivers/st/ddr/stm32mp1_ram.c
+index 615fa2862..f3201fcb6 100644
+--- a/drivers/st/ddr/stm32mp1_ram.c
++++ b/drivers/st/ddr/stm32mp1_ram.c
+@@ -114,6 +114,53 @@ static int stm32mp1_ddr_setup(void)
+ 		panic();
+ 	}
+ 
++	/* 
++	 * SL: 2022-08-10 Hard coded solution to allow support for different memory
++	 * size from Device Tree. The DT is set to 1GiB. We know we want to support 
++	 * 256MiB & 512MiB, anything else and we will fall through and fail the 
++	 * regular tf-a check further below.
++	 */
++	uret = stm32mp_ddr_check_size();
++	if (uret < config.info.size) {
++		INFO("%s : DDR size detected 0x%x different from Device Tree 0x%x\n", __func__,
++			uret, config.info.size);
++		switch (uret)
++		{
++			case 0x20000000:
++				config.c_map.addrmap6 = 0x0F060606;
++				config.info.size = 0x20000000;
++				break;
++			case 0x10000000:
++				config.c_map.addrmap6 = 0x0F0F0606;
++				config.info.size = 0x10000000;
++				break;
++			default:
++				break;
++		}
++		// Only adjust if we detected an expected size
++		if (uret == config.info.size)
++		{
++			INFO("%s : Adjusting DDR size to 0x%x\n", __func__,
++				config.info.size);
++
++			// Update internal stored size
++			priv->info.size = config.info.size;
++
++			// Update address line registers
++			/* Disable axidcg clock gating during init */
++			mmio_clrbits_32(priv->rcc + RCC_DDRITFCR, RCC_DDRITFCR_AXIDCGEN);
++			stm32mp1_ddr_map_init(priv, &config.c_map);
++			/* Enable axidcg clock gating */
++			mmio_setbits_32(priv->rcc + RCC_DDRITFCR, RCC_DDRITFCR_AXIDCGEN);		
++		}
++		else
++		{
++			ERROR("%s : Unexpected DDR size 0x%x\n", __func__,
++				uret);
++		}
++	}
++	/* End Modification for memory chip supports */
++
+ 	if (config.self_refresh) {
+ 		uret = stm32mp_ddr_test_rw_access();
+ 		if (uret != 0U) {
+diff --git a/include/drivers/st/stm32mp1_ddr.h b/include/drivers/st/stm32mp1_ddr.h
+index f21a8a75c..3992c1c71 100644
+--- a/include/drivers/st/stm32mp1_ddr.h
++++ b/include/drivers/st/stm32mp1_ddr.h
+@@ -131,5 +131,6 @@ struct stm32mp_ddr_config {
+ 
+ int stm32mp1_ddr_clk_enable(struct stm32mp_ddr_priv *priv, uint32_t mem_speed);
+ void stm32mp1_ddr_init(struct stm32mp_ddr_priv *priv, struct stm32mp_ddr_config *config);
++void stm32mp1_ddr_map_init(struct stm32mp_ddr_priv *priv, struct stm32mp1_ddrctrl_map *c_map);
+ 
+ #endif /* STM32MP1_DDR_H */
+-- 
+2.17.1
+

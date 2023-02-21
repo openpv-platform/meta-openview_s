@@ -1,0 +1,27 @@
+From 0a95cbb81a4921d50a9ab546260c46abe0300ddd Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Thu, 5 Jan 2023 14:42:40 -0500
+Subject: [PATCH] Update Makefile for Yocto
+
+---
+ esp_hosted_ng/host/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/esp_hosted_ng/host/Makefile b/esp_hosted_ng/host/Makefile
+index 4bf3da6..795e0d2 100644
+--- a/esp_hosted_ng/host/Makefile
++++ b/esp_hosted_ng/host/Makefile
+@@ -46,8 +46,8 @@ obj-m := $(MODULE_NAME).o
+ $(MODULE_NAME)-y := esp_bt.o main.o esp_cmd.o esp_wpa_utils.o esp_cfg80211.o esp_stats.o $(module_objects)
+ 
+ all: clean
+-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL) M=$(PWD) modules
++	make -C $(KERNEL_SRC) M=$(PWD) modules
+ 
+ clean:
+ 	rm -rf *.o sdio/*.o spi/*.o *.ko
+-	make ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL) M=$(PWD) clean
++	make -C $(KERNEL_SRC) M=$(PWD) clean
+-- 
+2.25.1
+

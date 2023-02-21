@@ -1,0 +1,185 @@
+From 9c0f8fa6a8aef1d44e2a4f561eaddf2008692fc1 Mon Sep 17 00:00:00 2001
+From: Jonathan Kaufmann <jonathan.kaufmann@hlioengineering.com>
+Date: Thu, 6 Jan 2022 12:33:39 -0600
+Subject: [PATCH] fix 1s reset delay and checksum on old firmware
+
+---
+ drivers/input/touchscreen/hycon-hy46xx.c | 79 +++++++++++++++++-------
+ 1 file changed, 58 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/input/touchscreen/hycon-hy46xx.c b/drivers/input/touchscreen/hycon-hy46xx.c
+index 4afc88dd0..3716b6b69 100644
+--- a/drivers/input/touchscreen/hycon-hy46xx.c
++++ b/drivers/input/touchscreen/hycon-hy46xx.c
+@@ -14,6 +14,7 @@
+ #include <linux/irq.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/regmap.h>
++#include <linux/delay.h>
+ 
+ #include <asm/unaligned.h>
+ 
+@@ -39,7 +40,7 @@
+ #define HY46XX_TPLEN			0x6
+ #define HY46XX_REPORT_PKT_LEN		0x44
+ 
+-#define HY46XX_MAX_SUPPORTED_POINTS	11
++#define HY46XX_MAX_SUPPORTED_POINTS	4
+ 
+ #define TOUCH_EVENT_DOWN		0x00
+ #define TOUCH_EVENT_UP			0x01
+@@ -72,6 +73,8 @@ struct hycon_hy46xx_data {
+ 	int tp_information;
+ 	int tp_chip_id;
+ 	int bootloader_version;
++
++	struct delayed_work deferred_init_work;
+ };
+ 
+ static const struct regmap_config hycon_hy46xx_i2c_regmap_config = {
+@@ -84,7 +87,18 @@ static bool hycon_hy46xx_check_checksum(struct hycon_hy46xx_data *tsdata, u8 *bu
+ 	u8 chksum = 0;
+ 	int i;
+ 
+-	for (i = 2; i < buf[HY46XX_CHKSUM_LEN]; i++)
++	int cslen = buf[HY46XX_CHKSUM_LEN];
++	if (!cslen) {
++		// Old "fw_version" sends 0 for this variable.  So just skip CS on those versions
++		return true;
++	}
++
++	if (cslen < 2) {
++		dev_err_ratelimited(&tsdata->client->dev, "UNEXPECTED cslen=%d\n", cslen);
++		return true;
++	}
++
++	for (i = 2; i < cslen; i++)
+ 		chksum += buf[i];
+ 
+ 	if (chksum == buf[HY46XX_CHKSUM_CODE])
+@@ -101,13 +115,13 @@ static irqreturn_t hycon_hy46xx_isr(int irq, void *dev_id)
+ {
+ 	struct hycon_hy46xx_data *tsdata = dev_id;
+ 	struct device *dev = &tsdata->client->dev;
+-	u8 rdbuf[HY46XX_REPORT_PKT_LEN];
++	u8 rdbuf[3 + HY46XX_TPLEN * HY46XX_MAX_SUPPORTED_POINTS + 1];
+ 	int i, x, y, id;
+ 	int error;
+ 
+ 	memset(rdbuf, 0, sizeof(rdbuf));
+ 
+-	error = regmap_bulk_read(tsdata->regmap, 0, rdbuf, sizeof(rdbuf));
++	error = regmap_bulk_read(tsdata->regmap, 0, rdbuf, 3 + HY46XX_TPLEN * HY46XX_MAX_SUPPORTED_POINTS);
+ 	if (error) {
+ 		dev_err_ratelimited(dev, "Unable to fetch data, error: %d\n",
+ 				    error);
+@@ -246,6 +260,9 @@ static ssize_t hycon_hy46xx_setting_store(struct device *dev,
+ 	return error ?: count;
+ }
+ 
++static HYCON_ATTR_U8(power_mode, 0444, HY46XX_PWR_MODE, 0, 255);
++static HYCON_ATTR_U8(rx_number_used, 0444, HY46XX_RX_NR_USED, 0, 255);
++static HYCON_ATTR_U8(tx_number_used, 0444, HY46XX_TX_NR_USED, 0, 255);
+ static HYCON_ATTR_U8(threshold, 0644, HY46XX_THRESHOLD, 0, 255);
+ static HYCON_ATTR_BOOL(glove_enable, 0644, HY46XX_GLOVE_EN);
+ static HYCON_ATTR_U8(report_speed, 0644, HY46XX_REPORT_SPEED, 0, 255);
+@@ -260,6 +277,9 @@ static HYCON_ATTR_U8(tp_chip_id, 0444, HY46XX_TP_CHIP_ID, 0, 255);
+ static HYCON_ATTR_U8(bootloader_version, 0444, HY46XX_BOOT_VER, 0, 255);
+ 
+ static struct attribute *hycon_hy46xx_attrs[] = {
++	&hycon_hy46xx_attr_power_mode.dattr.attr,
++	&hycon_hy46xx_attr_rx_number_used.dattr.attr,
++	&hycon_hy46xx_attr_tx_number_used.dattr.attr,
+ 	&hycon_hy46xx_attr_threshold.dattr.attr,
+ 	&hycon_hy46xx_attr_glove_enable.dattr.attr,
+ 	&hycon_hy46xx_attr_report_speed.dattr.attr,
+@@ -439,6 +459,32 @@ static void hycon_hy46xx_disable_regulator(void *arg)
+ 	regulator_disable(data->vcc);
+ }
+ 
++static void hycon_delayed_reset_init(struct work_struct *work)
++{
++	struct hycon_hy46xx_data *tsdata = container_of(work, struct hycon_hy46xx_data, deferred_init_work.work);
++	struct i2c_client *client = tsdata->client;
++	struct device *dev = &client->dev;
++
++	dev_info(dev, "Deferred chip init starting now\n");
++	hycon_hy46xx_get_defaults(dev, tsdata);
++	hycon_hy46xx_get_parameters(tsdata);
++
++	int error = devm_request_threaded_irq(dev, client->irq,
++					  NULL, hycon_hy46xx_isr, IRQF_ONESHOT,
++					  client->name, tsdata);
++
++	if (error) {
++		dev_err(dev, "Unable to request touchscreen IRQ.\n");
++		return;
++	}
++
++	error = devm_device_add_group(dev, &hycon_hy46xx_attr_group);
++	if (error) {
++		dev_err(dev, "devm_device_add_group failed\n");
++		return;
++	}
++}
++
+ static int hycon_hy46xx_probe(struct i2c_client *client,
+ 					 const struct i2c_device_id *id)
+ {
+@@ -487,7 +533,6 @@ static int hycon_hy46xx_probe(struct i2c_client *client,
+ 		gpiod_set_value_cansleep(tsdata->reset_gpio, 1);
+ 		usleep_range(5000, 6000);
+ 		gpiod_set_value_cansleep(tsdata->reset_gpio, 0);
+-		msleep(1000);
+ 	}
+ 
+ 	input = devm_input_allocate_device(&client->dev);
+@@ -507,9 +552,6 @@ static int hycon_hy46xx_probe(struct i2c_client *client,
+ 		return PTR_ERR(tsdata->regmap);
+ 	}
+ 
+-	hycon_hy46xx_get_defaults(&client->dev, tsdata);
+-	hycon_hy46xx_get_parameters(tsdata);
+-
+ 	input->name = "Hycon Capacitive Touch";
+ 	input->id.bustype = BUS_I2C;
+ 	input->dev.parent = &client->dev;
+@@ -528,27 +570,22 @@ static int hycon_hy46xx_probe(struct i2c_client *client,
+ 
+ 	i2c_set_clientdata(client, tsdata);
+ 
+-	error = devm_request_threaded_irq(&client->dev, client->irq,
+-					  NULL, hycon_hy46xx_isr, IRQF_ONESHOT,
+-					  client->name, tsdata);
+-	if (error) {
+-		dev_err(&client->dev, "Unable to request touchscreen IRQ.\n");
+-		return error;
+-	}
+-
+-	error = devm_device_add_group(&client->dev, &hycon_hy46xx_attr_group);
+-	if (error)
+-		return error;
+-
+ 	error = input_register_device(input);
+ 	if (error)
+ 		return error;
+ 
+-	dev_dbg(&client->dev,
++	dev_info(&client->dev,
+ 		"HYCON HY46XX initialized: IRQ %d, Reset pin %d.\n",
+ 		client->irq,
+ 		tsdata->reset_gpio ? desc_to_gpio(tsdata->reset_gpio) : -1);
+ 
++	// JK: previous driver was delaying 1 second for reset and effectively delaying our boot time for 1 second
++	// due to the kernel not really having anything else to do at the time.  This was required or corrupted initial
++	// register reads would occur (note the d.s. said 200ms but this didn't quite work and original driver was 1000ms).
++	// So now we defer the reset delay and then init registers, turn on ISRs, and enable the /sys/ regmap files after t
++	// his below 1 second delay so kernel can continue booting/initing other drivers now
++	INIT_DELAYED_WORK(&tsdata->deferred_init_work, &hycon_delayed_reset_init);
++	schedule_delayed_work(&tsdata->deferred_init_work, 1 * HZ);
+ 	return 0;
+ }
+ 
+-- 
+2.25.1
+

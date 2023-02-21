@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#   This script is only run once after reprogramming the flash memory.
+#   It's main goal is to set up the follow:
+#       Hlio specific extlinux.conf file with hlio-init script
+#       Apply any device tree overlay for proper lcd panel driver setup 
+#       Disable any services which are not needed or cause issues with our current systemd configuration
+#       Also gives systemd 5 seconds after it reaches the systemd-remount-fs service before rebooting
+#       in case any essential servies have not completed at that point. 
+
+
+
+# Copy new extlinux conf with hlio init script
+cp /usr/share/hlio-first-boot/extlinux.conf  /boot/extlinux
+
+# setup DTB overlays and proper resolution splash screen if neccesary
+/sbin/lcd-config
+
+# we only want to run after first time being programmed
+systemctl disable hlio-first-boot
+
+# weston started pre systemd
+systemctl disable weston-launch
+systemctl disable weston-checkgpu
+
+# systemctl disable psplash-drm-start
+
+sleep 5
+sync
+systemctl reboot

@@ -1,0 +1,11 @@
+[Unit]
+Description=Helios Init
+After=systemd-remount-fs.service
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+ExecStart=/bin/bash /usr/bin/hlio-first-boot
+
+[Install]
+WantedBy=multi-user.target

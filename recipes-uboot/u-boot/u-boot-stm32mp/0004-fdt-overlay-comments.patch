@@ -1,0 +1,36 @@
+From 0e6c597ba5d1f74d62cdaf7cc3d729a757506c28 Mon Sep 17 00:00:00 2001
+From: Alfredo Avila <alfredo.avila@hlioengineering.com>
+Date: Thu, 3 Nov 2022 16:58:57 -0500
+Subject: [PATCH] fdt overlay comments
+
+---
+ cmd/pxe_utils.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/cmd/pxe_utils.c b/cmd/pxe_utils.c
+index 067c24e5ff..37d6ab0990 100644
+--- a/cmd/pxe_utils.c
++++ b/cmd/pxe_utils.c
+@@ -366,6 +366,22 @@ static void label_boot_fdtoverlay(struct cmd_tbl *cmdtp, struct pxe_label *label
+ 
+ 	fdtoverlay_addr = hextoul(fdtoverlay_addr_env, NULL);
+ 
++	/**
++	 * @NOTE: The 'fdtoverlay' variable stores the label value but
++	 * 			can be replaced with a space seperated string
++	 * 			that lists the desired overlays to apply.
++	 *			Identifying which overlays to apply can be done
++	 *			in many ways such as through OTP using the fuse module
++	 * 			or by reading a U-Boot environment variable. In either case,
++	 * 			we would identify which overlays to apply, then replace the
++	 *			fdtoverlays variable with a string containing those overlay file
++	 *			names.
++	 *		For example:
++	 *			desired overlays : ["overlay1", "overlay2", "overlay3"]
++	 *			fdtoverlay = "overlay1 overlay2 overlay3";
++	 *				 
++	 */
++
+ 	/* Cycle over the overlay files and apply them in order */
+ 	do {
+ 		struct fdt_header *blob;

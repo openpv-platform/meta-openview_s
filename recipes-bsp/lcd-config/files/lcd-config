@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# probe 7 inch select pin and set up lcd configurations
+lcd-pin-config
+if [ $? -eq 1 ]
+then
+    if [ ! -f /boot/overlays/active_7-inch-screen-overlay.dtbo ];
+    then
+        cp /boot/overlays/disabled_7-inch-screen-overlay.dtbo /boot/overlays/active_7-inch-screen-overlay.dtbo
+    fi
+    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1024x600px.png /usr/share/psplash/splash.png
+
+else
+    rm /boot/overlays/active_7-inch-screen-overlay.dtbo
+    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_800x480px.png /usr/share/psplash/splash.png
+fi

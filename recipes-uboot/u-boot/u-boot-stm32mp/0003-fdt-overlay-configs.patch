@@ -1,0 +1,26 @@
+From df63c9b22f4710609c905d4c788f9bf181f9d3ce Mon Sep 17 00:00:00 2001
+From: Alfredo Avila <alfredo.avila@hlioengineering.com>
+Date: Fri, 4 Nov 2022 14:39:43 -0500
+Subject: [PATCH] fdt overlay configs
+
+---
+ configs/stm32mp15_defconfig | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/configs/stm32mp15_defconfig b/configs/stm32mp15_defconfig
+index 9eb1d68e0e..8dd239c656 100644
+--- a/configs/stm32mp15_defconfig
++++ b/configs/stm32mp15_defconfig
+@@ -201,3 +201,11 @@ CONFIG_STM32_SPI=n
+ CONFIG_OPTEE=n
+ CONFIG_VIDEO_LCD_ORISETECH_OTM8009A=n
+ CONFIG_VIDEO_LCD_ROCKTECH_HX8394=n
++
++# FDT Overlay configs (Some added to kirkstone by default but if they get removed in future releases, this will help debug)
++# enable the open firmware FDT library
++CONFIG_OF_LIBFDT=y
++# enable LIBFDT overlay support
++CONFIG_OF_LIBFDT_OVERLAY=y
++# enable the fdt command in u-boot console
++CONFIG_CMD_FDT=y
+\ No newline at end of file

@@ -1,0 +1,36 @@
+From 14b13a3d8d53bcbafa7ef0b11ec8106d1db72dd6 Mon Sep 17 00:00:00 2001
+From: Alfredo Avila <alfredo.avila@hlioengineering.com>
+Date: Tue, 11 Oct 2022 18:08:50 -0500
+Subject: [PATCH] drm display mode patch for 7inch high res
+
+---
+ drivers/gpu/drm/panel/panel-simple.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index f839ca8a2..fffe9d353 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2317,15 +2317,15 @@ static const struct panel_desc innolux_p120zdg_bf1 = {
+ };
+ 
+ static const struct drm_display_mode innolux_zj070na_01p_mode = {
+-	.clock = 51501,
++	.clock = 41000,
+ 	.hdisplay = 1024,
+-	.hsync_start = 1024 + 128,
+-	.hsync_end = 1024 + 128 + 64,
+-	.htotal = 1024 + 128 + 64 + 128,
++	.hsync_start = 1024 + 150,
++	.hsync_end = 1024 + 150 + 10,
++	.htotal = 1024 + 150 + 10 + 150,
+ 	.vdisplay = 600,
+-	.vsync_start = 600 + 16,
+-	.vsync_end = 600 + 16 + 4,
+-	.vtotal = 600 + 16 + 4 + 16,
++	.vsync_start = 600 + 8,
++	.vsync_end = 600 + 8 + 4,
++	.vtotal = 600 + 8 + 4 + 23,
+ };
+ 
+ static const struct panel_desc innolux_zj070na_01p = {

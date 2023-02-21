@@ -1,0 +1,4 @@
+
+UBOOT_EXTLINUX_KERNEL_ARGS = "rootwait rw quiet"
+
+UBOOT_EXTLINUX_TIMEOUT = "0"

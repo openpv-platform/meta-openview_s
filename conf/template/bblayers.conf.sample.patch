@@ -1,0 +1,29 @@
+--- ./meta-st/meta-st-openstlinux/conf/template/bblayers.conf.sample	2022-08-31 08:56:13.465823980 -0400
++++ ./meta-st/meta-hlio-rcd/conf/template/bblayers.conf.sample	2022-09-20 17:20:47.851411359 -0400
+@@ -1,3 +1,5 @@
++# Original source file: meta-st-openstlinux/conf/template/bblayers.conf.sample
++
+ # LAYER_CONF_VERSION is increased each time build/conf/bblayers.conf
+ # changes incompatibly
+ LCONF_VERSION = "7"
+@@ -59,6 +61,13 @@
+ # specific to framework
+ FRAMEWORKLAYERS += "${@'${OEROOT}/layers/meta-st/meta-st-openstlinux' if os.path.isfile('${OEROOT}/layers/meta-st/meta-st-openstlinux/conf/layer.conf') else ''}"
+ 
++# Specific to RCD
++RCDLAYERS = "${@'${OEROOT}/layers/meta-st/meta-hlio-rcd' if os.path.isfile('${OEROOT}/layers/meta-st/meta-hlio-rcd/conf/layer.conf') else ''}"
++RCDLAYERS += "${@'${OEROOT}/layers/meta-st/meta-st-stm32mp-addons' if os.path.isfile('${OEROOT}/layers/meta-st/meta-st-stm32mp-addons/conf/layer.conf') else ''}"
++
++# grab meta-webkit layer
++WPELAYER = "${@'${OEROOT}/layers/meta-webkit' if os.path.isfile('${OEROOT}/layers/meta-webkit/conf/layer.conf') else ''}"
++
+ # add BSP layer
+ BBLAYERS += " \
+     ${BASELAYERS} \
+@@ -66,4 +75,6 @@
+     ${ADDONSLAYERS} \
+     ${FRAMEWORKLAYERS} \
+     ${@'${OPENEMBEDDED}' if os.path.isfile('${OEROOT}/layers/openembedded-core/meta/conf/layer.conf') else '${POKY}'} \
++    ${RCDLAYERS} \
++    ${WPELAYER} \
+     "

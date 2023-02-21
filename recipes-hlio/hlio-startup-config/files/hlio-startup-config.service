@@ -1,0 +1,11 @@
+[Unit]
+Description=Helios Startup Config
+After=systemd-remount-fs.service
+StartLimitIntervalSec=0
+
+[Service]
+User=root
+ExecStart=/usr/bin/hlio-startup-config.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,68 @@
+From 8b8e351dec1f7d9b340bbb56e453e2e994557d84 Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Wed, 7 Sep 2022 14:05:24 -0400
+Subject: [PATCH] Update default atmel driver add invert support
+
+---
+ .../devicetree/bindings/input/atmel,maxtouch.yaml     |  8 ++++++++
+ drivers/input/touchscreen/atmel_mxt_ts.c              | 11 +++++++++++
+ 2 files changed, 19 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/input/atmel,maxtouch.yaml b/Documentation/devicetree/bindings/input/atmel,maxtouch.yaml
+index 3ec579d63..8579b0bd1 100644
+--- a/Documentation/devicetree/bindings/input/atmel,maxtouch.yaml
++++ b/Documentation/devicetree/bindings/input/atmel,maxtouch.yaml
+@@ -83,6 +83,14 @@ properties:
+   wakeup-source:
+     type: boolean
+ 
++  touchscreen-inverted-x:
++    type: boolean
++    description: Invert the X axis on the touch driver
++
++  touchscreen-inverted-y:
++    type: boolean
++    description: Invert the Y axis on the touch driver
++
+ required:
+   - compatible
+   - reg
+diff --git a/drivers/input/touchscreen/atmel_mxt_ts.c b/drivers/input/touchscreen/atmel_mxt_ts.c
+index eb66cd268..022d564ee 100644
+--- a/drivers/input/touchscreen/atmel_mxt_ts.c
++++ b/drivers/input/touchscreen/atmel_mxt_ts.c
+@@ -317,6 +317,9 @@ struct mxt_data {
+ 	struct gpio_desc *wake_gpio;
+ 	bool use_retrigen_workaround;
+ 
++	bool touchscreen_inverted_x;
++	bool touchscreen_inverted_y;
++
+ 	/* Cached parameters from object table */
+ 	u16 T5_address;
+ 	u8 T5_msg_size;
+@@ -916,6 +919,11 @@ static void mxt_proc_t100_message(struct mxt_data *data, u8 *message)
+ 	x = get_unaligned_le16(&message[2]);
+ 	y = get_unaligned_le16(&message[4]);
+ 
++	if (data->touchscreen_inverted_x)
++		x = data->max_x - x;
++	if (data->touchscreen_inverted_y)
++		y = data->max_y - y;
++
+ 	if (status & MXT_T100_DETECT) {
+ 		type = (status & MXT_T100_TYPE_MASK) >> 4;
+ 
+@@ -3111,6 +3119,9 @@ static int mxt_parse_device_properties(struct mxt_data *data)
+ 		data->t19_num_keys = n_keys;
+ 	}
+ 
++	data->touchscreen_inverted_x = device_property_read_bool(dev, "touchscreen-inverted-x");
++	data->touchscreen_inverted_y = device_property_read_bool(dev, "touchscreen-inverted-y");
++
+ 	return 0;
+ }
+ 
+-- 
+2.17.1
+

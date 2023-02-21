@@ -1,0 +1,41 @@
+From 4855c1ac83c50544040ea955284aa2b10b84aa7c Mon Sep 17 00:00:00 2001
+From: Alfredo Avila <alfredo.avila@hlioengineering.com>
+Date: Wed, 7 Dec 2022 14:02:20 -0600
+Subject: [PATCH] disable console
+
+---
+ arch/arm/mach-stm32mp/cpu.c | 3 +++
+ configs/stm32mp15_defconfig | 7 ++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-stm32mp/cpu.c b/arch/arm/mach-stm32mp/cpu.c
+index 2f17833579..a455bad0bf 100644
+--- a/arch/arm/mach-stm32mp/cpu.c
++++ b/arch/arm/mach-stm32mp/cpu.c
+@@ -134,6 +134,9 @@ int mach_cpu_init(void)
+ 		gd->flags |= GD_FLG_SILENT | GD_FLG_DISABLE_CONSOLE;
+ 	else if (IS_ENABLED(CONFIG_DEBUG_UART) && IS_ENABLED(CONFIG_SPL_BUILD))
+ 		debug_uart_init();
++	
++	// manually setting gd->flags to turn off UART logs
++	gd->flags |= GD_FLG_SILENT | GD_FLG_DISABLE_CONSOLE;
+ 
+ 	return 0;
+ }
+diff --git a/configs/stm32mp15_defconfig b/configs/stm32mp15_defconfig
+index 96665f9476..3a52fa99b4 100644
+--- a/configs/stm32mp15_defconfig
++++ b/configs/stm32mp15_defconfig
+@@ -224,4 +224,9 @@ CONFIG_BINMAN_FDT=n
+ CONFIG_CBMEM_CONSOLE=n
+ CONFIG_NETCONSOLE=n
+ CONFIG_DEBUG_UART=n
+-CONFIG_SPL_BUILD=n
+\ No newline at end of file
++CONFIG_SPL_BUILD=n
++
++# More boot time optimizations but the 3 below will remove all U-Boot UART logs
++CONFIG_DISABLE_CONSOLE=y
++CONFIG_SILENT_CONSOLE=y
++CONFIG_SYS_DEVICE_NULLDEV=y
+\ No newline at end of file

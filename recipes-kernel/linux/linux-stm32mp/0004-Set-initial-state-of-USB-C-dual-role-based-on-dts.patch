@@ -1,0 +1,39 @@
+From 12972865d0f9c798dcd5a359ab6de950f5cbef15 Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Fri, 17 Dec 2021 13:57:51 -0500
+Subject: [PATCH] Set initial state of USB-C dual role based on device tree.
+
+---
+ drivers/usb/dwc2/drd.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/usb/dwc2/drd.c b/drivers/usb/dwc2/drd.c
+index 27202eb05..bec22eeec 100644
+--- a/drivers/usb/dwc2/drd.c
++++ b/drivers/usb/dwc2/drd.c
+@@ -139,6 +139,7 @@ int dwc2_drd_init(struct dwc2_hsotg *hsotg)
+ 	struct usb_role_switch_desc role_sw_desc = {0};
+ 	struct usb_role_switch *role_sw;
+ 	int ret;
++	const char *str;
+ 
+ 	if (!device_property_read_bool(hsotg->dev, "usb-role-switch"))
+ 		return 0;
+@@ -161,6 +162,14 @@ int dwc2_drd_init(struct dwc2_hsotg *hsotg)
+ 	/* Enable override and initialize values */
+ 	dwc2_ovr_init(hsotg);
+ 
++	// Set initial state
++	ret = device_property_read_string(hsotg->dev, "role-switch-default-mode", &str);
++	if (ret >= 0 && !strncmp(str, "host", strlen("host"))) { 
++		dwc2_drd_role_sw_set(role_sw, USB_ROLE_HOST);
++	} else {
++		dwc2_drd_role_sw_set(role_sw, USB_ROLE_DEVICE); 
++	}
++
+ 	return 0;
+ }
+ 
+-- 
+2.25.1
+

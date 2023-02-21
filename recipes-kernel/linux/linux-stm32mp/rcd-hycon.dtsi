@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) Helios Technologies 2021 - All Rights Reserved
+ * hycon lcd driver
+ * 
+ */
+
+&i2c4 {
+ 	touchscreen@38 {
+		compatible = "hycon,hy4635";
+		reg = <0x38>;
+//		vcc-supply = <&vdd_tp_reg>;
+		interrupt-parent = <&gpioc>;
+		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
+		//reset-gpios = <&gpioc 13 GPIO_ACTIVE_LOW>;
+		touchscreen-size-x = <800>;
+		touchscreen-size-y = <480>;
+		hycon,report-speed-hz = <60>;
+		// wakeup-source;
+	};
+};

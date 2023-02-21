@@ -1,0 +1,15 @@
+# MX Cube Project Output #
+##########################
+.mxproject
+*.bak
+
+# Source Code we do not use #
+#############################
+mx/Drivers/
+mx/CM4/
+mx/Common/
+mx/EWARM/
+
+# vscode #
+##########
+**/.vscode/

@@ -1,0 +1,25 @@
+From eddbe5fc4e4f3063c7ae46f26afc3f1e57930ce5 Mon Sep 17 00:00:00 2001
+From: Bernardo Garza <bernardo.garza@hlioengineering.com>
+Date: Tue, 15 Mar 2022 10:59:07 -0500
+Subject: [PATCH] Updating display clock to avoid emi interference
+
+---
+ drivers/gpu/drm/panel/panel-simple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 204674fcc..f839ca8a2 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2094,7 +2094,7 @@ static const struct panel_desc innolux_at043tn24 = {
+ };
+ 
+ static const struct drm_display_mode innolux_at070tn92_mode = {
+-	.clock = 33333,
++	.clock = 28500, //JK: Changed from 33Mhz to help avoid 52Mhz EMMC and 25Mhz ESP SDIO clocks
+ 	.hdisplay = 800,
+ 	.hsync_start = 800 + 210,
+ 	.hsync_end = 800 + 210 + 20,
+-- 
+2.25.1
+
