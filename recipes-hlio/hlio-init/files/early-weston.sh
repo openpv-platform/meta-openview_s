@@ -30,6 +30,11 @@ mount -t tmpfs -o size=47404k,rw,nosuid,nodev,relatime,size=47404k,mode=700,uid=
 mkdir -p /dev/pts
 mount -t devpts -o mode=0620,gid=5 devpts /dev/pts
 
+# Required for Xwayland
+mkdir -p /tmp/.X11-unix
+chgrp video /tmp/.X11-unix
+chmod 770 /tmp/.X11-unix
+
 mkdir -p ${XDG_RUNTIME_DIR}
 chmod 0700 ${XDG_RUNTIME_DIR}
 
@@ -44,7 +49,6 @@ ARGS="$ARGS --logger-scopes="
 # Run weston - doing the non "launch" mode as root is about 200ms faster for some reason
 /usr/bin/weston --tty=7 $ARGS &
 #/usr/bin/weston-launch --tty=/dev/tty7 --user="${WESTON_USER}" -- ${ARGS} &
-
 
 # Bring up localhost
 ifconfig lo up
