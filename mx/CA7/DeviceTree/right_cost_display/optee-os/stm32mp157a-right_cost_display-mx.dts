@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
 /*
- * Copyright (C) STMicroelectronics 2022 - All Rights Reserved
+ * Copyright (C) STMicroelectronics 2023 - All Rights Reserved
  * Author: STM32CubeMX code generation for STMicroelectronics.
  */
 
@@ -15,18 +15,18 @@
 
 #include "stm32mp157.dtsi"
 #include "stm32mp15xa.dtsi"
-#include "stm32mp15xxad-pinctrl.dtsi"
+#include "stm32mp15xxab-pinctrl.dtsi"
 
 /* USER CODE BEGIN includes */
 /* USER CODE END includes */
 
 / {
-	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-5.15-yocto-kirkstone-mp1-v22.06.15";
+	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-5.15-yocto-kirkstone-mp1-v22.11.23";
 	compatible = "st,stm32mp157a-right_cost_display-mx", "st,stm32mp157";
 
 	memory@c0000000 {
 		device_type = "memory";
-		reg = <0xc0000000 0x10000000>;
+		reg = <0xc0000000 0x40000000>;
 
 		/* USER CODE BEGIN memory */
 		/* USER CODE END memory */
@@ -48,13 +48,20 @@
 		/* USER CODE BEGIN clocks */
 		/* USER CODE END clocks */
 
+		clk_hsi: clk-hsi {
+			clock-frequency = <64000000>;
+
+			/* USER CODE BEGIN clk_hsi */
+			/* USER CODE END clk_hsi */
+		};
 		clk_lse: clk-lse {
+			status = "disabled";
 
 			/* USER CODE BEGIN clk_lse */
 			/* USER CODE END clk_lse */
 		};
-
 		clk_hse: clk-hse {
+			clock-frequency = <24000000>;
 
 			/* USER CODE BEGIN clk_hse */
 			/* USER CODE END clk_hse */
@@ -88,13 +95,13 @@
 	DECPROT(STM32MP1_ETZPC_ADC_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_DMA1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_DMAMUX_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
-	DECPROT(STM32MP1_ETZPC_ETH_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_TT_FDCAN_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
+	DECPROT(STM32MP1_ETZPC_HASH1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_I2C4_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
-	DECPROT(STM32MP1_ETZPC_SAI1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
-	DECPROT(STM32MP1_ETZPC_SAI2_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
+	DECPROT(STM32MP1_ETZPC_RNG1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_SDMMC3_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_DLYBSD3_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
+	DECPROT(STM32MP1_ETZPC_TIM16_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_TIM4_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_UART4_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_UART5_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
@@ -168,7 +175,7 @@
 	>;
 	st,pkcs = <
 		CLK_CKPER_HSE
-		CLK_ETH_PLL4P
+		CLK_ETH_DISABLED
 		CLK_SDMMC12_PLL4P
 		CLK_STGEN_HSE
 		CLK_USBPHY_HSE
@@ -190,10 +197,11 @@
 		CLK_UART78_DISABLED
 		CLK_SPDIF_DISABLED
 		CLK_FDCAN_HSE
-		CLK_SAI1_CKPER
-		CLK_SAI2_CKPER
+		CLK_SAI1_DISABLED
+		CLK_SAI2_DISABLED
 		CLK_SAI3_DISABLED
 		CLK_SAI4_DISABLED
+		CLK_RNG1_CSI
 		CLK_LPTIM1_DISABLED
 		CLK_LPTIM23_DISABLED
 		CLK_LPTIM45_DISABLED
@@ -215,6 +223,13 @@
 		reg = <3>;
 		cfg = < 3 98 5 7 7 PQR(1,1,0) >;
 	};
+};
+
+&rng1{
+	status = "okay";
+
+	/* USER CODE BEGIN rng1 */
+	/* USER CODE END rng1 */
 };
 
 &rtc{

@@ -1,3 +1,4 @@
+THISAPPENDFILESDIR := "${THISDIR}/${PN}"
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:append = " \
@@ -10,3 +11,12 @@ SRC_URI:append = " \
         file://0007-disable-console.patch \
         file://0008-Fix-mmc_switch-excessive-timeout.patch \
         "
+
+do_add_platform_dtsi() {
+   # We are using a dummy LCD device tree include file since we do not use the LCD in u-boot
+   echo 'cp -f "${THISAPPENDFILESDIR}/rcd-lcd.dtsi" "${DEVSHELL_STARTDIR}/arch/arm/boot/dts"'
+   cp -f "${THISAPPENDFILESDIR}/rcd-lcd.dtsi" \
+           "${DEVSHELL_STARTDIR}/arch/arm/dts/rcd-lcd.dtsi";
+}
+
+addtask add_platform_dtsi before do_configure after do_patch 
