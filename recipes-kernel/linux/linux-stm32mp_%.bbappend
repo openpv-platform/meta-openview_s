@@ -77,6 +77,7 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
                             ${WORKDIR}/fragments/fragment_08_add_atmel_mxt_touch_driver.cfg \
                             ${WORKDIR}/fragments/fragment_09_pwm_timer.cfg \
                             ${WORKDIR}/fragments/fragment_10_interrupt_frequency.cfg \
+                            ${WORKDIR}/fragments/fragment_11_m4.cfg \
                             "
 
 SRC_URI:append = " \
@@ -89,6 +90,7 @@ SRC_URI:append = " \
                   file://fragments/fragment_08_add_atmel_mxt_touch_driver.cfg \
                   file://fragments/fragment_09_pwm_timer.cfg \
                   file://fragments/fragment_10_interrupt_frequency.cfg \
+                  file://fragments/fragment_11_m4.cfg \
                   "
 
 SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
@@ -100,4 +102,5 @@ SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_08_add_atmel_mxt_touch_driver.cfg \
                               file://fragments/fragment_09_pwm_timer.cfg \
                               file://fragments/fragment_10_interrupt_frequency.cfg \
+                              file://fragments/fragment_11_m4.cfg \
                               "

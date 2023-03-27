@@ -1,0 +1,43 @@
+/dts-v1/;
+/plugin/;
+
+/*
+	This overlay will:
+        1) Disable the CAN1 & CAN2 peripherals from the A7 processor
+		2) Enable the CAN1 & CAN2 peripherals to the M4 processor
+
+	For documentation on fragments see wiki: https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_wiki/wikis/Development%20Documentation/71/Device-Tree-Overlays-for-the-RCD-BSP#
+*/
+ 
+/ {
+	compatible = "stm32mp157a-right_cost_display-mx";
+
+	fragment@0 {
+		target = <&m_can1>;
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@1 {
+		target = <&m_can2>;
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@2 {
+		target = <&m4_m_can1>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target = <&m4_m_can2>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+};

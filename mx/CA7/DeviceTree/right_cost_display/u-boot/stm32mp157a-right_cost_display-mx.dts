@@ -604,6 +604,30 @@
 	};
 
 	/* USER CODE BEGIN pinctrl */
+
+	
+	/***********CAN1 & CAN2 NOTES*************
+		CAN1 & CAN2 are assigned to the A7 processor by default.
+		They can both be assigned to the M4 processor using device
+		tree overlays (see dtb-overlays.bb recipe in /recipes-uboot/).
+		The m4_FDCAN nodes below are moved to this USER section
+		so that CubeMX does not remove or overwrite them.
+		************************************************************/
+	/* CAN1 & CAN2 M4 assignments. Not active by default. */
+	m4_fdcan1_pins_mx: m4_fdcan1_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('A', 11, RSVD)>, /* FDCAN1_RX */
+					 <STM32_PINMUX('A', 12, RSVD)>; /* FDCAN1_TX */
+		};
+	};
+
+	m4_fdcan2_pins_mx: m4_fdcan2_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('B', 5, RSVD)>, /* FDCAN2_RX */
+					 <STM32_PINMUX('B', 13, RSVD)>; /* FDCAN2_TX */
+		};
+	};
+
 	/* TODO: No way to cause Berni's changes to CAN pinmux, RX pins do not have a "drive" mode   */
 	/*       but only bias enable, and slew-rate likewise not applicable.                        */
 	/*       Can we figure out why the driver does not work without this change or force it here */
@@ -632,8 +656,8 @@
 
 &m4_rproc{
 	/*Restriction: "memory-region" property is not managed - please to use User-Section if needed*/
-	mboxes = <&ipcc 2>;
-	mbox-names = "shutdown";
+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
+	mbox-names = "vq0", "vq1", "shutdown";
 	status = "okay";
 
 	/* USER CODE BEGIN m4_rproc */
@@ -644,14 +668,13 @@
 	interrupt-parent = <&exti>;
 	interrupts = <68 1>;
 	wakeup-source;
-	status = "disabled";
 	/* USER CODE END m4_rproc */
 
 	m4_system_resources{
 		status = "okay";
 
 		/* USER CODE BEGIN m4_system_resources */
-		status = "disabled";
+
 		/* USER CODE END m4_system_resources */
 	};
 };
@@ -1076,6 +1099,36 @@
 };
 
 /* USER CODE BEGIN addons */
+
+
+/***********CAN1 & CAN2 NOTES*************
+	CAN1 & CAN2 are assigned to the A7 by default but
+	we can change the assignment to the M4
+	with an overlay. The m4 nodes below need to
+	be present in order for the overlay to work so they have
+	been moved to this USER section so that CubeMX does
+	not overwrite or remove them.
+	*******************************************/
+&m4_m_can1{
+	pinctrl-names = "default";
+	pinctrl-0 = <&m4_fdcan1_pins_mx>;
+	status = "disabled";
+
+	/* USER CODE BEGIN m4_m_can1 */
+	/* USER CODE END m4_m_can1 */
+};
+
+&m4_m_can2{
+	pinctrl-names = "default";
+	pinctrl-0 = <&m4_fdcan2_pins_mx>;
+	status = "disabled";
+
+	/* USER CODE BEGIN m4_m_can2 */
+	/* USER CODE END m4_m_can2 */
+};
+
+
+
 /* TODO: Tried to get this in ioc file - verify that putting it here works */
 /*       This change was from Berni 01/11                                  */
 &i2c4_pins_mx {
