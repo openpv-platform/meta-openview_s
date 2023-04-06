@@ -9,6 +9,8 @@ mx/Drivers/
 mx/CM4/
 mx/Common/
 mx/EWARM/
+mx/Middlewares/
+mx/Utilities/
 
 # vscode #
 ##########
