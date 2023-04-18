@@ -85,4 +85,6 @@ RDEPENDS:packagegroup-hlio-rcd-development-support = "\
     jsoncpp \
     libgpiod-dev \
     glfw \
+    iperf2 \
+    net-tools \
     "
