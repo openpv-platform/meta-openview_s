@@ -1,0 +1,72 @@
+From 47586335ea77d910a875879742b2b4631f51a2cd Mon Sep 17 00:00:00 2001
+From: alfredo avila <alfredo.avila@hlioengineering.com>
+Date: Thu, 27 Apr 2023 16:25:26 -0500
+Subject: [PATCH] slip rpmsg send
+
+---
+ drivers/net/slip/slip.c | 23 +++++++++++++++++++++++
+ drivers/tty/rpmsg_tty.c | 12 +++++++++++-
+ 2 files changed, 34 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/slip/slip.c b/drivers/net/slip/slip.c
+index 5435b5689..22b515701 100644
+--- a/drivers/net/slip/slip.c
++++ b/drivers/net/slip/slip.c
+@@ -407,11 +407,34 @@ static void sl_encaps(struct slip *sl, unsigned char *icp, int len)
+ 	 */
+ 	set_bit(TTY_DO_WRITE_WAKEUP, &sl->tty->flags);
+ 	actual = sl->tty->ops->write(sl->tty, sl->xbuff, count);
++
++	/*
++	 *	Patch 0014: Add check to notify that packets were dropped
++	 */
++	if(actual < count)
++	{
++		printk(KERN_WARNING "%s: dropping packete, driver timed out\n", sl->dev->name);
++		sl->dev->stats.tx_dropped++;
++		sl_unlock(sl);
++		return;
++	}
++
+ #ifdef SL_CHECK_TRANSMIT
+ 	netif_trans_update(sl->dev);
+ #endif
+ 	sl->xleft = count - actual;
+ 	sl->xhead = sl->xbuff + actual;
++
++	/*
++	 *	Patch 0014: Clear the write wake up bit
++	 *		- tty-rpmsg doesn't do a write_wakeup callback.
++	 */
++	if(sl->xleft <= 0) 
++	{
++		clear_bit(TTY_DO_WRITE_WAKEUP, &sl->tty->flags);
++		sl_unlock(sl);
++	}
++
+ #ifdef CONFIG_SLIP_SMART
+ 	/* VSV */
+ 	clear_bit(SLF_OUTWAIT, &sl->flags);	/* reset outfill flag */
+diff --git a/drivers/tty/rpmsg_tty.c b/drivers/tty/rpmsg_tty.c
+index 29db413bb..240b2fc74 100644
+--- a/drivers/tty/rpmsg_tty.c
++++ b/drivers/tty/rpmsg_tty.c
+@@ -92,7 +92,17 @@ static int rpmsg_tty_write(struct tty_struct *tty, const u8 *buf, int len)
+ 	 * Use rpmsg_trysend instead of rpmsg_send to send the message so the caller is not
+ 	 * hung until a rpmsg buffer is available. In such case rpmsg_trysend returns -ENOMEM.
+ 	 */
+-	ret = rpmsg_trysend(rpdev->ept, (void *)buf, msg_size);
++	// ret = rpmsg_trysend(rpdev->ept, (void *)buf, msg_size);
++
++	/*
++	 * Patch 0014: remove call to rpmsg_trysend() and replace with rpmsg_send().
++	 * 		- This will cause our caller to block, which will cause the ip layer
++	 * 			in slip to queue the packets.
++	 * 		- Sort of flow control.
++	 * 		- The message will error out after 15 seconds if no buffers become available. 
++	 * 			If this happens things have really gotten bad!
++	 */
++	ret = rpmsg_send(rpdev->ept, (void *)buf, msg_size);
+ 	if (ret) {
+ 		dev_dbg_ratelimited(&rpdev->dev, "rpmsg_send failed: %d\n", ret);
+ 		return ret;

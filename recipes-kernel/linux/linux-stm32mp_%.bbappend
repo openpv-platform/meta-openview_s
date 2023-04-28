@@ -26,6 +26,9 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 #     - This patch updates the atmel_mxt_ts driver to reset the touch controller once a firmware update has been written to memory.
 #         This resolves an error where the i2c bus is left in a bad state due to the controller not leaving the boot block state.
 
+#  Patch 0014-slip-rpmsg-send.patch:
+#     - Patches the slip.c and rpmsg_tty.c drivers to use the blocking rpmsg_send() function instead of trysend(). 
+
 SRC_URI:append = " \
    file://0001-Add-hlio-specific-dtsi.patch \
    file://0002-Modify-SDIO-core-memcpy-to-copy-mis-aligned-buffers.patch \
@@ -37,6 +40,7 @@ SRC_URI:append = " \
    file://0011-dtc-symbols-flag.patch \
    file://0012-drm-display-mode-7-inch.patch \
    file://0013-fix-for-touchscreen-firmware-update-via-driver.patch \
+   file://0014-slip-rpmsg-send.patch \
    "
 
 # The following idea is adapted from: 
@@ -78,6 +82,7 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
                             ${WORKDIR}/fragments/fragment_09_pwm_timer.cfg \
                             ${WORKDIR}/fragments/fragment_10_interrupt_frequency.cfg \
                             ${WORKDIR}/fragments/fragment_11_m4.cfg \
+                            ${WORKDIR}/fragments/fragment_12_slip.cfg \
                             "
 
 SRC_URI:append = " \
@@ -91,6 +96,7 @@ SRC_URI:append = " \
                   file://fragments/fragment_09_pwm_timer.cfg \
                   file://fragments/fragment_10_interrupt_frequency.cfg \
                   file://fragments/fragment_11_m4.cfg \
+                  file://fragments/fragment_12_slip.cfg \
                   "
 
 SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
@@ -103,4 +109,5 @@ SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_09_pwm_timer.cfg \
                               file://fragments/fragment_10_interrupt_frequency.cfg \
                               file://fragments/fragment_11_m4.cfg \
+                              file://fragments/fragment_12_slip.cfg \
                               "
