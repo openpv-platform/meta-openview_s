@@ -38,6 +38,12 @@ chmod 770 /tmp/.X11-unix
 mkdir -p ${XDG_RUNTIME_DIR}
 chmod 0700 ${XDG_RUNTIME_DIR}
 
+# Run CAN Coprocessor First if Available.
+if [ -f /usr/local/Ahsoka/start_can_helper.sh ];
+then
+   /usr/local/Ahsoka/start_can_helper.sh &
+fi
+
 ARGS="--backend=drm-backend.so"
 ARGS="$ARGS --current-mode"
 ARGS="$ARGS --config=/etc/xdg/weston/weston.ini"
@@ -54,11 +60,14 @@ ARGS="$ARGS --logger-scopes="
 ifconfig lo up
 
 # Setup CAN modules if either CANx_BITRATE is set
-modprobe -a can_dev m_can m_can_platform can can_raw
-
+if [ ! -f /usr/local/Ahsoka/start_can_helper.sh ];
+then
+	modprobe -a can_dev m_can m_can_platform can can_raw
+fi
+	
 # Load the i2c for touch driver after UI is up
 modprobe i2c_stm32f7_drv
-
+	
 # Initialize CAN while waiting touch
 # [ -n "$CAN0_BITRATE" ] && ip link set can0 up type can bitrate $CAN0_BITRATE &> /dev/null
 # [ -n "$CAN1_BITRATE" ] && ip link set can1 up type can bitrate $CAN1_BITRATE &> /dev/null
