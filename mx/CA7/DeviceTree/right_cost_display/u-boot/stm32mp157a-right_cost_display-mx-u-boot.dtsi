@@ -25,7 +25,7 @@
 		/delete-node/vdev0buffer@10042000;
 		/delete-node/mcuram@30000000;
 		/delete-node/retram@38000000;
-		/delete-node/gpu@c8000000;
+		/delete-node/gpu@c1000000;
 	};
 	/* USER CODE END root */
 

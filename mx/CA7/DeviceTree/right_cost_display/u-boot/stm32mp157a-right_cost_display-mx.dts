@@ -78,8 +78,8 @@
 		};
 
 		// SL: Re-evaluate, currently allocating 32MiB
-		gpu_reserved: gpu@c8000000 {
-			reg = <0xc8000000 0x2000000>;
+		gpu_reserved: gpu@c1000000 {
+			reg = <0xc1000000 0x2000000>;
 			no-map;
 		};
 		/* USER CODE END reserved-memory */
@@ -672,7 +672,6 @@
 
 	m4_system_resources{
 		status = "okay";
-
 		/* USER CODE BEGIN m4_system_resources */
 
 		/* USER CODE END m4_system_resources */
