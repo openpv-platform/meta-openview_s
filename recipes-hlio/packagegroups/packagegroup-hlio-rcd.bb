@@ -73,6 +73,7 @@ RDEPENDS:packagegroup-hlio-rcd-qt5-support = "\
     qtwayland                           \
     qtwayland-plugins                   \
     openstlinux-qt-wayland              \
+    qtsvg                               \
     "
 
 SUMMARY:packagegroup-hlio-rcd-development-support = "Packages for Ahsoka supported development environments"
