@@ -31,11 +31,11 @@ static struct work_struct initiate_reboot_work;
 
 static void initiate_reboot(struct work_struct *work) {
 	int ret;
-	char *argv[] = { "/bin/systemctl",
+	static char *argv[] = { "/bin/systemctl",
 	                "reboot",
 					NULL 
 	};
-  	char *envp[] = {
+  	static char *envp[] = {
         "HOME=/",
         "PATH=/sbin:/bin:/usr/sbin:/usr/bin",
 		NULL 
@@ -97,10 +97,10 @@ static irq_handler_t uvlo_ISR(unsigned int irq, void *dev_id, struct pt_regs *re
 
 	if (trigger_once)
 	{
+		trigger_once = 0;
 		// run the rebooot command
 		printk(KERN_INFO "uvlo: UVLO triggered...\n");
 		schedule_work(&initiate_reboot_work);
-		trigger_once = 0;
 	}
 
     return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
