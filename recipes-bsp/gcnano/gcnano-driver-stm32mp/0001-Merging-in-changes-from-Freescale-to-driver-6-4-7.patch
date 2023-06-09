@@ -1,0 +1,49 @@
+From 540dd7b57cc8626f1cfce153cc0db10cc4b2e504 Mon Sep 17 00:00:00 2001
+From: Bernardo Garza <bernardo.garza@hlioengineering.com>
+Date: Sat, 3 Jun 2023 14:08:43 -0500
+Subject: [PATCH] Merging in changes from Freescale to driver 6-4-7
+
+---
+ hal/kernel/arch/gc_hal_kernel_hardware.c | 7 -------
+ hal/kernel/gc_hal_kernel_event.c         | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/hal/kernel/arch/gc_hal_kernel_hardware.c b/hal/kernel/arch/gc_hal_kernel_hardware.c
+index 7445a09..e9b0ad0 100644
+--- a/hal/kernel/arch/gc_hal_kernel_hardware.c
++++ b/hal/kernel/arch/gc_hal_kernel_hardware.c
+@@ -4863,13 +4863,6 @@ gckHARDWARE_Notify(
+ 
+     gckOS_AtomGet(Hardware->os, Hardware->kernel->eventObj->pending, (gctINT32_PTR)&pending);
+ 
+-    if (pending & (1 << 29))
+-    {
+-        /* Event ID 29 is not a normal event, but for invalidating pipe. */
+-        _ResumeWaitLinkFE(Hardware);
+-        pending &= ~(1 << 29);
+-    }
+-
+     gckOS_AtomSetMask(Hardware->kernel->eventObj->pending, pending);
+ 
+     /* Handle events. */
+diff --git a/hal/kernel/gc_hal_kernel_event.c b/hal/kernel/gc_hal_kernel_event.c
+index e663a04..c792943 100644
+--- a/hal/kernel/gc_hal_kernel_event.c
++++ b/hal/kernel/gc_hal_kernel_event.c
+@@ -1991,6 +1991,13 @@ gckEVENT_Notify(
+             break;
+         }
+ 
++        if (pending & (1 << 29)) {
++            /* Event ID 29 is not a normal event, but for invalidating pipe. */
++            gckHARDWARE_ResumeWLFE(Event->kernel->hardware);
++            pending &= ~(1 << 29);
++            gckOS_AtomClearMask(Event->pending, (1 << 29));
++        }
++
+         if (pending & 0x80000000)
+         {
+             gcmkPRINT("AXI BUS ERROR");
+-- 
+2.25.1
+

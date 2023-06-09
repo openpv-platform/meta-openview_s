@@ -1,0 +1,47 @@
+From 8b0bce1d8aa3230695325b8e6a332a8fac7d4ee5 Mon Sep 17 00:00:00 2001
+From: Bernardo Garza <bernardo.garza@hlioengineering.com>
+Date: Sat, 3 Jun 2023 14:24:50 -0500
+Subject: [PATCH] Added a function that was missing 6-4-7
+
+---
+ hal/kernel/arch/gc_hal_kernel_hardware.c | 9 +++++++++
+ hal/kernel/arch/gc_hal_kernel_hardware.h | 3 +++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/hal/kernel/arch/gc_hal_kernel_hardware.c b/hal/kernel/arch/gc_hal_kernel_hardware.c
+index e9b0ad0..040e2cc 100644
+--- a/hal/kernel/arch/gc_hal_kernel_hardware.c
++++ b/hal/kernel/arch/gc_hal_kernel_hardware.c
+@@ -4722,6 +4722,15 @@ OnError:
+     return;
+ }
+ 
++gceSTATUS
++gckHARDWARE_ResumeWLFE(gckHARDWARE Hardware)
++{
++    gceSTATUS status = gcvSTATUS_OK;
++
++    _ResumeWaitLinkFE(Hardware);
++    return status;
++}
++
+ /*******************************************************************************
+ **
+ **  gckHARDWARE_Interrupt
+diff --git a/hal/kernel/arch/gc_hal_kernel_hardware.h b/hal/kernel/arch/gc_hal_kernel_hardware.h
+index 78a668e..e77421d 100644
+--- a/hal/kernel/arch/gc_hal_kernel_hardware.h
++++ b/hal/kernel/arch/gc_hal_kernel_hardware.h
+@@ -335,6 +335,9 @@ gckHARDWARE_QueryCoreLoad(
+     OUT gctUINT32 *Load
+     );
+ 
++gceSTATUS
++gckHARDWARE_ResumeWLFE(gckHARDWARE Hardware);
++
+ #define gcmkWRITE_MEMORY(logical, data) \
+     do { \
+     gcmkVERIFY_OK(gckOS_WriteMemory(os, logical, data)); \
+-- 
+2.25.1
+
