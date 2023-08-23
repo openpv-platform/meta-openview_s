@@ -7,19 +7,14 @@
 configfs="/sys/kernel/config/usb_gadget"
 g=g1
 c=c.1
+e=c.2
 d="${configfs}/${g}"
 func_eth=rndis.0
+func_ecm=ecm.1
 func_ms=mass_storage.0
 
 VENDOR_ID="0x1d6b"
 PRODUCT_ID="0x0104"
-
-IP="192.168.7.2"
-NETMASK="255.255.255.0"
-
-#MAC address for ethernet-over-USB can be defined here
-MAC_HOST_CUST=""
-MAC_DEV_CUST=""
 
 get_mac_address_from_serial_number(){
     sha1sum /proc/device-tree/serial-number \
@@ -56,15 +51,22 @@ do_start() {
 
     mkdir -p "${d}/strings/0x409"
     tr -d '\0' < /proc/device-tree/serial-number > "${d}/strings/0x409/serialnumber"
-    echo "STMicroelectronics" > "${d}/strings/0x409/manufacturer"
-    echo "STM32MP1" > "${d}/strings/0x409/product"
+    echo "Enovation Controls" > "${d}/strings/0x409/manufacturer"
+    echo "OpenView" > "${d}/strings/0x409/product"
 
-    # Config
+    # Config RNDIS
     mkdir -p "${d}/configs/${c}"
     mkdir -p "${d}/configs/${c}/strings/0x409"
     echo "Config 1: RNDIS" > "${d}/configs/${c}/strings/0x409/configuration"
     echo 0 > "${d}/configs/${c}/MaxPower"
     echo 0xC0 > "${d}/configs/${c}/bmAttributes" # self powered device
+
+    # Config EEM
+    mkdir -p "${d}/configs/${e}"
+    mkdir -p "${d}/configs/${e}/strings/0x409"
+    echo "Config 2: ECM" > "${d}/configs/${e}/strings/0x409/configuration"
+    echo 0 > "${d}/configs/${e}/MaxPower"
+    echo 0xC0 > "${d}/configs/${e}/bmAttributes" # self powered device
 
     # Windows extension to force RNDIS config
     mkdir -p "${d}/os_desc"
@@ -77,39 +79,42 @@ do_start() {
     echo "RNDIS" > "${d}/functions/${func_eth}/os_desc/interface.rndis/compatible_id"
     echo "5162001" > "${d}/functions/${func_eth}/os_desc/interface.rndis/sub_compatible_id"
 
-    if [ "$MAC_HOST_CUST" != "" ]; then
-        echo $MAC_HOST_CUST > "${d}/functions/${func_eth}/host_addr"
-    else
-        mac_host=$(get_mac_address_from_serial_number)
-        echo $mac_host > "${d}/functions/${func_eth}/host_addr"
-    fi
-    if [ "$MAC_DEV_CUST" != "" ]; then
-        echo $MAC_DEV_CUST > "${d}/functions/${func_eth}/dev_addr"
-    fi
-
+    # Set mac address
+    mac_host=$(get_mac_address_from_serial_number)
+    echo $mac_host > "${d}/functions/${func_eth}/host_addr"
 
     # Set up the rndis device only first
     ln -s "${d}/functions/${func_eth}" "${d}/configs/${c}"
     ln -s "${d}/configs/${c}" "${d}/os_desc"
 
+    # Set up the ecm device
+    mkdir -p "${d}/functions/${func_ecm}"
+    ln -s "${d}/functions/${func_ecm}" "${d}/configs/${e}"
+
     echo "${udc}" > "${d}/UDC"
 
     sleep 0.2
 
-    interfacename=$(cat ${d}/functions/${func_eth}/ifname 2> /dev/null)
-    if [ -z "${interfacename}" ];
-    then
-        interfacename=usb0
-    fi
-    # ifconfig ${interfacename} $IP netmask $NETMASK
-    ifconfig ${interfacename} up
+    # Bring up rndis device
+    ifconfig usb0 up
+
+    # Bring up ecm device
+    ifconfig usb1 up
 }
 
 do_stop() {
     interfacename=$(cat ${d}/functions/${func_eth}/ifname 2> /dev/null)
     if [ -z "${interfacename}" ];
     then
-        echo "Nothing to do"
+        echo "Nothing to do for rndis device"
+        return
+    fi
+    ifconfig ${interfacename} down
+
+    interfacename=$(cat ${d}/functions/${func_ecm}/ifname 2> /dev/null)
+    if [ -z "${interfacename}" ];
+    then
+        echo "Nothing to do for ecm device"
         return
     fi
     ifconfig ${interfacename} down

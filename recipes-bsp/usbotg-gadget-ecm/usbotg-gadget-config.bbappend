@@ -8,7 +8,10 @@ LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/MIT;md5=0835ad
 
 PV = "1.0"
 
-SRC_URI = " file://stm32_usbotg_eth_config.sh \
+FILESEXTRAPATHS:prepend := "${THISDIR}/usbotg-gadget-config/:"
+
+SRC_URI:append = " \
+    file://stm32_usbotg_eth_config.sh \
     file://53-usb-otg-ecm.network \
     "
 
