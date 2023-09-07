@@ -41,6 +41,7 @@ SRC_URI:append = " \
    file://0012-drm-display-mode-7-inch.patch \
    file://0013-fix-for-touchscreen-firmware-update-via-driver.patch \
    file://0014-slip-rpmsg-send.patch \
+   file://0015-patch-for-touchscreen-driver-failed-i2c-send.patch \
    "
 
 # The following idea is adapted from: 

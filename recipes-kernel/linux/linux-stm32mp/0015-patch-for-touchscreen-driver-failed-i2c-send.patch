@@ -1,0 +1,40 @@
+From 293a02c04f2f298b645429f4758140a558d20a2b Mon Sep 17 00:00:00 2001
+From: Albert Zapata <albert.zapata@hlioengineering.com>
+Date: Thu, 31 Aug 2023 12:40:23 -0500
+Subject: [PATCH] patch for touchscreen driver failed i2c send
+__mxt_write_reg_crc did not retry to send data via i2c when the bytesToWrite is 0. 
+The only time this matters is when the initial bytes to write is 0. This patch makes
+sure to retry the send during under this condition.
+
+---
+ drivers/input/touchscreen/atmel_mxt_ts.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/input/touchscreen/atmel_mxt_ts.c b/drivers/input/touchscreen/atmel_mxt_ts.c
+index b9b257b80..ba79093ef 100644
+--- a/drivers/input/touchscreen/atmel_mxt_ts.c
++++ b/drivers/input/touchscreen/atmel_mxt_ts.c
+@@ -1148,9 +1148,11 @@ static int __mxt_write_reg_crc(struct i2c_client *client, u16 reg, u16 length,
+ 	u16 bytesWritten = 0;
+ 	u8 max_data_length = 11;
+ 	volatile u16 message_length = 0;
++	bool initBytesToWriteIsZero;
+ 
+ 	len = length + 2;
+ 	bytesToWrite = length;
++	initBytesToWriteIsZero = (bytesToWrite == 0);
+ 
+ 	//Limit size of data packet
+ 	if (length > max_data_length){
+@@ -1223,7 +1225,7 @@ static int __mxt_write_reg_crc(struct i2c_client *client, u16 reg, u16 length,
+ 		if (retry_counter == 10)
+ 			break;
+ 
+-	} while (bytesToWrite > 0);
++	} while (bytesToWrite > 0 || (initBytesToWriteIsZero && ret == -EIO));
+ 
+ 	kfree(databuf);		
+ 	return ret;
+-- 
+2.34.1
+
