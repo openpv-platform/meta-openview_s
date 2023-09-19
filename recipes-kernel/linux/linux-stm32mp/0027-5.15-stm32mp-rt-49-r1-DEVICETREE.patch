@@ -1,0 +1,23 @@
+From ae80245e7e6bc9667953d9ef229d4e2bc58dfd51 Mon Sep 17 00:00:00 2001
+From: Lionel VITTE <lionel.vitte@st.com>
+Date: Wed, 8 Feb 2023 09:57:43 +0100
+Subject: [PATCH] 5.15-stm32mp-rt-49-r1 DEVICETREE
+
+Signed-off-by: Lionel VITTE <lionel.vitte@st.com>
+
+---
+ arch/arm/boot/dts/stm32mp131.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/stm32mp131.dtsi b/arch/arm/boot/dts/stm32mp131.dtsi
+index d19cf69..8ee3e81 100644
+--- a/arch/arm/boot/dts/stm32mp131.dtsi
++++ b/arch/arm/boot/dts/stm32mp131.dtsi
+@@ -1161,7 +1161,6 @@
+ 		syscfg: syscon@50020000 {
+ 			compatible = "st,stm32mp157-syscfg", "syscon";
+ 			reg = <0x50020000 0x400>;
+-			clocks = <&rcc SYSCFG>;
+ 		};
+ 
+ 		lptimer2: timer@50021000 {

@@ -85,6 +85,20 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
                             ${WORKDIR}/fragments/fragment_11_m4.cfg \
                             ${WORKDIR}/fragments/fragment_12_slip.cfg \
                             "
+#                            ${WORKDIR}/fragments/fragment_14_enable_earlyprintk_on_uart4.cfg 
+
+KERNEL_CONFIG_FRAGMENTS:append:rt = "${WORKDIR}/fragments/fragment_13_enable_RT.cfg \
+                              "
+
+SRC_URI:append:rt = " \
+                    file://fragments/fragment_13_enable_RT.cfg \
+                    file://patch-5.15.24-rt31.patch \
+                    file://0023-5.15-stm32mp-rt-49-r1-CLOCK.patch \
+                    file://0024-5.15-stm32mp-rt-49-r1-DMA.patch \
+                    file://0025-5.15-stm32mp-rt-49-r1-MFD.patch \
+                    file://0026-5.15-stm32mp-rt-49-r1-NET-TTY.patch \
+                    file://0027-5.15-stm32mp-rt-49-r1-DEVICETREE.patch \
+                    "
 
 SRC_URI:append = " \
                   file://fragments/fragment_01_enable_j1939.cfg \
@@ -98,6 +112,7 @@ SRC_URI:append = " \
                   file://fragments/fragment_10_interrupt_frequency.cfg \
                   file://fragments/fragment_11_m4.cfg \
                   file://fragments/fragment_12_slip.cfg \
+                  file://fragments/fragment_14_enable_earlyprintk_on_uart4.cfg \
                   "
 
 SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
@@ -112,3 +127,5 @@ SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_11_m4.cfg \
                               file://fragments/fragment_12_slip.cfg \
                               "
+SRC_URI:class-devupstream:rt += "file://fragments/fragment_13_enable_RT.cfg \
+                                "

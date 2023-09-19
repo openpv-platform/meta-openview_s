@@ -40,6 +40,8 @@ RDEPENDS:packagegroup-hlio-rcd-custom = "\
     lcd-config \
     lmsensors-dev \
     uvlo \
+    ttf-bitstream-vera \
+    codesys \
     "
 
 
@@ -77,7 +79,9 @@ RDEPENDS:packagegroup-hlio-rcd-qt5-support = "\
     qtpdf                               \
     qtquick3d                           \
     qtquickcontrols                     \
+    qtquickcontrols-qmlplugins          \
     qtquickcontrols2                    \
+    qtquickcontrols2-qmlplugins         \
     qtquicktimeline                     \
     "
 

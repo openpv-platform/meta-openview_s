@@ -13,4 +13,5 @@ then
 else
     rm /boot/overlays/active_7-inch-screen-overlay.dtbo
     cp /usr/share/helios_backgrounds/Helios_Color_White_BG_800x480px.png /usr/share/psplash/splash.png
+    cp /usr/bin/codesys/CODESYSControl.5in.cfg /usr/bin/codesys/CODESYSControl.cfg
 fi
