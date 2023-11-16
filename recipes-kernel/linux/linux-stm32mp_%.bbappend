@@ -89,6 +89,9 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
 
 KERNEL_CONFIG_FRAGMENTS:append:rt = "${WORKDIR}/fragments/fragment_13_enable_RT.cfg \
                               "
+KERNEL_CONFIG_FRAGMENTS:append:ota = " \
+                               ${WORKDIR}/fragments/fragment_15_usb_fs_config.cfg \
+                              "
 
 SRC_URI:append:rt = " \
                     file://fragments/fragment_13_enable_RT.cfg \
@@ -115,6 +118,10 @@ SRC_URI:append = " \
                   file://fragments/fragment_14_enable_earlyprintk_on_uart4.cfg \
                   "
 
+SRC_URI:append:ota = " \
+                     file://fragments/fragment_15_usb_fs_config.cfg \
+                     "
+
 SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_03_enable_hycon_touch.cfg \
                               file://fragments/fragment_04_major_kernel_cleanup.cfg \
@@ -129,3 +136,7 @@ SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               "
 SRC_URI:class-devupstream:rt += "file://fragments/fragment_13_enable_RT.cfg \
                                 "
+
+SRC_URI:class-devupstream:ota += " \
+                                 file://fragments/fragment_15_usb_fs_config.cfg \
+                                 "

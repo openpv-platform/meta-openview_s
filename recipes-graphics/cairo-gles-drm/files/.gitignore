@@ -1,0 +1,3 @@
+## openembedded symlinks to build and working directories
+oe-logs
+oe-workdir

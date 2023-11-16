@@ -1,5 +1,10 @@
-Available images for OpenSTLinux layers are:
+Available images are:
 
   - Official Helios Right Cost Display images:
       hlio-image-rcd-base     -   The Hlio-RCD image containing only the base packages necessary for the distribution.
+
+  - Helios Openview OTA Image:
+      hlio-image-rcd-ota
+
+  - Deprecated:
       hlio-image-rcd-webkit   -   The Hlio-RCD adding a webkit browser to the base image.

@@ -6,6 +6,9 @@ PACKAGE_INSTALL := "${@oe.utils.str_filter_out('u-boot-stm32mp-splash', '${PACKA
 # add in device tree binary overlays
 
 PACKAGE_INSTALL += "\
-    esp-hosted \
     dtb-overlays \
+    "
+
+PACKAGE_INSTALL:${ESP_HOSTED_VERSION} += "\
+    esp-hosted \
     "

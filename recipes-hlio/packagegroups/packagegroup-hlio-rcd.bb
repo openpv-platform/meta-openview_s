@@ -42,6 +42,7 @@ RDEPENDS:packagegroup-hlio-rcd-custom = "\
     uvlo \
     ttf-bitstream-vera \
     codesys \
+    fw-env-config \
     "
 
 

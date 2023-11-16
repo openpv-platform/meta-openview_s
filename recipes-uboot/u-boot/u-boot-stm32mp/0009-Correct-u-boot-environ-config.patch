@@ -1,0 +1,30 @@
+From 037df849b1700281c7e04892ab73264ed15367b7 Mon Sep 17 00:00:00 2001
+From: Stephen Livingston <stephen.livingston@hlioengineering.com>
+Date: Tue, 10 Oct 2023 10:57:01 -0400
+Subject: [PATCH] Correct u-boot environ config
+
+---
+ configs/stm32mp15_defconfig | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/configs/stm32mp15_defconfig b/configs/stm32mp15_defconfig
+index 63c0f9a3c2..ea3ea1c0d5 100644
+--- a/configs/stm32mp15_defconfig
++++ b/configs/stm32mp15_defconfig
+@@ -228,4 +228,11 @@ CONFIG_SPL_BUILD=n
+ # More boot time optimizations but the 3 below will remove all U-Boot UART logs
+ CONFIG_DISABLE_CONSOLE=y
+ CONFIG_SILENT_CONSOLE=y
+-CONFIG_SYS_DEVICE_NULLDEV=y
+\ No newline at end of file
++CONFIG_SYS_DEVICE_NULLDEV=y
++
++# Correct the u-boot environment location and settings per our .tsv
++CONFIG_ENV_OFFSET=0x980000
++CONFIG_ENV_OFFSET_REDUND=0x9C0000
++CONFIG_ENV_SIZE=0x40000
++# CONFIG_ENV_IS_NOWWHERE is not set
++CONFIG_ENV_IS_IN_MMC=y
+-- 
+2.25.1
+

@@ -18,7 +18,7 @@ PRODUCT_ID="0x0104"
 
 get_mac_address_from_serial_number(){
     sha1sum /proc/device-tree/serial-number \
-    | fold -1 \
+    | fold -w 1 \
     | sed -n '1{h;d};2{y/1235679abdef/000444888ccc/;H;d};13{g;s/\n//g;p;q};s/^/:/;N;H;d'
 }
 

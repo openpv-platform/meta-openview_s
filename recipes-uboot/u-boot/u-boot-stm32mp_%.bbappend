@@ -10,6 +10,7 @@ SRC_URI:append = " \
         file://0006-defconfig-optimizations.patch \
         file://0007-disable-console.patch \
         file://0008-Fix-mmc_switch-excessive-timeout.patch \
+        file://0009-Correct-u-boot-environ-config.patch \
         "
 
 do_add_platform_dtsi() {
