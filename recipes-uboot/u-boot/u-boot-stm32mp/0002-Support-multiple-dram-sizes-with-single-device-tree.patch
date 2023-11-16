@@ -1,6 +1,6 @@
-From b657871927500932e6920f9f6507e5b5b44ce86e Mon Sep 17 00:00:00 2001
+From a6ac4b2629ce47016561de3c6c005d38082961fd Mon Sep 17 00:00:00 2001
 From: Stephen Livingston <stephen.livingston@hlioengineering.com>
-Date: Mon, 29 Aug 2022 12:12:17 -0400
+Date: Tue, 14 Nov 2023 14:19:59 -0500
 Subject: [PATCH] Support multiple dram sizes with single device tree
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH] Support multiple dram sizes with single device tree
  1 file changed, 73 insertions(+)
 
 diff --git a/arch/arm/mach-stm32mp/dram_init.c b/arch/arm/mach-stm32mp/dram_init.c
-index 920b99bb68..6e89ee911b 100644
+index 920b99bb68..5916ceea64 100644
 --- a/arch/arm/mach-stm32mp/dram_init.c
 +++ b/arch/arm/mach-stm32mp/dram_init.c
 @@ -12,11 +12,69 @@
@@ -23,11 +23,11 @@ index 920b99bb68..6e89ee911b 100644
  
 +/*
 + * SL: (2022-Aug) Hard coded function to determine actual memory size for 
-+ * Right Cost Display. Expects 1GiB, 512MiB or 256MiB and assumes
++ * Right Cost Display. Expects 1GiB or 512MiB and assumes
 + * the device tree is set up for 1GiB (max supported size). Based loosely
 + * on get_ram_size in ./common/memsize.c with required flush of dcache.
 + */
-+#define NumOfRamSizes 3
++#define NumOfRamSizes 2
 +long get_ddr_size(uint *base, long max_size)
 +{
 +	long		   result = max_size;	// Assume max size unless failure
@@ -104,5 +104,5 @@ index 920b99bb68..6e89ee911b 100644
  
  	gd->ram_size = ram.size;
 -- 
-2.17.1
+2.25.1
 
