@@ -1,0 +1,1 @@
+SRC_URI = "git://github.com/posborne/cmsis-svd.git;protocol=https;branch=main"
