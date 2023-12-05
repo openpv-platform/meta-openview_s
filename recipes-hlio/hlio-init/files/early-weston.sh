@@ -17,6 +17,11 @@ source /etc/xdg/weston/early-weston.env
 # Load GPU
 modprobe galcore
 
+# TODO: This is really only necessary for touch and is pretty heavy and seems to add about 80ms.
+# TODO: consider manually enabling the event/input0 or whatever necessary for weston
+udevd &
+UDEV=$!
+
 # Prep all needed weston mount points
 mount -t proc none /proc
 mount -t sysfs none /sys
@@ -58,3 +63,19 @@ if [ ! -f /usr/local/Ahsoka/start_can_helper.sh ];
 then
 	modprobe -a can_dev m_can m_can_platform can can_raw
 fi
+	
+# Load the i2c for touch driver after UI is up
+modprobe i2c_stm32f7_drv
+
+# Wait for udev to load touch
+END_TIME=$((SECONDS+2))
+while [ ! -e /dev/input/event0 ]; do
+    if [ $SECONDS -gt $END_TIME ]; then    # allow an exit after 2 seconds
+        echo "Timed out waiting for touch screen input device"
+        break;
+    fi
+    sleep 0.05;
+done
+
+sleep 0.05
+kill -TERM $UDEV
