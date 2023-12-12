@@ -2,7 +2,7 @@ SUMMARY = "Codesys Control"
 DESCRIPTION = "Codesys Control Runtime for Enovation Controls"
 LICENSE="CLOSED"
 
-SRCREV = "0a5e4b6e9422eaa85022c9794c948e223d73dd98"
+SRCREV = "c6d9a88f3dfdf7b380a1aeec343ebd2484f1cd57"
 SRC_URI = "gitsm://git@vs-ssh.visualstudio.com/v3/Enovation/Engineering/CODESYS.OpenView_S;protocol=ssh;branch=3.5.19.0"
 
 inherit systemd
