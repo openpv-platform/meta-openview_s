@@ -78,6 +78,7 @@ RDEPENDS:packagegroup-hlio-rcd-qt5-support = "\
     openstlinux-qt-wayland              \
     qtsvg                               \
     qtpdf                               \
+    qtcharts                            \
     qtquick3d                           \
     qtquickcontrols                     \
     qtquickcontrols-qmlplugins          \
