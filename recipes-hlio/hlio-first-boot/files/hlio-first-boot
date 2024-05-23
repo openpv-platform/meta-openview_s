@@ -25,6 +25,9 @@ systemctl disable weston-checkgpu
 
 # systemctl disable psplash-drm-start
 
+# remove st-image-resize-initrd from /boot
+rm -f /boot/st-image-resize-initrd
+
 sleep 5
 sync
 systemctl reboot

@@ -42,7 +42,7 @@ This is a special image intended to be loaded as a ramfs and used for field upda
 - __DISTRO__ = hlio-rcd-ota
 - __image__ = hlio-image-rcd-ota
 - Source Environment script:
-  - `DISTRO=hlio-rcd-ota MACHINE=stm32mp1-hlio-rcd-ota source layers/meta-st/scripts/envsetup.sh`
+  - `DISTRO=hlio-rcd-ota MACHINE=stm32mp1-hlio-rcd-ota EULA_stm32mp1hliorcdota=1 source layers/meta-st/scripts/envsetup.sh`
 - Build OTA image:
   - `bitbake hlio-image-rcd-ota`
 
