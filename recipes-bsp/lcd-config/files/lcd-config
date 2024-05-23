@@ -2,16 +2,19 @@
 
 # probe 7 inch select pin and set up lcd configurations
 lcd-pin-config
-if [ $? -eq 1 ]
+return_value=$?
+if [ $return_value -eq 2 ]
 then
-    if [ ! -f /boot/overlays/active_7-inch-screen-overlay.dtbo ];
-    then
-        cp /boot/overlays/disabled_7-inch-screen-overlay.dtbo /boot/overlays/active_7-inch-screen-overlay.dtbo
-    fi
+    cp /boot/overlays/10-inch-screen-overlay.dtbo /boot/overlays/active_screen-overlay.dtbo
+    cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1280x800px.png /usr/share/psplash/splash.png
+
+elif [ $return_value -eq 1 ]
+then
+    cp /boot/overlays/7-inch-screen-overlay.dtbo /boot/overlays/active_screen-overlay.dtbo
     cp /usr/share/helios_backgrounds/Helios_Color_White_BG_1024x600px.png /usr/share/psplash/splash.png
 
 else
-    rm /boot/overlays/active_7-inch-screen-overlay.dtbo
+    cp /boot/overlays/5-inch-screen-overlay.dtbo /boot/overlays/active_screen-overlay.dtbo
     cp /usr/share/helios_backgrounds/Helios_Color_White_BG_800x480px.png /usr/share/psplash/splash.png
     cp /usr/bin/codesys/CODESYSControl.5in.cfg /usr/bin/codesys/CODESYSControl.cfg
 fi

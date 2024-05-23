@@ -9,7 +9,9 @@ DEPENDS = "dtc-native"
 S = "${WORKDIR}"
 
 OVERLAY_DTS_FILES = " \
+        5-inch-screen-overlay \
         7-inch-screen-overlay \
+        10-inch-screen-overlay \
         m4-can-overlay \
         "
 
@@ -30,8 +32,14 @@ do_install() {
     install -d ${D}/boot/overlays
     install -d ${D}/boot/tf-a
 
+    # install the 5-inch LCD overlay
+    install -m 644 ${B}/5-inch-screen-overlay.dtbo ${D}/boot/overlays/5-inch-screen-overlay.dtbo
+
     # install the 7-inch LCD overlay
-    install -m 644 ${B}/7-inch-screen-overlay.dtbo ${D}/boot/overlays/disabled_7-inch-screen-overlay.dtbo
+    install -m 644 ${B}/7-inch-screen-overlay.dtbo ${D}/boot/overlays/7-inch-screen-overlay.dtbo
+
+    # install the 10-inch LCD overlay
+    install -m 644 ${B}/10-inch-screen-overlay.dtbo ${D}/boot/overlays/10-inch-screen-overlay.dtbo
     
     # install the m4-can overlay and the m4-can based TF-A 
     install -m 644 ${B}/m4-can-overlay.dtbo ${D}/boot/overlays/disabled_m4-can-overlay.dtbo
@@ -42,7 +50,9 @@ do_install() {
 }
 
 ALLOW_EMPTY:${PN} = "1"
-FILES:${PN} = "/boot/overlays/disabled_7-inch-screen-overlay.dtbo \
+FILES:${PN} = "/boot/overlays/5-inch-screen-overlay.dtbo \
+               /boot/overlays/7-inch-screen-overlay.dtbo \
+               /boot/overlays/10-inch-screen-overlay.dtbo \
                /boot/overlays/disabled_m4-can-overlay.dtbo \
                /boot/tf-a/tf-a_M4-CAN_emmc.stm32 \
                /boot/tf-a/tf-a_A7-CAN-backup_emmc.stm32 \

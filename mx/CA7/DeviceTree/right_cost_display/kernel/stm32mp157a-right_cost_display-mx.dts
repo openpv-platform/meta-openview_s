@@ -265,6 +265,7 @@
 	adc_pins_mx: adc_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('A', 0, ANALOG)>, /* ADC1_INP16 */
+					 <STM32_PINMUX('A', 7, ANALOG)>, /* ADC1_INP7 */
 					 <STM32_PINMUX('B', 1, ANALOG)>, /* ADC1_INP5 */
 					 <STM32_PINMUX('C', 2, ANALOG)>, /* ADC1_INP12 */
 					 <STM32_PINMUX('C', 3, ANALOG)>; /* ADC1_INP13 */
@@ -274,6 +275,7 @@
 	adc_sleep_pins_mx: adc_sleep_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('A', 0, ANALOG)>, /* ADC1_INP16 */
+					 <STM32_PINMUX('A', 7, ANALOG)>, /* ADC1_INP7 */
 					 <STM32_PINMUX('B', 1, ANALOG)>, /* ADC1_INP5 */
 					 <STM32_PINMUX('C', 2, ANALOG)>, /* ADC1_INP12 */
 					 <STM32_PINMUX('C', 3, ANALOG)>; /* ADC1_INP13 */
@@ -698,11 +700,14 @@
 		compatible = "st,stm32mp1-adc";
 		#io-channel-cells = <1>;
         reg = <0x0>;
-		st,adc-channels = <5>; 	// only 1 channel
-		st,min-sample-time-nsec = <10000>;
+		st,adc-channels = <5 7>; 	// 2 channels
 		channel@5 {
 			reg = <5>;               /* ADC1 in5 channel is used */
-			st,min-sample-time-nsec = <10000>;  /* 10µs sampling time */
+			st,min-sample-time-ns = <10000>;  /* 10us sampling time for channel 5*/
+		};
+		channel@7 {
+			reg = <7>;               /* ADC1 in7 channel is used */
+			st,min-sample-time-ns = <10000000>;  /* 10ms sampling time for channel 7*/
 		};
 	};
 	/* USER CODE END adc */

@@ -42,6 +42,7 @@ SRC_URI:append = " \
    file://0013-fix-for-touchscreen-firmware-update-via-driver.patch \
    file://0014-slip-rpmsg-send.patch \
    file://0015-patch-for-touchscreen-driver-failed-i2c-send.patch \
+   file://0028-Updating-10-inch-panel-timings-to-match-ETML1010V8DH.patch \
    "
 
 # The following idea is adapted from: 

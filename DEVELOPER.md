@@ -179,7 +179,7 @@ Modify the extlinux.conf file in `/boot/extlinux/extlinux.conf`.
   LABEL Hlio-RCD
       KERNEL /uImage-ota
       FDTDIR /
-      FDTOVERLAYS /overlays/active_7-inch-screen-overlay.dtbo /overlays/active_m4-can-overlay.dtbo
+      FDTOVERLAYS /overlays/active_screen-overlay.dtbo /overlays/active_m4-can-overlay.dtbo
       INITRD /uRamdisk
       APPEND rootwait rw oonsole=ttySTM0,115200
   ```
@@ -189,7 +189,7 @@ Modify the extlinux.conf file in `/boot/extlinux/extlinux.conf`.
   LABEL Hlio-RCD
       KERNEL /uImage
       FDTDIR /
-      FDTOVERLAYS /overlays/active_7-inch-screen-overlay.dtbo /overlays/active_m4-can-overlay.dtbo
+      FDTOVERLAYS /overlays/active_screen-overlay.dtbo /overlays/active_m4-can-overlay.dtbo
       APPEND root=PARTUUID=491f6117-415d-4f53-88c9-6e0de54deac6 rootwait rw quiet init="/sbin/hlio-init.sh"  console=ttySTM0,115200
   ```
 

@@ -2,6 +2,6 @@ TIMEOUT 0
 LABEL Hlio-RCD
     KERNEL /uImage-ota
     FDTDIR /
-    FDTOVERLAYS /overlays/active_7-inch-screen-overlay.dtbo /overlays/active_m4-can-overlay.dtbo
+    FDTOVERLAYS /overlays/active_screen-overlay.dtbo /overlays/active_m4-can-overlay.dtbo
     INITRD /uRamdisk
     APPEND rootwait rw oonsole=ttySTM0,115200

@@ -1,0 +1,58 @@
+From 55ef802b361c860232c559d33c2dd644354365f2 Mon Sep 17 00:00:00 2001
+From: Evan Williams <evan.williams@enovationcontrols.com>
+Date: Thu, 4 Apr 2024 13:20:39 -0500
+Subject: [PATCH] Updating 10 inch panel timings to match ETML1010V8DHA.
+
+---
+ drivers/gpu/drm/panel/panel-simple.c | 10 +++++-----
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 3ae15fb12..f51b8b5f5 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2571,32 +2571,33 @@ static const struct panel_desc innolux_g101ice_l01 = {
+ };
+ 
+ static const struct display_timing innolux_g121i1_l01_timing = {
+-	.pixelclock = { 67450000, 71000000, 74550000 },
+-	.hactive = { 1280, 1280, 1280 },
+-	.hfront_porch = { 40, 80, 160 },
+-	.hback_porch = { 39, 79, 159 },
+-	.hsync_len = { 1, 1, 1 },
+-	.vactive = { 800, 800, 800 },
+-	.vfront_porch = { 5, 11, 100 },
+-	.vback_porch = { 4, 11, 99 },
++	.pixelclock = { 68200000, 74500000, 78500000 }, // Use 74.5MHz so the clock dividers can hit it
++	.hactive = { 1280, 1280, 1280 },
++	.hfront_porch = { 50, 80, 110 },
++	.hback_porch = { 49, 79, 119 },
++	.hsync_len = { 1, 1, 1 },
++	.vactive = { 800, 800, 800 },
++	.vfront_porch = { 12, 19, 36 },
++	.vback_porch = { 11, 18, 35 },
+ 	.vsync_len = { 1, 1, 1 },
+ };
+ 
+ static const struct panel_desc innolux_g121i1_l01 = {
+ 	.timings = &innolux_g121i1_l01_timing,
+ 	.num_timings = 1,
+ 	.bpc = 6,
+ 	.size = {
+ 		.width = 261,
+ 		.height = 163,
+ 	},
+ 	.delay = {
+ 		.enable = 200,
+-		.disable = 20,
++		.disable = 50,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+-	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+-};
++	.connector_type = DRM_MODE_CONNECTOR_DPI,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_NEGEDGE,
++};
+ 
+ static const struct drm_display_mode innolux_g121x1_l03_mode = {
+ 	.clock = 65000,
