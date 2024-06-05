@@ -65,7 +65,7 @@ double probe_version_voltage()
     double version_voltage;
 
     req.lineoffsets[0] = 7;
-    req.lineoffsets[0] = 10;
+    req.lineoffsets[1] = 10;
     data.values[0] = 0; // LOW offset 7
     data.values[1] = 0; // LOW offset 10
     req.flags = GPIOHANDLE_REQUEST_OUTPUT;
