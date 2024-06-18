@@ -6,7 +6,7 @@
  */
 
 &i2c4 {
- 	touchscreen@38 {
+ 	touch: touchscreen@38 {
 		compatible = "hycon,hy4635";
 		reg = <0x38>;
 //		vcc-supply = <&vdd_tp_reg>;

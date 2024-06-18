@@ -9,4 +9,14 @@
 */
 
 / {
+	compatible = "stm32mp157a-right_cost_display-mx";
+
+	fragment@0 {
+        target = <&touch>;
+        __overlay__ {
+            touchscreen-inverted-x;
+            touchscreen-inverted-y;
+        };
+    };
+
 };

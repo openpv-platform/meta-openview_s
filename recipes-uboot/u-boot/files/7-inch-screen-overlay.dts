@@ -18,4 +18,12 @@
 		};
 	};
 
+	fragment@1 {
+        target = <&touch>;
+		__overlay__ {
+			touchscreen-inverted-x;
+			touchscreen-inverted-y;
+        };
+    };
+
 };

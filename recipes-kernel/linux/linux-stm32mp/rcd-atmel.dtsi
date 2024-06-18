@@ -6,15 +6,12 @@
  */
 
 &i2c4 {
-	atmel_mxt_ts@4a {
+	touch: atmel_mxt_ts@4a {
 		compatible = "atmel,atmel_mxt_ts";
 		// compatible = "atmel,mXT244";
 		reg = <0x4a>;
 		interrupt-parent = <&gpioc>;
 		interrupts = <13 0x2>;
 	    reset-gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
-
-		touchscreen-inverted-x;
-		touchscreen-inverted-y;
 	};
 };
