@@ -136,7 +136,7 @@ SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_10_interrupt_frequency.cfg \
                               file://fragments/fragment_11_m4.cfg \
                               file://fragments/fragment_12_slip.cfg \
-							  file://fragments/fragment_16_enable_usb_ethernet.cfg \
+                              file://fragments/fragment_16_enable_usb_ethernet.cfg \
                               "
 SRC_URI:class-devupstream:rt += "file://fragments/fragment_13_enable_RT.cfg \
                                 "
