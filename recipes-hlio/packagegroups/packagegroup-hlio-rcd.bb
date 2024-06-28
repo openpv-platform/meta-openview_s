@@ -99,4 +99,5 @@ RDEPENDS:packagegroup-hlio-rcd-development-support = "\
     glfw \
     iperf2 \
     net-tools \
+    freerdp \
     "

@@ -31,3 +31,4 @@ FILES:${PN} += "\
         ${datadir}/helios_backgrounds/Helios_Color_White_BG_1280x800px.png \
         ${datadir}/psplash/splash.png \
         ${sysconfdir}/xdg/weston/early-weston.env "
+
