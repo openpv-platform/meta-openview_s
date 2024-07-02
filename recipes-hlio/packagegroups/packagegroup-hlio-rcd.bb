@@ -42,7 +42,10 @@ RDEPENDS:packagegroup-hlio-rcd-custom = "\
     uvlo \
     ttf-bitstream-vera \
     codesys \
-    fw-env-config \
+    fw-env-config \    
+	bluez5-noinst-tools \
+    bluez5-obex \
+    openobex \
     "
 
 
@@ -99,5 +102,4 @@ RDEPENDS:packagegroup-hlio-rcd-development-support = "\
     glfw \
     iperf2 \
     net-tools \
-    freerdp \
     "
