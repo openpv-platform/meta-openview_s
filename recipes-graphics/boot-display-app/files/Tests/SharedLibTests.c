@@ -35,14 +35,14 @@ int main()
 	int ret = InitWindowInterop(0, 0, 300, 300, true);
 	if (ret != 0)
 	{
-		printf("Error Initializing SDL Client! Exiting Test...\n\r");
+		printf("Error Initializing SDL Client! Exiting Test...\r\n");
 		exit(-1);
 	}
 
 	cairo_t *ctx = Test_CairoContext();
 	if (!ctx)
 	{
-		printf("Error getting Cairo Context! Exiting Test...\n\r");
+		printf("Error getting Cairo Context! Exiting Test...\r\n");
 		ret = -1;
 		goto exit;
 	}
@@ -50,17 +50,17 @@ int main()
 	cairo_surface_t *surf = Test_CairoSurface();
 	if (!surf)
 	{
-		printf("Error getting Cairo Surface! Exiting Test...\n\r");
+		printf("Error getting Cairo Surface! Exiting Test...\r\n");
 		ret = -1;
 		goto exit;
 	}
 
-	printf("Initial Software Tests Passed, Touch screen to validate touch...\n\r");
-	printf("Touches received:\n\r");
+	printf("Initial Software Tests Passed, Touch screen to validate touch...\r\n");
+	printf("Touches received:\r\n");
 
 	while (1) {
 		while (dequeue(&item, 1000)) {
-			printf("  %s x: %d y: %d id: %d count: %d\n\r",
+			printf("  %s x: %d y: %d id: %d count: %d\r\n",
 				touch_names[item.type],
 				item.x,
 				item.y,
@@ -68,18 +68,18 @@ int main()
 				touch_wait_count);
 			touch_wait_count -= 1;
 		}
-		// printf("Waited 1s: %d\n\r", touch_wait_s);
+		// printf("Waited 1s: %d\r\n", touch_wait_s);
 		touch_wait_s -= 1;
 		if (touch_wait_count <= 0 || touch_wait_s <= 0)
 			break;
 	}
 
-	printf("\n\rDrawing on screen for physical inspection...\n\r");
+	printf("\r\nDrawing on screen for physical inspection...\r\n");
 
 	ret = Test_CairoDraw(ctx, surf);
 	if (ret != 0)
 	{
-		printf("Error Drawing on surface...\n\r");
+		printf("Error Drawing on surface...\r\n");
 		ret = -1;
 		goto exit;
 	}
@@ -110,7 +110,7 @@ static int Test_CairoDraw(cairo_t *cr, cairo_surface_t*img)
 	int color_idx = 0;
 	int count;
 	cairo_text_extents_t te;
-	static const char * const pngFile = "/usr/share/cairo-gles-drm/Cloud.png";
+	static const char * const pngFile = "Cloud.png";
 	cairo_surface_t *cloud;
 	double cur_x, cur_y;
 
@@ -160,7 +160,7 @@ static int Test_CairoDraw(cairo_t *cr, cairo_surface_t*img)
 		GLSwapBuffers(img);
 		cairo_surface_destroy (cloud);
 
-		cairo_move_to (cr, 0.27, 0.54);
+		cairo_move_to (cr, 0.5, 0.5);
 
 		cairo_select_font_face (cr, "cairo :monospace", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
 		cairo_set_font_size (cr, 0.05f);

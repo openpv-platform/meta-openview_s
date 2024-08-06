@@ -16,7 +16,7 @@ void createTouchQueue() {
     pthread_mutex_init(&touch_mtx, NULL);
     sem_init(&touch_sem, 0, 0);
     TAILQ_INIT(&head);
-    printf("[] Done creating Touch input queue\n\r");
+    printf("[] Done creating Touch input queue\r\n");
 }
 
 

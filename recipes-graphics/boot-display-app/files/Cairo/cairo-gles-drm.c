@@ -88,7 +88,7 @@ int InitWindowInterop(int x, int y, int w, int h, bool fullScreen)
 
 	ret = InitTouchDevice();
 	if (ret != 0) {
-		printf("[] SOL: ERROR InitTouchDevice [%d]\n\r", ret);
+		printf("[] SOL: ERROR InitTouchDevice [%d]\r\n", ret);
 		return -1;
 	}
 
@@ -101,7 +101,7 @@ int InitWindowInterop(int x, int y, int w, int h, bool fullScreen)
 
 	display.initialized = true;
 	window.initialized = true;
-	printf("[] Done with window interop INIT...\n\r");
+	printf("[] Done with window interop INIT...\r\n");
 
 	return 0;
 }

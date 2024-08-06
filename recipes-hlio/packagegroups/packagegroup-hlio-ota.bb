@@ -31,6 +31,6 @@ RDEPENDS:packagegroup-hlio-ota-tools = "\
 SUMMARY:packagegroup-hlio-ota-graphics = "Graphics layers for RCD OTA application."
 RDEPENDS:packagegroup-hlio-ota-graphics = "\
     kmscube \
-    cairo-gles-drm \
+    boot-display-app \
     evtest \
     "

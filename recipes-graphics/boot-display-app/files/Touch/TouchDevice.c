@@ -90,7 +90,7 @@ static void* touch_thread(void * arg)
 	/* TODO: Not sure of value for test_grab, will grab if grab flag = 1, do we grab or not grab? */
 	if (test_grab(fd, 0))
 	{
-		printf("Device '%s' is grabbed by another process\n\r", DEV_INPUT_NAME);
+		printf("Device '%s' is grabbed by another process\r\n", DEV_INPUT_NAME);
 		goto exit;
 	}
 
@@ -113,7 +113,7 @@ static void* touch_thread(void * arg)
 		if (selResult > 0) {
 			rd = read(fd, ev, sizeof(ev));
 			if (rd < (int) sizeof(struct input_event)) {
-				printf("expected %d bytes, got %d\n\r", (int) sizeof(struct input_event), rd);
+				printf("expected %d bytes, got %d\r\n", (int) sizeof(struct input_event), rd);
 				perror("touch : error reading");
 				// Should anything else happen here?
 			}
@@ -195,7 +195,7 @@ exit:
 	if (fd >= 0)
 		close(fd);
 #ifdef DEBUG
-	printf("Exiting touch thread\n\r");
+	printf("Exiting touch thread\r\n");
 #endif
 	sem_post(&touchThreadSem);
 	return NULL;
@@ -233,7 +233,7 @@ void DestroyTouchDevice()
 			while ((s = sem_timedwait(&touchThreadSem, &ts)) == -1 && errno == EINTR)
 				continue;
 			if (s == -1 && errno == ETIMEDOUT) {
-				fprintf(stderr, "Touch: Time out waiting for touch thread\n\r");
+				fprintf(stderr, "Touch: Time out waiting for touch thread\r\n");
 			}
 			else {
 				sem_destroy(&touchThreadSem);
@@ -241,6 +241,6 @@ void DestroyTouchDevice()
 		}
 	}
 	else {
-		fprintf(stderr, "Touch handler not running\n\r");
+		fprintf(stderr, "Touch handler not running\r\n");
 	}
 }

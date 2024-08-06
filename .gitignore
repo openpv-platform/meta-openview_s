@@ -15,3 +15,6 @@ mx/Utilities/
 # vscode #
 ##########
 **/.vscode/
+recipes-graphics/boot-display-app/files/build/*
+recipes-graphics/boot-display-app/files/Ahsoka.Interop/*
+

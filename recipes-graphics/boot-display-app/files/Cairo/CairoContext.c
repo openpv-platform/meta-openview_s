@@ -51,13 +51,13 @@ int InitCairoFW(CairoContext *context)
     context->cairo_device = cairo_egl_device_create(context->display->egl.dpy, context->display->egl.ctx);
     status = cairo_device_status(context->cairo_device);
     if ( status != CAIRO_STATUS_SUCCESS ) {
-        printf("cairo_device_status error [%d]\n\r", status);
+        printf("cairo_device_status error [%d]\r\n", status);
         return -1;
     }
 
     if (context->window->fullscreen)
     {
-        printf("Fullscreen %dx%d\n\r", context->window->toplevel_w, context->window->toplevel_h);
+        printf("Fullscreen %dx%d\r\n", context->window->toplevel_w, context->window->toplevel_h);
         // context->cr = create_cairo_context(context->window->toplevel_w,
         //                                     context->window->toplevel_h,
         //                                     4,
@@ -70,7 +70,7 @@ int InitCairoFW(CairoContext *context)
     }
     else
     {
-        printf("Window Requested %dx%d\n\r", context->window->req_width, context->window->req_height);
+        printf("Window Requested %dx%d\r\n", context->window->req_width, context->window->req_height);
         // context->cr = create_cairo_context(context->window->req_width,
         //                                     context->window->req_height,
         //                                     4,
@@ -89,13 +89,13 @@ int InitCairoFW(CairoContext *context)
 
     if (context->cairo_surface == NULL)
         return -1;
-    printf("[] Cairo Surface Creation: Success\n\r");
+    printf("Cairo Surface Creation: Success\r\n");
 
     // printf("Created surface %dx%d\n", cairo_image_surface_get_width(context->cairo_surface), cairo_image_surface_get_height(context->cairo_surface));
     context->cr = cairo_create(context->cairo_surface);
     status = cairo_status(context->cr);
     if (status != CAIRO_STATUS_SUCCESS) {
-        printf("cairo_status error [%d]\n\r", status);
+        printf("cairo_status error [%d]\r\n", status);
         return -1;
     }
     return 0;
