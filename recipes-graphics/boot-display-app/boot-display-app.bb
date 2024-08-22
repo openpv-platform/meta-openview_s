@@ -22,8 +22,8 @@ EXTRA_OECMAKE = ""
 TARGET_CC_ARCH += "${LDFLAGS}"
 
 do_install() {
-	install -d ${D}${bindir}
-	install -m 0755 ${B}/Install/BootDisplayApp ${D}${bindir}/BootDisplayApp
+    install -d ${D}${bindir}
+    install -m 0755 ${B}/Install/BootDisplayApp ${D}${bindir}/BootDisplayApp
 }
 
 FILES:${PN} += "${bindir}"

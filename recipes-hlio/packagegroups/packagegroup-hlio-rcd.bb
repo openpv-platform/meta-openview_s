@@ -15,7 +15,7 @@ PACKAGES = "\
             packagegroup-hlio-rcd-tools-python3 \
             packagegroup-hlio-rcd-qt5-support \
             packagegroup-hlio-rcd-development-support \
-			packagegroup-hlio-rcd-webbrowser \
+            packagegroup-hlio-rcd-webbrowser \
             "
 
 RDEPENDS:packagegroup-hlio-rcd = "\
@@ -25,7 +25,7 @@ RDEPENDS:packagegroup-hlio-rcd = "\
     packagegroup-hlio-rcd-tools-python3 \
     packagegroup-hlio-rcd-qt5-support \
     packagegroup-hlio-rcd-development-support \
-	packagegroup-hlio-rcd-webbrowser \
+    packagegroup-hlio-rcd-webbrowser \
     "
 
 SUMMARY:packagegroup-hlio-rcd-custom = "Custom tools for RCD added by HCEE team."
@@ -45,18 +45,18 @@ RDEPENDS:packagegroup-hlio-rcd-custom = "\
     ttf-bitstream-vera \
     codesys \
     fw-env-config \    
-	bluez5-noinst-tools \
+    bluez5-noinst-tools \
     bluez5-obex \
     openobex \
     "
 
 SUMMARY:packagegroup-hlio-rcd-webbrowser = "Support for HTML5 User Interfaces / Browser Display"
 RDEPENDS:packagegroup-hlio-rcd-webbrowser += "\
-        qtbase-plugins \
-        wpewebkit-qtwpe-qml-plugin \
-        web-browser \
-        eglfs-configs \
-        "
+    qtbase-plugins \
+    wpewebkit-qtwpe-qml-plugin \
+    web-browser \
+    eglfs-configs \
+    "
 
 
 SUMMARY:packagegroup-hlio-rcd-debugging = "Tools for debugging user space applications on the RCD"
@@ -111,5 +111,5 @@ RDEPENDS:packagegroup-hlio-rcd-development-support = "\
     glfw \
     iperf2 \
     net-tools \
-	freerdp \
+    freerdp \
     "
