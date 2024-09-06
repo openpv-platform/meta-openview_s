@@ -87,6 +87,7 @@ KERNEL_CONFIG_FRAGMENTS += "${WORKDIR}/fragments/fragment_01_enable_j1939.cfg \
                             ${WORKDIR}/fragments/fragment_12_slip.cfg \
                             ${WORKDIR}/fragments/fragment_16_enable_usb_ethernet.cfg \
                             ${WORKDIR}/fragments/fragment_16_enable_rfcomm.cfg \
+                            ${WORKDIR}/fragments/fragment_17_add_usb_serial.cfg \
                             "
 #                            ${WORKDIR}/fragments/fragment_14_enable_earlyprintk_on_uart4.cfg 
 
@@ -121,6 +122,7 @@ SRC_URI:append = " \
                   file://fragments/fragment_14_enable_earlyprintk_on_uart4.cfg \
                   file://fragments/fragment_16_enable_usb_ethernet.cfg \
                   file://fragments/fragment_16_enable_rfcomm.cfg \
+                  file://fragments/fragment_17_add_usb_serial.cfg \
                   "
 
 SRC_URI:append:ota = " \
@@ -139,7 +141,8 @@ SRC_URI:class-devupstream += "file://fragments/fragment_01_enable_j1939.cfg \
                               file://fragments/fragment_11_m4.cfg \
                               file://fragments/fragment_12_slip.cfg \
                               file://fragments/fragment_16_enable_usb_ethernet.cfg \
-                              file://fragments/fragment_16_enable_rfcomm.cfg \
+							  file://fragments/fragment_16_enable_rfcomm.cfg \
+                              file://fragments/fragment_17_add_usb_serial.cfg \
                               "
 SRC_URI:class-devupstream:rt += "file://fragments/fragment_13_enable_RT.cfg \
                                 "
