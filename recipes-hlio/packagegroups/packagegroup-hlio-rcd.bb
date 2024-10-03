@@ -48,6 +48,7 @@ RDEPENDS:packagegroup-hlio-rcd-custom = "\
     bluez5-noinst-tools \
     bluez5-obex \
     openobex \
+    rtc-config \
     "
 
 SUMMARY:packagegroup-hlio-rcd-webbrowser = "Support for HTML5 User Interfaces / Browser Display"

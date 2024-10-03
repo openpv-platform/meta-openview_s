@@ -15,6 +15,7 @@ cp /usr/share/hlio-first-boot/extlinux.conf  /boot/extlinux
 
 # setup DTB overlays and proper resolution splash screen if neccesary
 /sbin/lcd-config
+/sbin/rtc-config
 
 # we only want to run after first time being programmed
 systemctl disable hlio-first-boot

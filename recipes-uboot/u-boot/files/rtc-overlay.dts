@@ -1,0 +1,32 @@
+/dts-v1/;
+/plugin/;
+
+/*
+	This overlay will:
+		1) Add rs5c372b to the device tree and configure it as rtc0
+
+	For documentation on fragments see wiki: https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_wiki/wikis/Development%20Documentation/71/Device-Tree-Overlays-for-the-RCD-BSP#
+*/
+
+/ {
+	compatible = "stm32mp157a-right_cost_display-mx";
+    fragment@0 {
+        target-path="/";
+        __overlay__ {
+            aliases {
+                rtc0 = &rtc_rs5c372b;
+            };
+        };
+    };
+
+    fragment@1 {
+        target = <&i2c4>;
+        __overlay__ {
+            rtc_rs5c372b: rtc@32 {
+                compatible = "ricoh,rs5c372b";
+                reg = <0x32>;
+                status = "okay";
+            };
+        };
+    };
+};

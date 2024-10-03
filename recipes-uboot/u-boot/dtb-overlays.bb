@@ -13,6 +13,8 @@ OVERLAY_DTS_FILES = " \
         7-inch-screen-overlay \
         10-inch-screen-overlay \
         m4-can-overlay \
+        empty-overlay \
+        rtc-overlay \
         "
 
 do_compile() {
@@ -47,6 +49,9 @@ do_install() {
 
     #install an a7-can backup in case we need to switch back to CAN A7 
     install -m 644 ${DEPLOY_DIR_IMAGE}/arm-trusted-firmware/tf-a-stm32mp157a-right_cost_display-mx-emmc.stm32 ${D}/boot/tf-a/tf-a_A7-CAN-backup_emmc.stm32
+
+    install -m 644 ${B}/empty-overlay.dtbo ${D}/boot/overlays/empty-overlay.dtbo
+    install -m 644 ${B}/rtc-overlay.dtbo ${D}/boot/overlays/rtc-overlay.dtbo
 }
 
 ALLOW_EMPTY:${PN} = "1"
@@ -56,4 +61,6 @@ FILES:${PN} = "/boot/overlays/5-inch-screen-overlay.dtbo \
                /boot/overlays/disabled_m4-can-overlay.dtbo \
                /boot/tf-a/tf-a_M4-CAN_emmc.stm32 \
                /boot/tf-a/tf-a_A7-CAN-backup_emmc.stm32 \
+               /boot/overlays/empty-overlay.dtbo \
+               /boot/overlays/rtc-overlay.dtbo \
               "

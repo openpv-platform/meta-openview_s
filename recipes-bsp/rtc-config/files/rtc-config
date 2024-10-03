@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Install the i2c module and run i2cdetect to find RTC on address 32
+modprobe i2c-dev
+if i2cdetect -y 0 | grep -q "32"; then
+    cp /boot/overlays/rtc-overlay.dtbo /boot/overlays/active_rtc-overlay.dtbo
+else
+    # Use an empty overlay to prevent warning in the journal
+    cp /boot/overlays/empty-overlay.dtbo /boot/overlays/active_rtc-overlay.dtbo
+fi

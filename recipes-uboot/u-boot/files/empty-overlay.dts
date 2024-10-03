@@ -1,0 +1,9 @@
+/dts-v1/;
+/plugin/;
+
+/*
+	For documentation on fragments see wiki: https://dev.azure.com/HeliosEngineering/Right%20Cost%20Display/_wiki/wikis/Development%20Documentation/71/Device-Tree-Overlays-for-the-RCD-BSP#
+*/
+
+/ {
+};
