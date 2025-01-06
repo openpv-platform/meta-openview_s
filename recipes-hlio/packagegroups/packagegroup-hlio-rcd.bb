@@ -113,4 +113,5 @@ RDEPENDS:packagegroup-hlio-rcd-development-support = "\
     iperf2 \
     net-tools \
     freerdp \
+    libqmi \
     "
