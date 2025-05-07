@@ -43,7 +43,7 @@ RDEPENDS:packagegroup-hlio-rcd-custom = "\
     lmsensors-dev \
     uvlo \
     ttf-bitstream-vera \
-    codesys \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'codesys', 'codesys', '', d)} \
     fw-env-config \    
     bluez5-noinst-tools \
     bluez5-obex \
